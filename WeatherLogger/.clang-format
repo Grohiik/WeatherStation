@@ -1,0 +1,12 @@
+# Set the style to base on
+BasedOnStyle: Google
+
+# Set the custom style
+ContinuationIndentWidth: 4
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+AlignTrailingComments: true
+AlignAfterOpenBracket: Align
+UseCRLF: false
+AllowShortIfStatementsOnASingleLine: WithoutElse

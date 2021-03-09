@@ -6,25 +6,24 @@
 **/obj
 **/target
 **/dist
-**/.cache
+**/.parcel-cache
 
 ## Package files
 *.zip
 *.rar
 *.tar.gz
 
-## Generated
+## Generated data
 **/data
 
 ## NodeJS
 **/node_modules
 
+## Spring server configuration
+**/application.yml
+
 # ┃ Generated Workspaces
 # ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ #
-
-## Makefile
-Makefile
-*.make
 
 ## Visual Studio Code
 .vscode

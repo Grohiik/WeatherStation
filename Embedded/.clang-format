@@ -1,0 +1,27 @@
+# Select style to base on.
+BasedOnStyle: Google
+
+# Always used 4 spaces and always use spaces.
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ContinuationIndentWidth: 4
+UseCRLF: false
+
+# Single line comment style
+AlignTrailingComments: true
+
+# These options applies for C++.
+Language: Cpp
+SortIncludes: false 
+CompactNamespaces: true
+NamespaceIndentation: All
+AllowAllConstructorInitializersOnNextLine: true
+AllowAllArgumentsOnNextLine: true
+DerivePointerAlignment: true
+PointerAlignment: Left
+SpaceBeforeInheritanceColon: true
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AlwaysBreakTemplateDeclarations: Yes
+AlignConsecutiveMacros: true
+AlignEscapedNewlines: Right
