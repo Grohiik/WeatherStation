@@ -1,0 +1,52 @@
+# ┃ Outputs
+# ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ #
+
+## Builds
+**/bin
+**/obj
+**/target
+**/dist
+**/.cache
+
+## Package files
+*.zip
+*.rar
+*.tar.gz
+
+## Generated
+**/data
+
+## NodeJS
+**/node_modules
+
+# ┃ Generated Workspaces
+# ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ #
+
+## Makefile
+Makefile
+*.make
+
+## Visual Studio Code
+.vscode
+
+### Visual Studio Code (Java)
+.project
+.settings
+.classpath
+
+## IntelliJ
+.idea
+*.iml
+
+# ┃ System Files
+# ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ #
+
+## macOS
+.DS_Store
+*.icloud
+.AppleDouble
+.LSOverride
+
+## Windows
+$RECYCLE.BIN/
+*.lnk
