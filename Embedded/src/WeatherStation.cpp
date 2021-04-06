@@ -13,12 +13,52 @@
  */
 
 #include <Arduino.h>
+#include <Wire.h>
+
+#include <WiFi.h>
+#include <WiFiMulti.h>
+
+#ifdef USE_WIFI_CONFIG
+#include "PoseidonConfig.hpp"
+#else
+#define WIFI_SSID     "YOUR SSD ID HERE"
+#define WIFI_PASSWORD "YOUR WIFI PASSWORD HERE"
+#endif
 
 #define BAUD_RATE 115200
 
-void setup() { Serial.begin(BAUD_RATE); }
+// WiFi configurations
+constexpr auto SSID = WIFI_SSID;
+constexpr auto PASSWORD = WIFI_PASSWORD;
+
+// Filenames
+constexpr auto TEMP_FILENAME = "temperature.csv";
+
+// MQTT topics
+constexpr auto TEMPERATURE_TOPIC = "/temperature";
+
+// WiFi object
+WiFiMulti wifi;
+
+void setup() {
+    Serial.begin(BAUD_RATE);
+
+    // Read temperature
+
+    // Connect to WiFi
+    wifi.addAP(SSID, PASSWORD);
+}
 
 void loop() {
-    Serial.print("Hello, World!");
-    delay(250);
+    // Read from SD-card
+
+    // Try to send
+    if ((wifi.run()) == WL_CONNECTED) {
+        Serial.println("We're connected!");
+        delay(3000);
+    }
+
+    // Log to SD-card if failed
+
+    // Sleep
 }

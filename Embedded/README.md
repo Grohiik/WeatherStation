@@ -14,6 +14,26 @@ The Weather Station project is an embedded system with sensor suite, such as tem
 
 ## Development
 
+### Configurations
+
+Create `PoseidonConfig.hpp` file in `src` directory. Use the sample config below.
+
+```cpp
+#pragma once
+
+#define WIFI_SSID     "SSID"
+#define WIFI_PASSWORD "PASSWORD"
+```
+
+### PlatformIO
+
+To upload the program you'll need to add these to the `platformio.ini` file.
+
+```
+upload_port = <your-port>
+monitor_port = <your-port>
+```
+
 ### Visual Studio Code
 
 - [PlatformIO](https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide)
