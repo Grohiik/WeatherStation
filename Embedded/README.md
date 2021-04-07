@@ -21,8 +21,13 @@ Create `PoseidonConfig.hpp` file in `src` directory. Use the sample config below
 ```cpp
 #pragma once
 
-#define WIFI_SSID     "SSID"
-#define WIFI_PASSWORD "PASSWORD"
+#define WIFI_SSID      "YOUR SSID"
+#define WIFI_PASSWORD  "YOUR WIFI PASSWORD"
+#define MQTT_BROKER_IP "YOUR BROKER IP"
+#define MQTT_USERNAME  "YOUR USERNAME"
+#define MQTT_KEY       "YOUR KEY"
+
+constexpr auto TEMPERATURE_TOPIC = "/temperature";
 ```
 
 ### PlatformIO
