@@ -16,27 +16,30 @@ The Weather Station project is an embedded system with sensor suite, such as tem
 
 ### Configurations
 
-Create `PoseidonConfig.hpp` file in `src` directory. Use the sample config below.
+Create `env.ini` file in the root of this project and include the values below with your own configs.
 
-```cpp
-#pragma once
-
-#define WIFI_SSID      "YOUR SSID"
-#define WIFI_PASSWORD  "YOUR WIFI PASSWORD"
-#define MQTT_BROKER_IP "YOUR BROKER IP"
-#define MQTT_USERNAME  "YOUR USERNAME"
-#define MQTT_KEY       "YOUR KEY"
-
-constexpr auto TEMPERATURE_TOPIC = "/temperature";
-```
-
-### PlatformIO
-
-To upload the program you'll need to add these to the `platformio.ini` file.
-
-```
+```ini
+[env]
 upload_port = <your-port>
 monitor_port = <your-port>
+
+# To use this you need to create PoseidonEnv.hpp
+[env:featheresp32]
+build_flags = -DPOSEIDON_CONFIGURATION
+```
+
+The `POSEIDON_CONFIGURATION` macro needs `PoseidonEnv.hpp` file to work. Create the file and copy the sample below and input your own config.
+```cpp
+#pragma once
+// clang-format off
+
+constexpr auto WIFI_SSID      = "YOUR_SSID";
+constexpr auto WIFI_PASSWORD  = "YOUR_WIFI_PASSWORD";
+constexpr auto MQTT_BROKER_IP = "YOUR_BROKER_IP";
+constexpr auto MQTT_USERNAME  = "YOUR_BROKER_USERNAME";
+constexpr auto MQTT_KEY       = "YOUR_MQTT_KEY";
+
+constexpr auto TEMPERATURE_TOPIC = "/temperature";
 ```
 
 ### Visual Studio Code
@@ -64,12 +67,15 @@ This project follows the [Doxygen](https://www.doxygen.nl/index.html) documentat
 ```
 Embedded
 ├─ include
+│  └─ PoseidonCore.hpp
 ├─ lib
 ├─ src
+│  ├─ PoseidonEnv.hpp      ← ignored
 │  └─ WeatherStation.cpp
 ├─ test
 ├─ .clang-format
 ├─ .gitignore
+├─ env.ini                 ← ignored
 ├─ .platformio.ini
 └─ README.md
 ```

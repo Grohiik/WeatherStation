@@ -5,7 +5,7 @@
  * @brief   WeatherStation is a microcontroller with sensor suite for reading
  *          the environment. It reports back the data to a server for logging
  *          and for later analysis.
- * @version 0.1.0
+ * @version 0.2.0
  * @date    2021-03-31
  *
  * @copyright Copyright (c) 2021
@@ -18,17 +18,10 @@
 #include <WiFi.h>
 #include <MQTT.h>
 
-#ifdef USE_WIFI_CONFIG
-#include "PoseidonConfig.hpp"
-#else
-#define WIFI_SSID      "YOUR SSID"
-#define WIFI_PASSWORD  "YOUR WIFI PASSWORD"
-#define MQTT_BROKER_IP "YOUR BROKER IP"
-#define MQTT_USERNAME  "YOUR USERNAME"
-#define MQTT_KEY       "YOUR KEY"
-
-constexpr auto TEMPERATURE_TOPIC = "/temperature";
+#ifdef POSEIDON_CONFIGURATION
+#include "PoseidonEnv.hpp"
 #endif
+#include "PoseidonCore.hpp"
 
 // Filenames
 constexpr auto TEMP_FILENAME = "temperature.csv";
@@ -39,7 +32,7 @@ constexpr auto TIME_TO_SLEEP = 20;         // Time to sleep in seconds
 constexpr auto MAX_CONNECTION_TRIES = 10;  // Connection max tries
 
 // Boards baud rate
-constexpr auto BAUD_RATE = 115200;
+constexpr auto BAUD_RATE = 115200U;
 
 // WiFi and MQTT
 WiFiClient wifi;
@@ -73,7 +66,7 @@ bool connect() {
         }
     }
 
-    Serial.println("\nconnected!");
+    Serial.println("\nConnected!");
     client.publish(TEMPERATURE_TOPIC, "0");
     return true;
 }
@@ -98,16 +91,16 @@ void setup() {
     client.begin(MQTT_BROKER_IP, wifi);
 
     if (!connect()) {
-        // TODO: log to SD-CARD
+        // TODO: Log to SD-CARD
 
         sleep();
     }
 
     // TODO: Read from SD-card
 
-    // TODO: send all data
+    // TODO: Send all data
 
-    // TODO: delete the logs from SD-card
+    // TODO: Delete the logs from SD-card
 
     Serial.println("Failed to connect");
     sleep();

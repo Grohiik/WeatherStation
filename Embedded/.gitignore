@@ -6,4 +6,5 @@
 .vscode/ipch
 
 # Configuration file
-PoseidonConfig.hpp
+PoseidonEnv.hpp
+env.ini
