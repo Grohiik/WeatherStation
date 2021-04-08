@@ -13,10 +13,16 @@ import org.springframework.jdbc.core.JdbcTemplate;
  * @version 0.0.0
  */
 @SpringBootApplication
-public class WeatherApp {
-    public static void main(String[] args) {
-        var app = new SpringApplication(WeatherApp.class);
-        app.run(args);
+public class WeatherApp implements CommandLineRunner{
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    public static void main(String[] args)
+    {
+        SpringApplication.run(WeatherApp.class, args);
+        //var app = new SpringApplication(WeatherApp.class);
+        //app.run(args);
     }
 
     @Override
