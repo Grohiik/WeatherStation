@@ -17,6 +17,7 @@
 
 #include <WiFi.h>
 #include <MQTT.h>
+#include <DHTesp.h>
 
 #ifdef POSEIDON_CONFIGURATION
 #include "PoseidonEnv.hpp"
@@ -28,7 +29,7 @@ constexpr auto TEMP_FILENAME = "temperature.csv";
 
 // Sleep configurations
 constexpr auto uS_TO_S_FACTOR = 1000000;   // μs to s conversion factor
-constexpr auto TIME_TO_SLEEP = 20;         // Time to sleep in seconds
+constexpr auto TIME_TO_SLEEP = 10;         // Time to sleep in seconds
 constexpr auto MAX_CONNECTION_TRIES = 10;  // Connection max tries
 
 // Boards baud rate
@@ -37,6 +38,7 @@ constexpr auto BAUD_RATE = 115200U;
 // WiFi and MQTT
 WiFiClient wifi;
 MQTTClient client;
+DHTesp dht;
 
 /**
  * @brief Check WiFi connection status and connect to MQTT server.
@@ -66,8 +68,15 @@ bool connect() {
         }
     }
 
-    Serial.println("\nConnected!");
-    client.publish(TEMPERATURE_TOPIC, "0");
+    auto values = dht.getTempAndHumidity();
+    auto batteryValue = analogRead(A13) * 2;
+
+    Serial.println("\nConnected to MQTT!");
+    client.publish("KTheXIII/feeds/humidity", String(values.humidity));
+    delay(3000);
+    client.publish("KTheXIII/feeds/temperature", String(values.temperature));
+    delay(3000);
+    client.publish("KTheXIII/feeds/hello-world", String(analogRead(A13)));
     return true;
 }
 
@@ -83,6 +92,8 @@ void setup() {
     Serial.begin(BAUD_RATE);
     Serial.println("Waking up");
 
+    dht.setup(13, DHTesp::DHT22);
+
     // TODO: Read temperature
 
     // Connect to WiFi
@@ -92,7 +103,7 @@ void setup() {
 
     if (!connect()) {
         // TODO: Log to SD-CARD
-
+        Serial.println("Failed to connect");
         sleep();
     }
 
@@ -102,8 +113,15 @@ void setup() {
 
     // TODO: Delete the logs from SD-card
 
-    Serial.println("Failed to connect");
     sleep();
 }
 
-void loop() {}
+void loop() {
+    auto values = dht.getTempAndHumidity();
+    Serial.print("Temperature: ");
+    Serial.print(values.temperature);
+    Serial.print(", Humidity: ");
+    Serial.println(values.humidity);
+
+    delay(1000);
+}
