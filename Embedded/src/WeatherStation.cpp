@@ -17,7 +17,6 @@
 
 #include <WiFi.h>
 #include <MQTT.h>
-#include <DHTesp.h>
 
 #ifdef POSEIDON_CONFIGURATION
 #include "PoseidonEnv.hpp"
@@ -29,8 +28,11 @@ constexpr auto TEMP_FILENAME = "temperature.csv";
 
 // Sleep configurations
 constexpr auto uS_TO_S_FACTOR = 1000000;   // μs to s conversion factor
-constexpr auto TIME_TO_SLEEP = 10;         // Time to sleep in seconds
-constexpr auto MAX_CONNECTION_TRIES = 10;  // Connection max tries
+constexpr auto TIME_TO_SLEEP = 120;         // Time to sleep in seconds
+constexpr auto MAX_CONNECTION_TRIES = 20;  // Connection max tries
+
+// Header
+String header = "device,time,temp,hum,ligh\n";
 
 // Boards baud rate
 constexpr auto BAUD_RATE = 115200U;
@@ -38,7 +40,6 @@ constexpr auto BAUD_RATE = 115200U;
 // WiFi and MQTT
 WiFiClient wifi;
 MQTTClient client;
-DHTesp dht;
 
 /**
  * @brief Check WiFi connection status and connect to MQTT server.
@@ -55,28 +56,23 @@ bool connect() {
         if (counter >= MAX_CONNECTION_TRIES) {
             return false;
         }
+        counter++;
     }
     counter = 0;
     Serial.println("\nConnected to WiFi.");
 
-    Serial.print("\nConnecting to MQTT...");
+    Serial.println("\nConnecting to MQTT...");
     while (!client.connect("station1", MQTT_USERNAME, MQTT_KEY)) {
         Serial.print(".");
         delay(1000);
         if (counter >= MAX_CONNECTION_TRIES) {
             return false;
         }
+        counter++;
     }
 
-    auto values = dht.getTempAndHumidity();
-    auto batteryValue = analogRead(A13) * 2;
+    //client.publish(TEMPERATURE_TOPIC, "device,time,temp,hum,ligh\ndevice1,time,32,32,32", false, 2);
 
-    Serial.println("\nConnected to MQTT!");
-    client.publish("KTheXIII/feeds/humidity", String(values.humidity));
-    delay(3000);
-    client.publish("KTheXIII/feeds/temperature", String(values.temperature));
-    delay(3000);
-    client.publish("KTheXIII/feeds/hello-world", String(analogRead(A13)));
     return true;
 }
 
@@ -86,13 +82,20 @@ void sleep() {
     esp_deep_sleep_start();
 }
 
+void send(String& data) {
+    data = header + data;
+
+    client.publish(TEMPERATURE_TOPIC, data, false, 2);
+}
+
 void setup() {
     delay(500);
 
     Serial.begin(BAUD_RATE);
     Serial.println("Waking up");
 
-    dht.setup(13, DHTesp::DHT22);
+
+
 
     // TODO: Read temperature
 
@@ -107,6 +110,9 @@ void setup() {
         sleep();
     }
 
+    String data = String(DEVICE_ID)+",time,32,32,32";
+    send(data);
+
     // TODO: Read from SD-card
 
     // TODO: Send all data
@@ -116,12 +122,4 @@ void setup() {
     sleep();
 }
 
-void loop() {
-    auto values = dht.getTempAndHumidity();
-    Serial.print("Temperature: ");
-    Serial.print(values.temperature);
-    Serial.print(", Humidity: ");
-    Serial.println(values.humidity);
-
-    delay(1000);
-}
+void loop() {}
