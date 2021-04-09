@@ -1,0 +1,43 @@
+version: '3.3'
+
+services:
+  weather-db:
+    image: postgres:alpine
+    restart: always
+    ports:
+      - 5432:5432
+    networks:
+      - weather-network
+    environment:
+      - 'POSTGRES_DB=${POSTGRES_DATABASE}'
+      - 'POSTGRES_USER=${POSTGRES_USER}'
+      - 'POSTGRES_PASSWORD=${POSTGRES_PASSWORD}'
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+
+  weather-admin:
+    image: dpage/pgadmin4:latest
+    restart: always
+    ports:
+      - '${PGADMIN_PORT}:80'
+    networks:
+      - weather-network
+    environment:
+      - 'PGADMIN_DEFAULT_EMAIL=${PDADMIN_EMAIL}'
+      - 'PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}'
+
+  weather-logger:
+    build: WeatherLogger
+    image: weather-logger
+    networks:
+      - weather-network
+    ports:
+      - '${PORT}:8080'
+    links:
+      - weather-db
+    volumes:
+      - ./data:/app/data
+
+networks:
+  weather-network:
+    driver: bridge

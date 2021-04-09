@@ -22,6 +22,12 @@
 ## Spring server configuration
 **/application.yml
 
+# ┃ Environment Variables
+# ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ #
+
+## Docker and other environment file
+.env
+
 # ┃ Generated Workspaces
 # ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ #
 
