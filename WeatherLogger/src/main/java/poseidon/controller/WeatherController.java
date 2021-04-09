@@ -16,12 +16,19 @@ import poseidon.repository.DataRepository;
 /**
  * @author Marcus Linné
  * @author Erik Kellgren
+ *
  */
 @RestController
 @RequestMapping(value = "api")
 public class WeatherController {
     @Autowired DataRepository dataRepository;
 
+    /**
+     * Method used to create and save data onto the SQL DB,
+     * using the GET request with specified mapping.
+     *
+     * @return informs that the data has been created on the DB
+     */
     @GetMapping("/fillWithTrashData")
     public String fillWithTrashData() {
         dataRepository.save(new DataReceiver("lm25", "12.00.15", "20.5", "90", "20"));
@@ -34,6 +41,7 @@ public class WeatherController {
         return "much data made";
     }
 
+
     @PostMapping("/create")
     public String create(@RequestBody DataUI dataUI) {
         dataRepository.save(new DataReceiver(dataUI.getDevice(), dataUI.getTime(),
@@ -43,6 +51,12 @@ public class WeatherController {
         return "one is created";
     }
 
+    /**
+     * Method used to find all data on the SQL DB,
+     * using the GET request with specified mapping.
+     *
+     * @return all data stored on the DB as JSON
+     */
     @GetMapping("/findall")
     public List<DataUI> findAll() {
         List<DataReceiver> data = dataRepository.findAll();

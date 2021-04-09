@@ -63,7 +63,7 @@ public class DataUI {
 
     public String toString() {
         return String.format(
-            "Values[device='%s', time='%s', temperature='%s', humidity='%s', light='%s']", device,
+            "weatherlog[device='%s', time='%s', temperature='%s', humidity='%s', light='%s']", device,
             time, temperature, humidity, light);
     }
 }
