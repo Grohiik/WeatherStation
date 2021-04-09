@@ -93,8 +93,6 @@ void send(String& data) {
 TempAndHumidity getTemp() {
     auto values = dht.getTempAndHumidity();
 
-    Serial.println("temperatures: "+ String(values.temperature));
-
     return values;
 }
 
@@ -128,13 +126,11 @@ void setup() {
         sleep();
     }
 
-    
-    String data = String(DEVICE_ID)+",time,"+tempandhumidity.temperature+","+tempandhumidity.humidity+","+"l"+","+String(getBatv());
-    send(data);
-
     // TODO: Read from SD-card
 
     // TODO: Send all data
+    String data = String(DEVICE_ID)+",time,"+tempandhumidity.temperature+","+tempandhumidity.humidity+","+"l"+","+String(getBatv());
+    send(data);
 
     // TODO: Delete the logs from SD-card
 
