@@ -5,7 +5,7 @@ services:
     image: postgres:alpine
     restart: always
     ports:
-      - 5432:5432
+      - '${POSTGRES_PORT}:5432'
     networks:
       - weather-network
     environment:
@@ -25,10 +25,13 @@ services:
     environment:
       - 'PGADMIN_DEFAULT_EMAIL=${PDADMIN_EMAIL}'
       - 'PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}'
+    volumes:
+      - ./data/pgadmin:/var/lib/pgadmin
 
   weather-logger:
     build: WeatherLogger
     image: weather-logger
+    restart: always
     networks:
       - weather-network
     ports:
@@ -36,7 +39,7 @@ services:
     links:
       - weather-db
     volumes:
-      - ./data:/app/data
+      - ./data/weather:/app/data
 
 networks:
   weather-network:
