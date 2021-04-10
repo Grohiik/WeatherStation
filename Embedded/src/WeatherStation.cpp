@@ -18,6 +18,9 @@
 #include <WiFi.h>
 #include <MQTT.h>
 #include <DHTesp.h>
+#include "RTClib.h"
+#include <Adafruit_Sensor.h>
+#include "Adafruit_TSL2591.h"
 
 #ifdef POSEIDON_CONFIGURATION
 #include "PoseidonEnv.hpp"
@@ -29,7 +32,7 @@ constexpr auto TEMP_FILENAME = "temperature.csv";
 
 // Sleep configurations
 constexpr auto uS_TO_S_FACTOR = 1000000;   // μs to s conversion factor
-constexpr auto TIME_TO_SLEEP = 120;         // Time to sleep in seconds
+constexpr auto TIME_TO_SLEEP = 120;        // Time to sleep in seconds
 constexpr auto MAX_CONNECTION_TRIES = 20;  // Connection max tries
 
 // Header
@@ -42,6 +45,14 @@ constexpr auto BAUD_RATE = 115200U;
 WiFiClient wifi;
 MQTTClient client;
 DHTesp dht;
+RTC_PCF8523 rtc;
+Adafruit_TSL2591 tsl = Adafruit_TSL2591(2591);
+
+struct LightSensor {
+    uint16_t ir;
+    uint16_t full;
+    float lux;
+};
 
 /**
  * @brief Check WiFi connection status and connect to MQTT server.
@@ -73,7 +84,8 @@ bool connect() {
         counter++;
     }
 
-    //client.publish(TEMPERATURE_TOPIC, "device,time,temp,hum,ligh\ndevice1,time,32,32,32", false, 2);
+    // client.publish(TEMPERATURE_TOPIC,
+    // "device,time,temp,hum,ligh\ndevice1,time,32,32,32", false, 2);
 
     return true;
 }
@@ -97,11 +109,27 @@ TempAndHumidity getTemp() {
 }
 
 float getBatv() {
-    auto batteryValue = (analogRead(A13)/4095.0)*2*3.3*1.100;
+    auto batteryValue = (analogRead(A13) / 4095.0) * 2 * 3.3 * 1.100;
 
     return batteryValue;
 }
 
+uint32_t getUnixTime() {
+    if (rtc.initialized()) {
+        return rtc.now().unixtime();
+    }
+
+    return 0;
+}
+
+LightSensor getLightData() {
+    LightSensor data;
+    uint32_t rawData = tsl.getFullLuminosity();
+    data.ir = rawData >> 16;
+    data.full = rawData & 0xFFFF;
+    data.lux = tsl.calculateLux(data.full, data.ir);
+    return data;
+}
 
 void setup() {
     delay(500);
@@ -110,7 +138,10 @@ void setup() {
     Serial.println("Waking up");
 
     dht.setup(13, DHTesp::DHT22);
-
+    rtc.begin();
+    tsl.begin();
+    tsl.setGain(TSL2591_GAIN_MED);
+    tsl.setTiming(TSL2591_INTEGRATIONTIME_300MS);
 
     // TODO: Read temperature
     auto tempandhumidity = getTemp();
@@ -129,7 +160,9 @@ void setup() {
     // TODO: Read from SD-card
 
     // TODO: Send all data
-    String data = String(DEVICE_ID)+",time,"+tempandhumidity.temperature+","+tempandhumidity.humidity+","+"l"+","+String(getBatv());
+    String data = String(DEVICE_ID) + "," + String(getUnixTime()) + "," +
+                  tempandhumidity.temperature + "," + tempandhumidity.humidity +
+                  "," + String(getLightData().lux) + "," + String(getBatv());
     send(data);
 
     // TODO: Delete the logs from SD-card
