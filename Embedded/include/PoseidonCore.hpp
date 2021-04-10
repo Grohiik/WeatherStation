@@ -18,7 +18,7 @@ constexpr auto MQTT_BROKER_IP = "YOUR_BROKER_IP";
 constexpr auto MQTT_USERNAME  = "YOUR_BROKER_USERNAME";
 constexpr auto MQTT_KEY       = "YOUR_MQTT_KEY";
 
-constexpr auto TEMPERATURE_TOPIC = "/temperature";
+constexpr auto WEATHER_TOPIC = "/weather";
 #endif
 
 #ifndef POSEIDON_MAJOR_VERSION

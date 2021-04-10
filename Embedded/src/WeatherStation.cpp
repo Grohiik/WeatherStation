@@ -31,9 +31,9 @@
 constexpr auto TEMP_FILENAME = "temperature.csv";
 
 // Sleep configurations
-constexpr auto uS_TO_S_FACTOR = 1000000;   // μs to s conversion factor
-constexpr auto TIME_TO_SLEEP = 120;        // Time to sleep in seconds
-constexpr auto MAX_CONNECTION_TRIES = 20;  // Connection max tries
+constexpr auto uS_TO_S_FACTOR = 1000000U;   // μs to s conversion factor
+constexpr auto TIME_TO_SLEEP = 120U;        // Time to sleep in seconds
+constexpr auto MAX_CONNECTION_TRIES = 20U;  // Connection max tries
 
 // Header
 String header = "device,time,temp,hum,ligh,batv\n";
@@ -84,9 +84,6 @@ bool connect() {
         counter++;
     }
 
-    // client.publish(TEMPERATURE_TOPIC,
-    // "device,time,temp,hum,ligh\ndevice1,time,32,32,32", false, 2);
-
     return true;
 }
 
@@ -98,19 +95,16 @@ void sleep() {
 
 void send(String& data) {
     data = header + data;
-
-    client.publish(TEMPERATURE_TOPIC, data, false, 2);
+    client.publish(WEATHER_TOPIC, data, false, 2);
 }
 
 TempAndHumidity getTemp() {
     auto values = dht.getTempAndHumidity();
-
     return values;
 }
 
 float getBatv() {
     auto batteryValue = (analogRead(A13) / 4095.0) * 2 * 3.3 * 1.100;
-
     return batteryValue;
 }
 
@@ -118,7 +112,6 @@ uint32_t getUnixTime() {
     if (rtc.initialized()) {
         return rtc.now().unixtime();
     }
-
     return 0;
 }
 

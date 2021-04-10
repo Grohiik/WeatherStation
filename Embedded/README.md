@@ -29,6 +29,7 @@ build_flags = -DPOSEIDON_CONFIGURATION
 ```
 
 The `POSEIDON_CONFIGURATION` macro needs `PoseidonEnv.hpp` file to work. Create the file and copy the sample below and input your own config.
+
 ```cpp
 #pragma once
 // clang-format off
@@ -39,7 +40,7 @@ constexpr auto MQTT_BROKER_IP = "YOUR_BROKER_IP";
 constexpr auto MQTT_USERNAME  = "YOUR_BROKER_USERNAME";
 constexpr auto MQTT_KEY       = "YOUR_MQTT_KEY";
 
-constexpr auto TEMPERATURE_TOPIC = "/temperature";
+constexpr auto WEATHER_TOPIC  = "/weather";
 ```
 
 ### Visual Studio Code
