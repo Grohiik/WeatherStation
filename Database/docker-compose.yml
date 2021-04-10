@@ -3,6 +3,10 @@ version: '3.3'
 services:
   weather-db:
     image: postgres:alpine
+    command: >
+      -c ssl=on
+      -c ssl_cert_file=/var/lib/postgresql/server.crt
+      -c ssl_key_file=/var/lib/postgresql/server.key
     restart: always
     ports:
       - '${POSTGRES_PORT}:5432'
@@ -14,8 +18,8 @@ services:
       - 'POSTGRES_PASSWORD=${POSTGRES_PASSWORD}'
     volumes:
       - ./data/db:/var/lib/postgresql/data
-      # - ./data/ssl/server.crt:/var/lib/postgresql/server.crt
-      # - ./data/ssl/server.key:/var/lib/postgresql/server.key
+      - ./data/ssl/server.crt:/var/lib/postgresql/server.crt
+      - ./data/ssl/server.key:/var/lib/postgresql/server.key
 
   weather-admin:
     image: dpage/pgadmin4:latest

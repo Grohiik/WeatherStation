@@ -6,4 +6,4 @@ services:
     image: weather-logger
     restart: always
     ports:
-      - '${PORT}:8080'
+      - '${WEATHER_PORT}:8080'

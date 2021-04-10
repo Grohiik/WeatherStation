@@ -8,6 +8,9 @@
 **/dist
 **/.parcel-cache
 
+## Java jar files
+*.jar
+
 ## Package files
 *.zip
 *.rar
