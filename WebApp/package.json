@@ -7,7 +7,9 @@
   "scripts": {
     "dev": "parcel src/index.html",
     "build": "parcel build src/index.html",
-    "clean": "rimraf dist .parcel-cache"
+    "clean": "rimraf dist .parcel-cache",
+    "test:eslint": " eslint src/ --ext .ts --ext .js",
+    "fix:eslint": "eslint --fix src/ --ext .ts --ext .js"
   },
   "devDependencies": {
     "@types/node": "^14.14.37",
