@@ -8,6 +8,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * This class receives the data, the data that is specified by the @Column mark.
+ * It implements serializable because of it being sent across a stream.
+ * @author Marcus Linné
+ * @author Erik Kellgren
+ *
+ * @version 0.0.0
+ */
 @Entity
 @Table(name = "weatherlog")
 public class DataReceiver implements Serializable {
@@ -24,21 +32,27 @@ public class DataReceiver implements Serializable {
 
     @Column(name = "light") private String light;
 
+    /**
+     * Totally irrelevant
+     */
     protected DataReceiver() {}
 
-    public DataReceiver(String device, String time, String temperature, String humidity, String light) {
+    /**
+     * Constructor for DataUI, initializes the variables of this class.
+     *
+     * @param device Which device is the data sent from.
+     * @param time Indicates the time when the data was gathered.
+     * @param temperature The temperature at the given time.
+     * @param humidity The humidity at the given time.
+     * @param light The light-level at the given time.
+     */
+    public DataReceiver(String device, String time, String temperature, String humidity,
+                        String light) {
         this.device = device;
         this.time = time;
         this.temperature = temperature;
         this.humidity = humidity;
         this.light = light;
-    }
-
-    @Override
-    public String toString() {
-        return String.format(
-            "DataReceiver[id=%d, device='%s', time='%s', temperature='%s', humidity='%s', light='%s']", id,
-            device, time, temperature, humidity, light);
     }
 
     public long getId() {
@@ -87,5 +101,15 @@ public class DataReceiver implements Serializable {
 
     public void setLight(String light) {
         this.light = light;
+    }
+
+    /**
+     * This is the toString of the class, it formats the print of the class.
+     */
+    @Override
+    public String toString() {
+        return String.format(
+            "DataReceiver[id=%d, device='%s', time='%s', temperature='%s', humidity='%s', light='%s']",
+            id, device, time, temperature, humidity, light);
     }
 }

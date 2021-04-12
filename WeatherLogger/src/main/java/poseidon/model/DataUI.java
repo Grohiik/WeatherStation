@@ -1,8 +1,11 @@
 package poseidon.model;
 
 /**
+ * This class represents what the sending data contains, what parameters etc are included.
  * @author Marcus Linné
  * @author Erik Kellgren
+ *
+ * @version 0.0.0
  */
 public class DataUI {
     private String device;
@@ -11,8 +14,20 @@ public class DataUI {
     private String humidity;
     private String light;
 
+    /**
+     * Totally irrelevant (dont know yet???)
+     */
     protected DataUI() {}
 
+    /**
+     * Constructor for DataUI, initializes the variables of this class.
+     *
+     * @param device Which device is the data sent from.
+     * @param time Indicates the time when the data was gathered.
+     * @param temperature The temperature at the given time.
+     * @param humidity The humidity at the given time.
+     * @param light The light-level at the given time.
+     */
     public DataUI(String device, String time, String temperature, String humidity, String light) {
         this.device = device;
         this.time = time;
@@ -61,9 +76,12 @@ public class DataUI {
         this.light = light;
     }
 
+    /**
+     * This is the toString of the class, it formats the print of the class.
+     */
     public String toString() {
         return String.format(
-            "weatherlog[device='%s', time='%s', temperature='%s', humidity='%s', light='%s']", device,
-            time, temperature, humidity, light);
+            "weatherlog[device='%s', time='%s', temperature='%s', humidity='%s', light='%s']",
+            device, time, temperature, humidity, light);
     }
 }
