@@ -17,9 +17,8 @@
 
 #include <WiFi.h>
 #include <MQTT.h>
-#include <DHTesp.h>
 #include "RTClib.h"
-#include <Adafruit_Sensor.h>
+#include "Temperature.hpp"
 #include "LightSensor.hpp"
 
 #ifdef POSEIDON_CONFIGURATION
@@ -44,7 +43,6 @@ constexpr auto BAUD_RATE = 115200U;
 // Objects for the sensor components
 WiFiClient wifi;
 MQTTClient client;
-DHTesp dht;
 RTC_PCF8523 rtc;
 
 
@@ -99,14 +97,6 @@ void send(String& data) {
 }
 
 /**
- * @returns Temperature and humidity
- */
-TempAndHumidity getTemp() {
-    auto values = dht.getTempAndHumidity();
-    return values;
-}
-
-/**
  * @returns Battery voltage
  */
 float getBatv() {
@@ -132,8 +122,7 @@ void setup() {
 
     Serial.begin(BAUD_RATE);
     Serial.println("Waking up");
-
-    dht.setup(13, DHTesp::DHT22);
+    setupTemperatureAndHumiditySensor();
     rtc.begin();
     setupLightsensor();
 
