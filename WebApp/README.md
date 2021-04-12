@@ -58,15 +58,13 @@ Create `.env` like the the one in the [WebApp Project Structure](#webapp-project
 Example: Define a key in `.env` file
 
 ```
-KEY1="Hello, KEY!"
-KEY2="Much Key"
+API_URL='insert your API URL here'
 ```
 
 USAGE:
 
 ```ts
-console.log(process.env.KEY1)
-console.log(process.env.KEY2)
+console.log(process.env.API_URL)
 ```
 
 ### WebApp Project Structure
