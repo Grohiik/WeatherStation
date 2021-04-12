@@ -17,9 +17,9 @@
 
 #include <WiFi.h>
 #include <MQTT.h>
-#include "RTClib.h"
 #include "Temperature.hpp"
 #include "LightSensor.hpp"
+#include "Clock.hpp"
 
 #ifdef POSEIDON_CONFIGURATION
 #include "PoseidonEnv.hpp"
@@ -43,7 +43,6 @@ constexpr auto BAUD_RATE = 115200U;
 // Objects for the sensor components
 WiFiClient wifi;
 MQTTClient client;
-RTC_PCF8523 rtc;
 
 
 /**
@@ -104,15 +103,6 @@ float getBatv() {
     return batteryValue;
 }
 
-/**
- * @returns Current unix time
- */
-uint32_t getUnixTime() {
-    if (rtc.initialized()) {
-        return rtc.now().unixtime();
-    }
-    return 0;
-}
 
 /**
  * @brief setup and main "loop" starts all sensors, collects all data and decides what to so next
@@ -123,11 +113,9 @@ void setup() {
     Serial.begin(BAUD_RATE);
     Serial.println("Waking up");
     setupTemperatureAndHumiditySensor();
-    rtc.begin();
     setupLightsensor();
 
-
-    auto tempandhumidity = getTemp();
+    TempAndHumidity tempandhumidity = getTemp();
 
     // Connect to WiFi
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
