@@ -41,7 +41,7 @@ String header = "device,time,temp,hum,ligh,batv\n";
 // Boards baud rate
 constexpr auto BAUD_RATE = 115200U;
 
-// WiFi and MQTT
+// Objects for the sensor components
 WiFiClient wifi;
 MQTTClient client;
 DHTesp dht;
@@ -87,27 +87,42 @@ bool connect() {
     return true;
 }
 
+/**
+ * @brief Puts the micro controller into deep sleep for TIME_TO_SLEEP seconds. Is called whenever it is done with sending or writing to SD-Card
+ */
 void sleep() {
     Serial.println("Going to sleep...");
     esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
     esp_deep_sleep_start();
 }
 
+/**
+ * @brief Publishes data to WEATHER_TOPIC
+ */
 void send(String& data) {
     data = header + data;
     client.publish(WEATHER_TOPIC, data, false, 2);
 }
 
+/**
+ * @returns Temperature and humidity
+ */
 TempAndHumidity getTemp() {
     auto values = dht.getTempAndHumidity();
     return values;
 }
 
+/**
+ * @returns Battery voltage
+ */
 float getBatv() {
     auto batteryValue = (analogRead(A13) / 4095.0) * 2 * 3.3 * 1.100;
     return batteryValue;
 }
 
+/**
+ * @returns Current unix time
+ */
 uint32_t getUnixTime() {
     if (rtc.initialized()) {
         return rtc.now().unixtime();
@@ -115,6 +130,9 @@ uint32_t getUnixTime() {
     return 0;
 }
 
+/**
+ * @returns A struct with ir, full and lux from the light sensor
+ */
 LightSensor getLightData() {
     LightSensor data;
     uint32_t rawData = tsl.getFullLuminosity();
@@ -124,6 +142,9 @@ LightSensor getLightData() {
     return data;
 }
 
+/**
+ * @brief setup and main "loop" starts all sensors, collects all data and decides what to so next
+ */
 void setup() {
     delay(500);
 
@@ -136,7 +157,6 @@ void setup() {
     tsl.setGain(TSL2591_GAIN_MED);
     tsl.setTiming(TSL2591_INTEGRATIONTIME_300MS);
 
-    // TODO: Read temperature
     auto tempandhumidity = getTemp();
 
     // Connect to WiFi
@@ -153,6 +173,7 @@ void setup() {
     // TODO: Read from SD-card
 
     // TODO: Send all data
+    // TODO: Make it better, it is shit
     String data = String(DEVICE_ID) + "," + String(getUnixTime()) + "," +
                   tempandhumidity.temperature + "," + tempandhumidity.humidity +
                   "," + String(getLightData().lux) + "," + String(getBatv());
