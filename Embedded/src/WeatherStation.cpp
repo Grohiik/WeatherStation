@@ -20,7 +20,7 @@
 #include <DHTesp.h>
 #include "RTClib.h"
 #include <Adafruit_Sensor.h>
-#include "Adafruit_TSL2591.h"
+#include "LightSensor.hpp"
 
 #ifdef POSEIDON_CONFIGURATION
 #include "PoseidonEnv.hpp"
@@ -46,13 +46,7 @@ WiFiClient wifi;
 MQTTClient client;
 DHTesp dht;
 RTC_PCF8523 rtc;
-Adafruit_TSL2591 tsl = Adafruit_TSL2591(2591);
 
-struct LightSensor {
-    uint16_t ir;
-    uint16_t full;
-    float lux;
-};
 
 /**
  * @brief Check WiFi connection status and connect to MQTT server.
@@ -131,18 +125,6 @@ uint32_t getUnixTime() {
 }
 
 /**
- * @returns A struct with ir, full and lux from the light sensor
- */
-LightSensor getLightData() {
-    LightSensor data;
-    uint32_t rawData = tsl.getFullLuminosity();
-    data.ir = rawData >> 16;
-    data.full = rawData & 0xFFFF;
-    data.lux = tsl.calculateLux(data.full, data.ir);
-    return data;
-}
-
-/**
  * @brief setup and main "loop" starts all sensors, collects all data and decides what to so next
  */
 void setup() {
@@ -153,9 +135,8 @@ void setup() {
 
     dht.setup(13, DHTesp::DHT22);
     rtc.begin();
-    tsl.begin();
-    tsl.setGain(TSL2591_GAIN_MED);
-    tsl.setTiming(TSL2591_INTEGRATIONTIME_300MS);
+    setupLightsensor();
+
 
     auto tempandhumidity = getTemp();
 
