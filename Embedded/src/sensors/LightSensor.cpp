@@ -1,4 +1,3 @@
-#include <Arduino.h>
 #include "LightSensor.hpp"
 #include "Adafruit_TSL2591.h"
 

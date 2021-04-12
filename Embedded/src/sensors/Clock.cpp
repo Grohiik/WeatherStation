@@ -1,8 +1,10 @@
 #include "Clock.hpp"
-#include "RTClib.h"
 
 RTC_PCF8523 rtc;
 
+/**
+ * @brief setsup the RCT
+ */
 void setupRTC() {
     rtc.begin();
 }

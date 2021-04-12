@@ -17,9 +17,9 @@
 
 #include <WiFi.h>
 #include <MQTT.h>
-#include "Temperature.hpp"
-#include "LightSensor.hpp"
-#include "Clock.hpp"
+#include "sensors/Temperature.hpp"
+#include "sensors/LightSensor.hpp"
+#include "sensors/Clock.hpp"
 
 #ifdef POSEIDON_CONFIGURATION
 #include "PoseidonEnv.hpp"

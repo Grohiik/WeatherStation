@@ -1,9 +1,10 @@
-#include <Arduino.h>
-#include <DHTesp.h>
 #include "Temperature.hpp"
 
 DHTesp dht;
 
+/**
+ * @brief setsup the temperatur and humidity sensor
+ */
 void setupTemperatureAndHumiditySensor(){
     dht.setup(13, DHTesp::DHT22);
 }
