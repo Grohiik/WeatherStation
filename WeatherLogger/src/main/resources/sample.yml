@@ -8,7 +8,7 @@ spring:
       properties.jdbc.lob.non_contextual_creation: true
 
   datasource:
-    platform: <postgres>
+    platform: postgres
     url: <the url to your database>
     username: <your username>
     password: <your password>
