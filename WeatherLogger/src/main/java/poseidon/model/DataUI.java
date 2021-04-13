@@ -13,6 +13,7 @@ public class DataUI {
     private String temperature;
     private String humidity;
     private String light;
+    private String batV;
 
     /**
      * Totally irrelevant (dont know yet???)
@@ -27,13 +28,16 @@ public class DataUI {
      * @param temperature The temperature at the given time.
      * @param humidity The humidity at the given time.
      * @param light The light-level at the given time.
+     * @param batV The current battery voltage.
      */
-    public DataUI(String device, String time, String temperature, String humidity, String light) {
+    public DataUI(String device, String time, String temperature, String humidity, String light,
+                  String batV) {
         this.device = device;
         this.time = time;
         this.temperature = temperature;
         this.humidity = humidity;
         this.light = light;
+        this.batV = batV;
     }
 
     public String getDevice() {
@@ -76,12 +80,20 @@ public class DataUI {
         this.light = light;
     }
 
+    public String getBatV() {
+        return batV;
+    }
+
+    public void setBatV(String batV) {
+        this.batV = batV;
+    }
+
     /**
      * This is the toString of the class, it formats the print of the class.
      */
     public String toString() {
         return String.format(
-            "weatherlog[device='%s', time='%s', temperature='%s', humidity='%s', light='%s']",
-            device, time, temperature, humidity, light);
+            "weatherlog[device='%s', time='%s', temperature='%s', humidity='%s', light='%s', batV='%s']",
+            device, time, temperature, humidity, light, batV);
     }
 }

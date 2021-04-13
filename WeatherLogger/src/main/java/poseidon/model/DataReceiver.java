@@ -1,5 +1,6 @@
 package poseidon.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +20,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "weatherlog")
 public class DataReceiver implements Serializable {
+    @Serial
     private static final long serialVersionUID = -2343243243242432341L;
     @Id @GeneratedValue(strategy = GenerationType.AUTO) private long id;
 
@@ -31,6 +33,8 @@ public class DataReceiver implements Serializable {
     @Column(name = "humidity") private String humidity;
 
     @Column(name = "light") private String light;
+
+    @Column(name = "batV") private String batV;
 
     /**
      * Totally irrelevant
@@ -47,12 +51,13 @@ public class DataReceiver implements Serializable {
      * @param light The light-level at the given time.
      */
     public DataReceiver(String device, String time, String temperature, String humidity,
-                        String light) {
+                        String light, String batV) {
         this.device = device;
         this.time = time;
         this.temperature = temperature;
         this.humidity = humidity;
         this.light = light;
+        this.batV = batV;
     }
 
     public long getId() {
@@ -103,13 +108,21 @@ public class DataReceiver implements Serializable {
         this.light = light;
     }
 
+    public String getBatV() {
+        return batV;
+    }
+
+    public void setBatV(String batV) {
+        this.batV = batV;
+    }
+
     /**
      * This is the toString of the class, it formats the print of the class.
      */
     @Override
     public String toString() {
         return String.format(
-            "DataReceiver[id=%d, device='%s', time='%s', temperature='%s', humidity='%s', light='%s']",
-            id, device, time, temperature, humidity, light);
+            "DataReceiver[id=%d, device='%s', time='%s', temperature='%s', humidity='%s', light='%s', batV='%s']",
+            id, device, time, temperature, humidity, light, batV);
     }
 }
