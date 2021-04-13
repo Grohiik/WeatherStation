@@ -14,12 +14,15 @@
 
 #include <Arduino.h>
 #include <Wire.h>
-
+#include <SPI.h>
+#include <SD.h>
 #include <WiFi.h>
 #include <MQTT.h>
+
 #include "sensors/Temperature.hpp"
 #include "sensors/LightSensor.hpp"
 #include "sensors/Clock.hpp"
+#include "sensors/BatteryVoltage.hpp"
 
 #ifdef POSEIDON_CONFIGURATION
 #include "PoseidonEnv.hpp"
@@ -27,12 +30,13 @@
 #include "PoseidonCore.hpp"
 
 // Filenames
-constexpr auto TEMP_FILENAME = "temperature.csv";
+constexpr auto DATALOG_FILENAME = "/datalog.csv";
+constexpr auto SD_CARD_CHIP_SELECT = 33;
 
 // Sleep configurations
-constexpr auto uS_TO_S_FACTOR = 1000000U;   // μs to s conversion factor
-constexpr auto TIME_TO_SLEEP = 120U;        // Time to sleep in seconds
-constexpr auto MAX_CONNECTION_TRIES = 20U;  // Connection max tries
+constexpr auto uS_TO_S_FACTOR = 1000000U;  // μs to s conversion factor
+constexpr auto TIME_TO_SLEEP = 10U;        // Time to sleep in seconds
+constexpr auto MAX_CONNECTION_TRIES = 1U;  // Connection max tries
 
 // Header
 constexpr auto MESSAGE_HEADER = "device,time,temp,hum,ligh,batv";
@@ -45,6 +49,7 @@ char messageBuffer[MESSAGE_BUFFER_SIZE];
 // Objects for the sensor components
 WiFiClient wifi;
 MQTTClient client;
+File dataLogger;
 
 /**
  * @brief Check WiFi connection status and connect to MQTT server.
@@ -59,22 +64,25 @@ bool connect() {
         Serial.print(".");
         delay(1000);
         if (counter >= MAX_CONNECTION_TRIES) {
+            Serial.println();
             return false;
         }
         counter++;
     }
     counter = 0;
-    Serial.println("\nConnected to WiFi.");
+    Serial.println("\nConnected to WiFi!");
 
     Serial.println("\nConnecting to MQTT...");
     while (!client.connect("station1", MQTT_USERNAME, MQTT_KEY)) {
         Serial.print(".");
         delay(1000);
         if (counter >= MAX_CONNECTION_TRIES) {
+            Serial.println();
             return false;
         }
         counter++;
     }
+    Serial.println("\nConnected to MQTT!");
 
     return true;
 }
@@ -92,14 +100,11 @@ void sleep() {
 /**
  * @brief Publishes data to WEATHER_TOPIC
  */
-void send(const char* data) { client.publish(WEATHER_TOPIC, data, false, 2); }
-
-/**
- * @returns Battery voltage
- */
-float getBatv() {
-    auto batteryValue = (analogRead(A13) / 4095.0) * 2 * 3.3 * 1.100;
-    return batteryValue;
+void send(const char* data) {
+    String message = MESSAGE_HEADER;
+    message += "\n";
+    message += data;
+    client.publish(WEATHER_TOPIC, message, false, 2);
 }
 
 /**
@@ -110,32 +115,58 @@ void setup() {
     delay(500);
 
     Serial.begin(BAUD_RATE);
+    const bool sdStatus = SD.begin(SD_CARD_CHIP_SELECT);
+
     Serial.println("Waking up");
     setupTemperatureAndHumiditySensor();
     setupLightsensor();
 
-    TempAndHumidity tempandhumidity = getTemp();
-
     // Connect to WiFi
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-
     client.begin(MQTT_BROKER_IP, wifi);
 
-    if (!connect()) {
-        // TODO: Log to SD-CARD
-        Serial.println("Failed to connect");
-        sleep();
+    TempAndHumidity tempandhumidity = getTemp();
+
+    const auto isConnected = connect();
+
+    if (sdStatus && isConnected) {
+        char* collectedData = nullptr;
+        String sdCardData;
+
+        dataLogger = SD.open(DATALOG_FILENAME, FILE_READ);
+
+        const auto size = dataLogger.size();
+
+        if (size != 0) collectedData = new char[size + 1];
+        if (collectedData != nullptr) {
+            size_t dataIndex = 0;
+            while (dataLogger.available() && dataIndex < size) {
+                collectedData[dataIndex] = dataLogger.read();
+                dataIndex++;
+            }
+
+            dataLogger.close();
+            collectedData[dataIndex] = 0;
+            send(collectedData);
+            delete[] collectedData;
+        }
+
+        dataLogger = SD.open(DATALOG_FILENAME, FILE_WRITE);
+        if (dataLogger) dataLogger.print("");
+        dataLogger.close();
     }
 
-    // TODO: Read from SD-card
-
-    // TODO: Send all data
-    sprintf(messageBuffer, "%s\n%s,%d,%f,%f,%f,%f", MESSAGE_HEADER, DEVICE_ID,
-            getUnixTime(), tempandhumidity.temperature,
-            tempandhumidity.humidity, getLightData().lux, getBatv());
-    send(messageBuffer);
-
-    // TODO: Delete the logs from SD-card
+    sprintf(messageBuffer, "%s,%d,%f,%f,%f,%f", DEVICE_ID, getUnixTime(),
+            tempandhumidity.temperature, tempandhumidity.humidity,
+            getLightData().lux, getBatteryVoltage());
+    if (isConnected) {
+        send(messageBuffer);
+    } else {
+        Serial.println("Logging to SD-card...");
+        dataLogger = SD.open(DATALOG_FILENAME, FILE_APPEND);
+        if (dataLogger) dataLogger.println(messageBuffer);
+        dataLogger.close();
+    }
 
     sleep();
 }
