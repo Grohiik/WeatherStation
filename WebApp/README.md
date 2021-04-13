@@ -32,6 +32,18 @@ npm run dev
 npm run clean
 ```
 
+**Test the code style**
+
+```
+npm run test:eslint
+```
+
+**Run auto fix**
+
+```
+npm run fix:eslint
+```
+
 **Build the distribution**
 
 ```shell
