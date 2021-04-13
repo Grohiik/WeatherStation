@@ -18,6 +18,5 @@ public class WeatherApp {
     @Autowired DataRepository idataRepository;
     public static void main(String[] args) {
         SpringApplication.run(WeatherApp.class, args);
-        MqttHandler mqttHandler = new MqttHandler();
     }
 }

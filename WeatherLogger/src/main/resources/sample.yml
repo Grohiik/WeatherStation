@@ -1,2 +1,23 @@
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+      properties.jdbc.lob.non_contextual_creation: true
+
+  datasource:
+    platform: postgres
+    url: 
+    username: 
+    password: 
+    initialization-mode: always
+
 server:
-  port: 3000
+  port: 8080
+
+Host:
+Username: 
+Key: 
+Feed:
