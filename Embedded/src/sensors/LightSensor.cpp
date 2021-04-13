@@ -6,7 +6,7 @@ Adafruit_TSL2591 lightsensor = Adafruit_TSL2591(2591);
 /**
  * @brief setsup the lightsensor
  */
-void setupLightsensor(){
+void setupLightsensor() {
     lightsensor.begin();
     lightsensor.setGain(TSL2591_GAIN_MED);
     lightsensor.setTiming(TSL2591_INTEGRATIONTIME_300MS);

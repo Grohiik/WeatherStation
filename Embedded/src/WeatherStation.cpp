@@ -35,15 +35,16 @@ constexpr auto TIME_TO_SLEEP = 120U;        // Time to sleep in seconds
 constexpr auto MAX_CONNECTION_TRIES = 20U;  // Connection max tries
 
 // Header
-String header = "device,time,temp,hum,ligh,batv\n";
-
+constexpr auto MESSAGE_HEADER = "device,time,temp,hum,ligh,batv";
+constexpr auto MESSAGE_BUFFER_SIZE = 256;
 // Boards baud rate
 constexpr auto BAUD_RATE = 115200U;
+
+char messageBuffer[MESSAGE_BUFFER_SIZE];
 
 // Objects for the sensor components
 WiFiClient wifi;
 MQTTClient client;
-
 
 /**
  * @brief Check WiFi connection status and connect to MQTT server.
@@ -79,7 +80,8 @@ bool connect() {
 }
 
 /**
- * @brief Puts the micro controller into deep sleep for TIME_TO_SLEEP seconds. Is called whenever it is done with sending or writing to SD-Card
+ * @brief Puts the micro controller into deep sleep for TIME_TO_SLEEP seconds.
+ *        Is called whenever it is done with sending or writing to SD-Card
  */
 void sleep() {
     Serial.println("Going to sleep...");
@@ -90,10 +92,7 @@ void sleep() {
 /**
  * @brief Publishes data to WEATHER_TOPIC
  */
-void send(String& data) {
-    data = header + data;
-    client.publish(WEATHER_TOPIC, data, false, 2);
-}
+void send(const char* data) { client.publish(WEATHER_TOPIC, data, false, 2); }
 
 /**
  * @returns Battery voltage
@@ -103,9 +102,9 @@ float getBatv() {
     return batteryValue;
 }
 
-
 /**
- * @brief setup and main "loop" starts all sensors, collects all data and decides what to so next
+ * @brief setup and main "loop" starts all sensors, collects all data and
+ * decides what to so next
  */
 void setup() {
     delay(500);
@@ -131,11 +130,10 @@ void setup() {
     // TODO: Read from SD-card
 
     // TODO: Send all data
-    // TODO: Make it better, it is shit
-    String data = String(DEVICE_ID) + "," + String(getUnixTime()) + "," +
-                  tempandhumidity.temperature + "," + tempandhumidity.humidity +
-                  "," + String(getLightData().lux) + "," + String(getBatv());
-    send(data);
+    sprintf(messageBuffer, "%s\n%s,%d,%f,%f,%f,%f", MESSAGE_HEADER, DEVICE_ID,
+            getUnixTime(), tempandhumidity.temperature,
+            tempandhumidity.humidity, getLightData().lux, getBatv());
+    send(messageBuffer);
 
     // TODO: Delete the logs from SD-card
 

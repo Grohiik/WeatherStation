@@ -5,9 +5,7 @@ RTC_PCF8523 rtc;
 /**
  * @brief setsup the RCT
  */
-void setupRTC() {
-    rtc.begin();
-}
+void setupRTC() { rtc.begin(); }
 
 /**
  * @returns Current unix time
