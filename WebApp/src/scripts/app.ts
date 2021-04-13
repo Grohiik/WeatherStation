@@ -1,11 +1,8 @@
 import {Chart} from 'chart.js'
 
-console.log('Hello, World!') // hello
-
 const API_URL = process.env.API_URL as string
 const xlabels: string[] = []
 const ytemps: number[] = []
-
 
 chartIt()
 
@@ -13,14 +10,14 @@ async function getData(){
   const response = await fetch(API_URL)
   const data = await response.text()
 
-  const rows = data.split('\n').slice(1)
+  const table = data.split('\n').slice(2)
 
-  rows.forEach(row => {
+  table.forEach(row => {
     const cols = row.split(',')
-    const year = cols[1]
+    const year = cols[0]
     xlabels.push(year)
     const temp = cols[1]
-    ytemps.push(Number (temp))
+    ytemps.push(Number (temp) + 14)
     //console.log(year, temp)
   })
 }
@@ -33,7 +30,7 @@ async function chartIt() {
     data: {
       labels: xlabels,
       datasets: [{
-        label: 'Average temperature per year',
+        label: 'Global Average Temperature in C°, January',
         data: ytemps,
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
@@ -42,8 +39,19 @@ async function chartIt() {
           'rgba(255, 99, 132, 1)',
         ],
         borderWidth: 1
-      }]
+      },]
     },
+    options: {
+      scales: {
+        y: {
+          ticks: {
+            callback: function(value, index, values) {
+              return value + '°'
+            }
+          }   
+        }
+      }
+    }
   })
 } 
 
