@@ -9,18 +9,31 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.yaml.snakeyaml.Yaml;
+
+import poseidon.model.DataReceiver;
+import poseidon.repository.DataRepository;
 
 /**
  * @author Eric Lundin
  * @version 1.0.0
  *
  */
+@SpringBootApplication
 public class MqttHandler implements MqttCallback {
     private String connection_url;
     private String subscription;
     private String username;
     private String password;
+
+    private String[] testdata = {"lm26", "12.00.15", "20.5", "90", "20"};
+
+    @Autowired DataRepository dataRepository;
 
     public MqttHandler() {
         startClient();
@@ -49,11 +62,10 @@ public class MqttHandler implements MqttCallback {
             System.out.println(" == Start Subscriber ==");
 
             MqttClient client = new MqttClient(connection_url, MqttClient.generateClientId());
-
             MqttConnectOptions connectOptions = setUpConnectOptions(username, password);
+
             client.setCallback(this);
             client.connect(connectOptions);
-
             client.subscribe(subscription);
         } catch (MqttException e) {
         }
@@ -74,6 +86,19 @@ public class MqttHandler implements MqttCallback {
         // TODO Auto-generated method stub
         System.out.println(arg0);
         System.out.println(arg1);
+        splitStore(arg1.toString());
+        System.out.println("next");
+    }
+
+    public void splitStore(String indata){
+        var data = indata.split("\\r?\\n");
+        for (int i = 1; i < data.length; i++) {
+            
+            var utdata = data[i].split(",", 6);
+            System.out.println("writing....");
+            dataRepository.save(new DataReceiver(utdata[0], utdata[1], utdata[2], utdata[3], utdata[4], utdata[5]));
+        }
+        System.out.println("done");
     }
 
     private static MqttConnectOptions setUpConnectOptions(String userName, String password) {
