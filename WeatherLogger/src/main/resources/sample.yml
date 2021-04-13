@@ -8,16 +8,16 @@ spring:
       properties.jdbc.lob.non_contextual_creation: true
 
   datasource:
-    platform: postgres
-    url: 
-    username: 
-    password: 
+    platform: <postgres>
+    url: <the url to your database>
+    username: <your username>
+    password: <your password>
     initialization-mode: always
 
 server:
   port: 8080
 
-Host:
-Username: 
-Key: 
-Feed:
+Host: <your mqtt brokers URL>
+Username: <your username>
+Key: <your password to the mqtt broker>
+Feed: <the feed you want to subscribe to>
