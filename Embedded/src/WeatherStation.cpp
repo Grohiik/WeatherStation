@@ -39,7 +39,7 @@ constexpr auto TIME_TO_SLEEP = 10U;        // Time to sleep in seconds
 constexpr auto MAX_CONNECTION_TRIES = 5U;  // Connection max tries
 
 // Header
-constexpr auto MESSAGE_HEADER = "device,time,temp,hum,ligh,batv";
+constexpr auto MESSAGE_HEADER = "device,time,temp,hum,light,batv";
 constexpr auto MESSAGE_BUFFER_SIZE = 256;
 // Boards baud rate
 constexpr auto BAUD_RATE = 115200U;
