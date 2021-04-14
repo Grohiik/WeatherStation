@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.yaml.snakeyaml.Yaml;
 import poseidon.model.DataReceiver;
+import poseidon.model.DeviceReceiver;
 import poseidon.repository.DataRepository;
+import poseidon.repository.DeviceRepository;
 
 /**
  * This class handles the mqtt communication with the embedded system
@@ -31,6 +33,7 @@ public class MqttHandler implements MqttCallback {
     private String password;
 
     @Autowired DataRepository dataRepository;
+    @Autowired DeviceRepository deviceRepository;
 
     public MqttHandler() {
         startClient();
@@ -101,10 +104,10 @@ public class MqttHandler implements MqttCallback {
      * message(the first line in the message) This function assumes that each line is formatted the
      * same way as the header
      *
-     * @param indata The message string from the mqtt broker
+     * @param inData The message string from the mqtt broker
      */
-    public void splitStore(String indata) {
-        var data = indata.split("\\r?\\n"); // splits the message at each line
+    public void splitStore(String inData) {
+        var data = inData.split("\\r?\\n"); // splits the message at each line
         var keyData = data[0].split(",");   // splits the header at each ","
         HashMap<String, String> dataMap = new HashMap<String, String>();
 
@@ -113,10 +116,12 @@ public class MqttHandler implements MqttCallback {
             for (int j = 0; j < valData.length; j++) {
                 dataMap.put(keyData[j], valData[j]);
             }
+
             // at the moment light might give null
-            dataRepository.save(new DataReceiver(dataMap.get("device"), dataMap.get("time"),
-                                                 dataMap.get("temp"), dataMap.get("hum"),
-                                                 dataMap.get("light"), dataMap.get("batv")));
+            deviceRepository.save(new DeviceReceiver(dataMap.get("device")));
+            dataRepository.save(new DataReceiver(dataMap.get("time"), dataMap.get("temp"),
+                                                 dataMap.get("hum"), dataMap.get("light"),
+                                                 dataMap.get("batv")));
         }
     }
 

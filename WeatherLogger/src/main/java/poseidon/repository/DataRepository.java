@@ -13,6 +13,5 @@ import poseidon.model.DataReceiver;
  */
 @Repository
 public interface DataRepository extends JpaRepository<DataReceiver, Long> {
-    List<DataReceiver> findByDevice(String device);
     List<DataReceiver> findAll();
 }

@@ -1,7 +1,8 @@
 package poseidon.model;
 
 /**
- * This class represents what the sending data contains, what parameters etc are included.
+ * This class represents what the data in the DB contains
+ * and which parameters that are included.
  *
  * @author Marcus Linné
  * @author Erik Kellgren
@@ -16,18 +17,26 @@ public class DataUI {
     private String batV;
 
     /**
-     * Constructor for DataUI, initializes the variables of this class.
+     * Default constructor for DataUI, initializes the devices,
+     * used for the device table.
      *
-     * @param device Which device is the data sent from.
+     * @param device Which device the data is sent from.
+     */
+    public DataUI(String device) {
+        this.device = device;
+    }
+
+    /**
+     * Constructor for DataUI, initializes the remaining variables,
+     * .
+     *
      * @param time Indicates the time when the data was gathered.
      * @param temperature The temperature at the given time.
      * @param humidity The humidity at the given time.
      * @param light The light-level at the given time.
      * @param batV The current battery voltage.
      */
-    public DataUI(String device, String time, String temperature, String humidity, String light,
-                  String batV) {
-        this.device = device;
+    public DataUI(String time, String temperature, String humidity, String light, String batV) {
         this.time = time;
         this.temperature = temperature;
         this.humidity = humidity;
@@ -88,7 +97,8 @@ public class DataUI {
      */
     public String toString() {
         return String.format(
-            "weatherlog[device='%s', time='%s', temperature='%s', humidity='%s', light='%s', batV='%s']",
-            device, time, temperature, humidity, light, batV);
+            "dev[device='%s']",
+            "weatherlog[time='%s', temperature='%s', humidity='%s', light='%s', batV='%s']", device,
+            time, temperature, humidity, light, batV);
     }
 }
