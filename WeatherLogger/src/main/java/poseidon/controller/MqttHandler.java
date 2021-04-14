@@ -57,9 +57,10 @@ public class MqttHandler implements MqttCallback {
      *This method reads the options.yml and stores the variables in the respective strings
      */
     private void optionsReader() {
+        // TODO use sapmle.yml instead of options.yml
         Yaml yaml = new Yaml();
         InputStream inputStream =
-            this.getClass().getClassLoader().getResourceAsStream("options.yml");
+            this.getClass().getClassLoader().getResourceAsStream("application.yml");
         Map<String, Object> obj = yaml.load(inputStream);
         connection_url = (String) obj.get("Host");
         subscription = (String) obj.get("Feed");
