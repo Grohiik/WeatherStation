@@ -5,10 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import poseidon.model.DataReceiver;
 
-/*
- * This class is intended for testing and edu
+/**
+ * Interface containing lists used when searing for data in the DB.
  *
  * @author Erik Kellgren
+ * @version 0.0.0
  */
 @Repository
 public interface DataRepository extends JpaRepository<DataReceiver, Long> {

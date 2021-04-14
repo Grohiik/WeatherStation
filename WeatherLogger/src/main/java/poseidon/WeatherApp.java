@@ -3,7 +3,6 @@ package poseidon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import poseidon.controller.MqttHandler;
 import poseidon.repository.DataRepository;
 
 /**
@@ -12,10 +11,9 @@ import poseidon.repository.DataRepository;
  * @author Marcus Linné
  * @version 0.0.0
  */
-
 @SpringBootApplication
 public class WeatherApp {
-    @Autowired DataRepository idataRepository;
+    @Autowired DataRepository dataRepository;
     public static void main(String[] args) {
         SpringApplication.run(WeatherApp.class, args);
     }
