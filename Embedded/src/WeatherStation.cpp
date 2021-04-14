@@ -36,7 +36,7 @@ constexpr auto SD_CARD_CHIP_SELECT = 33;
 // Sleep configurations
 constexpr auto uS_TO_S_FACTOR = 1000000U;  // μs to s conversion factor
 constexpr auto TIME_TO_SLEEP = 10U;        // Time to sleep in seconds
-constexpr auto MAX_CONNECTION_TRIES = 1U;  // Connection max tries
+constexpr auto MAX_CONNECTION_TRIES = 5U;  // Connection max tries
 
 // Header
 constexpr auto MESSAGE_HEADER = "device,time,temp,hum,ligh,batv";
@@ -125,41 +125,41 @@ void setup() {
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
     client.begin(MQTT_BROKER_IP, wifi);
 
-    TempAndHumidity tempandhumidity = getTemp();
-
     const auto isConnected = connect();
 
-    if (sdStatus && isConnected) {
-        char* collectedData = nullptr;
-        String sdCardData;
-
-        dataLogger = SD.open(DATALOG_FILENAME, FILE_READ);
-
-        const auto size = dataLogger.size();
-
-        if (size != 0) collectedData = new char[size + 1];
-        if (collectedData != nullptr) {
-            size_t dataIndex = 0;
-            while (dataLogger.available() && dataIndex < size) {
-                collectedData[dataIndex] = dataLogger.read();
-                dataIndex++;
-            }
-
-            dataLogger.close();
-            collectedData[dataIndex] = 0;
-            send(collectedData);
-            delete[] collectedData;
-        }
-
-        dataLogger = SD.open(DATALOG_FILENAME, FILE_WRITE);
-        if (dataLogger) dataLogger.print("");
-        dataLogger.close();
-    }
-
+    TempAndHumidity tempandhumidity = getTemp();
     sprintf(messageBuffer, "%s,%d,%f,%f,%f,%f", DEVICE_ID, getUnixTime(),
             tempandhumidity.temperature, tempandhumidity.humidity,
             getLightData().lux, getBatteryVoltage());
+
     if (isConnected) {
+        if (sdStatus) {
+            char* collectedData = nullptr;
+            String sdCardData;
+
+            dataLogger = SD.open(DATALOG_FILENAME, FILE_READ);
+
+            const auto size = dataLogger.size();
+
+            if (size != 0) collectedData = new char[size + 1];
+            if (collectedData != nullptr) {
+                size_t dataIndex = 0;
+                while (dataLogger.available() && dataIndex < size) {
+                    collectedData[dataIndex] = dataLogger.read();
+                    dataIndex++;
+                }
+
+                dataLogger.close();
+                collectedData[dataIndex] = 0;
+                send(collectedData);
+                delete[] collectedData;
+            }
+
+            dataLogger = SD.open(DATALOG_FILENAME, FILE_WRITE);
+            if (dataLogger) dataLogger.print("");
+            dataLogger.close();
+        }
+
         send(messageBuffer);
     } else {
         Serial.println("Logging to SD-card...");
