@@ -2,9 +2,9 @@ package poseidon.model;
 
 /**
  * This class represents what the sending data contains, what parameters etc are included.
+ *
  * @author Marcus Linné
  * @author Erik Kellgren
- *
  * @version 0.0.0
  */
 public class DataUI {
@@ -14,11 +14,6 @@ public class DataUI {
     private String humidity;
     private String light;
     private String batV;
-
-    /**
-     * Totally irrelevant (dont know yet???)
-     */
-    protected DataUI() {}
 
     /**
      * Constructor for DataUI, initializes the variables of this class.
@@ -89,7 +84,7 @@ public class DataUI {
     }
 
     /**
-     * This is the toString of the class, it formats the print of the class.
+     * The toString method used to sort the data in it's correct order for the DB.
      */
     public String toString() {
         return String.format(

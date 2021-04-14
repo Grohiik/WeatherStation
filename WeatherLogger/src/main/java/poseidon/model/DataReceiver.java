@@ -10,18 +10,17 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * This class receives the data, the data that is specified by the @Column mark.
- * It implements serializable because of it being sent across a stream.
+ * This class is used to specify which data we want from the DB, each set of data is specified by a
+ * @Column mark. It implements serializable because of it being sent across a stream.
+ *
  * @author Marcus Linné
  * @author Erik Kellgren
- *
  * @version 0.0.0
  */
 @Entity
 @Table(name = "weatherlog")
 public class DataReceiver implements Serializable {
-    @Serial
-    private static final long serialVersionUID = -2343243243242432341L;
+    @Serial private static final long serialVersionUID = -2343243243242432341L;
     @Id @GeneratedValue(strategy = GenerationType.AUTO) private long id;
 
     @Column(name = "device") private String device;
@@ -37,7 +36,7 @@ public class DataReceiver implements Serializable {
     @Column(name = "batV") private String batV;
 
     /**
-     * Totally irrelevant
+     * Protected constructor required by Spring
      */
     protected DataReceiver() {}
 
@@ -117,7 +116,7 @@ public class DataReceiver implements Serializable {
     }
 
     /**
-     * This is the toString of the class, it formats the print of the class.
+     * The toString method used to sort the data from the db into the correct order.
      */
     @Override
     public String toString() {

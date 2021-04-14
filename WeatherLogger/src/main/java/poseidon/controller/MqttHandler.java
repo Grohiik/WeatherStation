@@ -54,7 +54,7 @@ public class MqttHandler implements MqttCallback {
     }
 
     /**
-     *This method reads the options.yml and stores the variables in the respective strings
+     * This method reads the options.yml and stores the variables in the respective strings
      */
     private void optionsReader() {
         Yaml yaml = new Yaml();
