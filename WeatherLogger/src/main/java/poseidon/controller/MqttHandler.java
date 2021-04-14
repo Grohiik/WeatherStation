@@ -44,7 +44,8 @@ public class MqttHandler implements MqttCallback {
             optionsReader();
             System.out.println(" == Start Subscriber ==");
 
-            MqttClient client = new MqttClient(connection_url, MqttClient.generateClientId(), new MqttDefaultFilePersistence("data"));
+            MqttClient client = new MqttClient(connection_url, MqttClient.generateClientId(),
+                                               new MqttDefaultFilePersistence("data"));
             MqttConnectOptions connectOptions = setUpConnectOptions(username, password);
 
             client.setCallback(this);
@@ -56,14 +57,15 @@ public class MqttHandler implements MqttCallback {
     }
 
     /**
-     * This method reads the options.yml and stores the variables in the respective strings
+     * This method reads the application.yml and stores the variables in the respective strings
      */
     private void optionsReader() {
-        // TODO use sapmle.yml instead of options.yml
         Yaml yaml = new Yaml();
-        InputStream inputStream =
-            this.getClass().getClassLoader().getResourceAsStream("application.yml");
+        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(
+            "application.yml"); // loads the yml file in to a map
         Map<String, Object> obj = yaml.load(inputStream);
+
+        // picks the connection variables from the map
         connection_url = (String) obj.get("Host");
         subscription = (String) obj.get("Feed");
         username = (String) obj.get("Username");
@@ -95,14 +97,15 @@ public class MqttHandler implements MqttCallback {
     }
 
     /**
-     * Splits the message String in to rows and then columns before storing them in the database
+     * Stores the data from the mqtt broker in the database according to the header in the
+     * message(the first line in the message) This function assumes that each line is formatted the
+     * same way as the header
      *
      * @param indata The message string from the mqtt broker
      */
     public void splitStore(String indata) {
-        // TODO use the header of the message to arrange the datapoints instead of the order
-        var data = indata.split("\\r?\\n");
-        var keyData = data[0].split(",");
+        var data = indata.split("\\r?\\n"); // splits the message at each line
+        var keyData = data[0].split(",");   // splits the header at each ","
         HashMap<String, String> dataMap = new HashMap<String, String>();
 
         for (int i = 1; i < data.length; i++) {
@@ -110,9 +113,10 @@ public class MqttHandler implements MqttCallback {
             for (int j = 0; j < valData.length; j++) {
                 dataMap.put(keyData[j], valData[j]);
             }
-            //at the moment light might give null
-            dataRepository.save(
-                new DataReceiver(dataMap.get("device"), dataMap.get("time"), dataMap.get("temp"), dataMap.get("hum"), dataMap.get("light"), dataMap.get("batv")));
+            // at the moment light might give null
+            dataRepository.save(new DataReceiver(dataMap.get("device"), dataMap.get("time"),
+                                                 dataMap.get("temp"), dataMap.get("hum"),
+                                                 dataMap.get("light"), dataMap.get("batv")));
         }
     }
 
@@ -121,7 +125,7 @@ public class MqttHandler implements MqttCallback {
      *
      * @param userName
      * @param password
-     * @return
+     * @return returns the connect options
      */
     private static MqttConnectOptions setUpConnectOptions(String userName, String password) {
         MqttConnectOptions connectOptions = new MqttConnectOptions();
