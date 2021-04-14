@@ -33,3 +33,7 @@ All branch naming should be `lowercase` with `-` as separators.
 ### Versioning
 
 This project follows the [Semantic Versioning 2.0.0](https://semver.org/). Make sure to read through it when you're versioning the code.
+
+## Deployment
+
+The `sample.env` file is the sample environment variables for deploying the service with `docker-compose`. Create `.env` in the root of the this project where `docker-compose.yml` lives and paste in the content from the `sample.env`.

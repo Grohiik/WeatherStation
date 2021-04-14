@@ -8,6 +8,9 @@
 **/dist
 **/.parcel-cache
 
+## Java jar files
+*.jar
+
 ## Package files
 *.zip
 *.rar
@@ -21,6 +24,12 @@
 
 ## Spring server configuration
 **/application.yml
+
+# ┃ Environment Variables
+# ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ #
+
+## Docker and other environment file
+.env
 
 # ┃ Generated Workspaces
 # ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ #
