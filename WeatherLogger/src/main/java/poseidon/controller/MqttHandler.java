@@ -1,6 +1,7 @@
 package poseidon.controller;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -8,6 +9,7 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.yaml.snakeyaml.Yaml;
@@ -42,7 +44,7 @@ public class MqttHandler implements MqttCallback {
             optionsReader();
             System.out.println(" == Start Subscriber ==");
 
-            MqttClient client = new MqttClient(connection_url, MqttClient.generateClientId());
+            MqttClient client = new MqttClient(connection_url, MqttClient.generateClientId(), new MqttDefaultFilePersistence("/data"));
             MqttConnectOptions connectOptions = setUpConnectOptions(username, password);
 
             client.setCallback(this);
@@ -100,13 +102,18 @@ public class MqttHandler implements MqttCallback {
     public void splitStore(String indata) {
         // TODO use the header of the message to arrange the datapoints instead of the order
         var data = indata.split("\\r?\\n");
+        var keyData = data[0].split(",");
+        HashMap<String, String> dataMap = new HashMap<String, String>();
+
         for (int i = 1; i < data.length; i++) {
-            var utdata = data[i].split(",", 6);
-            System.out.println("writing....");
+            var valData = data[i].split(",");
+            for (int j = 0; j < valData.length; j++) {
+                dataMap.put(keyData[j], valData[j]);
+            }
+            //at the moment light might give null
             dataRepository.save(
-                new DataReceiver(utdata[0], utdata[1], utdata[2], utdata[3], utdata[4], utdata[5]));
+                new DataReceiver(dataMap.get("device"), dataMap.get("time"), dataMap.get("temp"), dataMap.get("hum"), dataMap.get("light"), dataMap.get("batv")));
         }
-        System.out.println("done");
     }
 
     /**
