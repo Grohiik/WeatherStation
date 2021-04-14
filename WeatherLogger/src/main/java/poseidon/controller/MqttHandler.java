@@ -44,7 +44,7 @@ public class MqttHandler implements MqttCallback {
             optionsReader();
             System.out.println(" == Start Subscriber ==");
 
-            MqttClient client = new MqttClient(connection_url, MqttClient.generateClientId(), new MqttDefaultFilePersistence("/data"));
+            MqttClient client = new MqttClient(connection_url, MqttClient.generateClientId(), new MqttDefaultFilePersistence("data"));
             MqttConnectOptions connectOptions = setUpConnectOptions(username, password);
 
             client.setCallback(this);
