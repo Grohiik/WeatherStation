@@ -17,7 +17,7 @@ async function getData(){
     const year = cols[0]
     xlabels.push(year)
     const temp = cols[1]
-    ytemps.push(parseFloat(temp) + 14) // Adds 14 to the graph for mean value
+    ytemps.push(parseFloat(temp) +14) // Adds 14 to the graph for mean value
     console.log(year, temp)
   })
 }
@@ -30,10 +30,10 @@ async function chartIt() {
     data: {
       labels: xlabels,
       datasets: [{
-        label: 'Global Average Temperature in C°, January',
+        label: 'Global Average Temperature in C°,',
         data: ytemps,
         fill:true,    // Shadow under the graph
-        backgroundColor: [
+        backgroundColor:  [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
           'rgba(255, 206, 86, 0.2)',
@@ -41,7 +41,7 @@ async function chartIt() {
           'rgba(153, 102, 255, 0.2)',
           'rgba(255, 159, 64, 0.2)',
         ],
-        borderColor: [
+        borderColor:  [
           'rgba(255, 99, 132, 1)',
           'rgba(54, 162, 235, 1)',
           'rgba(255, 206, 86, 1)',
@@ -67,6 +67,3 @@ async function chartIt() {
     }
   })
 } 
-
-
-

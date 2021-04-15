@@ -1,4 +1,67 @@
 html,
 body {
+  grid-template-columns: 12em 1fr;
+  grid-template-rows: auto 1fr auto;
   font-family: 'Roboto', sans-serif;
+  grid-template-areas:
+  'banner banner'
+  'nav main'
+  'nav footer'
+  ;
 }
+header{
+  grid-column: span 2;
+  grid-area: banner;
+}
+nav{
+  grid-row: span 2;
+  grid-area: nav;
+}
+main{ grid-area: nav;}
+footer{grid-area: footer;}
+
+
+
+h1,
+h2,
+h3,
+h4 {
+    margin: .1rem 0;
+}
+
+h1 {
+    font-size: 3rem;
+    font-display: [blop];
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; /** typ av font*/
+    font;
+}
+
+
+h2 {
+    font-size: 1.5rem;
+    padding-left: 20px;
+}
+
+h3 {
+    font-size: 1.2rem;
+    padding-left: 40px;
+}
+
+h4 {
+
+    font-size: 1rem;
+    font-style: italic;
+    padding-left: 60px;
+    /**
+    * font size;
+    * font style; 
+    * normal; 
+    * italic;
+    * oblique;
+    * oblique 10 deg;
+    * inherit;
+    * initial;
+    *unset;
+    */
+}
+

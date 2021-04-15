@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+  
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,13 +20,19 @@
   </head>
   <body>
     <h1>Weather Station</h1>
-
-
+            <h4>Ademir,Christian,Gabriella</h4>
     <div>
-      <canvas id="myChart" width="400" height="400"></canvas>
+      <canvas id="myChart" width="50" height="50"></canvas>
     </div>
 
     <script src="scripts/app.ts"></script>
+    
+      <input type="radio" id="temperature" name="datavalue" value="temperature">
+      <label for="temperature">Temperatur</label>
+      <input type="radio" id="humidity" name="datavalue" value="humidity">
+      <label for="humidity">Humidity</label>
+      <input type="radio" id="brightness" name="datavalue" value="brightness">
+      <label for="brightness">Brightness</label>
     
   </body>
 </html>
