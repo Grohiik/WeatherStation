@@ -2,6 +2,7 @@ package poseidon.model;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.*;
 
 /**
@@ -20,6 +21,8 @@ public class DeviceReceiver implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.AUTO) private long id;
 
     @Column(name = "device") private String device;
+
+    @OneToMany(mappedBy = "device") private Set<DataReceiver> weatherData;
 
     /**
      * Protected constructor required by Spring.

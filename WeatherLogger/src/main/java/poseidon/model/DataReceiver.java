@@ -29,6 +29,10 @@ public class DataReceiver implements Serializable {
 
     @Column(name = "batV") private String batV;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "device", nullable = false)
+    private DeviceReceiver device;
+
     /**
      * Protected constructor required by Spring
      */
@@ -42,6 +46,16 @@ public class DataReceiver implements Serializable {
      * @param humidity The humidity at the given time.
      * @param light The light-level at the given time.
      */
+    public DataReceiver(String time, String temperature, String humidity, String light, String batV,
+                        DeviceReceiver device) {
+        this.time = time;
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.light = light;
+        this.batV = batV;
+        this.device = device;
+    }
+
     public DataReceiver(String time, String temperature, String humidity, String light,
                         String batV) {
         this.time = time;

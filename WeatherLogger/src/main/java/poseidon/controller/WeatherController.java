@@ -35,16 +35,22 @@ public class WeatherController {
      * @return informs that the data has been created on the DB
      */
     @GetMapping("/fillWithTrashData")
-    public String fillWithTrashData() {
-        deviceRepository.save(new DeviceReceiver("lsgsgs"));
-        dataRepository.save(new DataReceiver("12.00.15", "20.5", "90", "20", "3.4"));
 
-        deviceRepository.saveAll(Arrays.asList(
-            new DeviceReceiver("gsgsg"), new DeviceReceiver("352"), new DeviceReceiver("yolo")));
+    public String fillWithTrashData() {
+        DeviceReceiver test = new DeviceReceiver("lsgsgs");
+        deviceRepository.save(test);
+        dataRepository.save(new DataReceiver("12.00.15", "20.5", "90", "20", "3.4", test));
+
+        DeviceReceiver test2 = new DeviceReceiver("lmao");
+        DeviceReceiver test3 = new DeviceReceiver("sfs");
+        DeviceReceiver test4 = new DeviceReceiver("difisgts");
+
+        deviceRepository.saveAll(Arrays.asList(test2, test3, test4));
+
         dataRepository.saveAll(
-            Arrays.asList(new DataReceiver("12.05.15", "2220.5", "15", "28", "4.2"),
-                          new DataReceiver("13.15.55", "80.1", "40", "80", "4.4"),
-                          new DataReceiver("18.01.35", " 60.5", "88", "8", "4")));
+            Arrays.asList(new DataReceiver("12.05.15", "2220.5", "15", "28", "4.2", test2),
+                          new DataReceiver("13.15.55", "80.1", "40", "80", "4.4", test3),
+                          new DataReceiver("18.01.35", " 60.5", "88", "8", "4", test4)));
 
         return "much data made";
     }
