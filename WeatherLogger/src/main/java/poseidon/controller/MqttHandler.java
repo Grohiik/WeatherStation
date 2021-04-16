@@ -2,6 +2,7 @@ package poseidon.controller;
 
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -31,6 +32,8 @@ public class MqttHandler implements MqttCallback {
     private String subscription;
     private String username;
     private String password;
+
+    private HashMap<String, DeviceReceiver> devicemap = new HashMap<String, DeviceReceiver>();
 
     @Autowired DataRepository dataRepository;
     @Autowired DeviceRepository deviceRepository;
@@ -102,7 +105,12 @@ public class MqttHandler implements MqttCallback {
     /**
      * Stores the data from the mqtt broker in the database according to the header in the
      * message(the first line in the message) This function assumes that each line is formatted the
-     * same way as the header
+     * same way as the header.
+     * First the databse is checked for existing Devices, if the device exists a new device will not
+     * be created and the data will be linked to an existing device withthe same device_id.
+     * However, if the device doesn't exist, a new object will be created and sent with its
+     * corresponding data. 
+     * The data is related to it's own device by the device_id, shown in the database-table.
      *
      * @param inData The message string from the mqtt broker
      */
@@ -117,11 +125,25 @@ public class MqttHandler implements MqttCallback {
                 dataMap.put(keyData[j], valData[j]);
             }
 
-            // at the moment light might give null
-            deviceRepository.save(new DeviceReceiver(dataMap.get("device")));
-            dataRepository.save(new DataReceiver(dataMap.get("time"), dataMap.get("temp"),
-                                                 dataMap.get("hum"), dataMap.get("light"),
-                                                 dataMap.get("batv")));
+            boolean deviceFlag = false;
+            List<DeviceReceiver> checkForDevices = deviceRepository.findAll();
+            for (DeviceReceiver deviceReceiver : checkForDevices) {
+                if (deviceReceiver.getDevice().equals(dataMap.get("device"))) {
+                    dataRepository.save(new DataReceiver(dataMap.get("time"), dataMap.get("temp"),
+                                                         dataMap.get("hum"), dataMap.get("light"),
+                                                         dataMap.get("batv"), deviceReceiver));
+                    deviceFlag = true;
+                    break;
+                }
+            }
+
+            if (!deviceFlag) {
+                DeviceReceiver deviceReceiver = new DeviceReceiver(dataMap.get("device"));
+                deviceRepository.save(deviceReceiver);
+                dataRepository.save(new DataReceiver(dataMap.get("time"), dataMap.get("temp"),
+                                                     dataMap.get("hum"), dataMap.get("light"),
+                                                     dataMap.get("batv"), deviceReceiver));
+            }
         }
     }
 

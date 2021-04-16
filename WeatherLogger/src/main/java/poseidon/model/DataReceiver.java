@@ -30,7 +30,7 @@ public class DataReceiver implements Serializable {
     @Column(name = "batV") private String batV;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "device", nullable = false)
+    @JoinColumn(name = "device_id", nullable = false)
     private DeviceReceiver device;
 
     /**

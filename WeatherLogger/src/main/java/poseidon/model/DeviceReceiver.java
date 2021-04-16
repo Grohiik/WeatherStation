@@ -25,7 +25,7 @@ public class DeviceReceiver implements Serializable {
     @OneToMany(mappedBy = "device") private Set<DataReceiver> weatherData;
 
     /**
-     * Protected constructor required by Spring.
+     * Protected constructor required by Spring
      */
     protected DeviceReceiver() {}
 
