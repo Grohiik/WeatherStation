@@ -106,7 +106,7 @@ public class MqttHandler implements MqttCallback {
      * Stores the data from the mqtt broker in the database according to the header in the
      * message(the first line in the message) This function assumes that each line is formatted the
      * same way as the header.
-     * First the databse is checked for existing Devices, if the device exists a new device will not
+     * First the database is checked for existing Devices, if the device exists a new device will not
      * be created and the data will be linked to an existing device withthe same device_id.
      * However, if the device doesn't exist, a new object will be created and sent with its
      * corresponding data. 
