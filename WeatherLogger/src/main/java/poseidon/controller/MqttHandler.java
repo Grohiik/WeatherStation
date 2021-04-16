@@ -20,7 +20,7 @@ import poseidon.repository.DataRepository;
 import poseidon.repository.DeviceRepository;
 
 /**
- * This class handles the mqtt communication with the embedded system
+ * This class handles the mqtt communication with the embedded system.
  *
  * @author Eric Lundin
  * @version 1.0.0
@@ -43,7 +43,7 @@ public class MqttHandler implements MqttCallback {
     }
 
     /**
-     * Starts and configures the mqtt client
+     * Starts and configures the mqtt client.
      */
     public void startClient() {
         try {
@@ -63,12 +63,12 @@ public class MqttHandler implements MqttCallback {
     }
 
     /**
-     * This method reads the application.yml and stores the variables in the respective strings
+     * This method reads the application.yml and stores the variables in the respective strings.
      */
     private void optionsReader() {
         Yaml yaml = new Yaml();
         InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(
-            "application.yml"); // loads the yml file in to a map
+            "application.yml"); // loads the yml file into a map
         Map<String, Object> obj = yaml.load(inputStream);
 
         // picks the connection variables from the map
@@ -89,10 +89,10 @@ public class MqttHandler implements MqttCallback {
     }
 
     /**
-     * Callback method for when the mqtt client receives a message
+     * Callback method for when the mqtt client receives a message.
      *
-     * @param arg0 contains the sender and feed
-     * @param arg1 contains the message
+     * @param arg0 contains the sender and feed.
+     * @param arg1 contains the message.
      */
     @Override
     public void messageArrived(String arg0, MqttMessage arg1) throws Exception {
@@ -106,13 +106,13 @@ public class MqttHandler implements MqttCallback {
      * Stores the data from the mqtt broker in the database according to the header in the
      * message(the first line in the message) This function assumes that each line is formatted the
      * same way as the header.
-     * First the database is checked for existing Devices, if the device exists a new device will not
-     * be created and the data will be linked to an existing device withthe same device_id.
+     * First the database is checked for existing Devices, if the device exists a new device will
+     * not be created and the data will be linked to an existing device with the same device_id.
      * However, if the device doesn't exist, a new object will be created and sent with its
-     * corresponding data. 
+     * corresponding data.
      * The data is related to it's own device by the device_id, shown in the database-table.
      *
-     * @param inData The message string from the mqtt broker
+     * @param inData The message string from the mqtt broker.
      */
     public void splitStore(String inData) {
         var data = inData.split("\\r?\\n"); // splits the message at each line
@@ -148,11 +148,12 @@ public class MqttHandler implements MqttCallback {
     }
 
     /**
-     * Creates the connectOptions object used to connect with the mqtt broker
+     * Creates the connectOptions object used to connect to the mqtt broker.
      *
-     * @param userName
-     * @param password
-     * @return returns the connect options
+     * @param userName The username used.
+     * @param password The password used.
+     *
+     * @return returns the connect options.
      */
     private static MqttConnectOptions setUpConnectOptions(String userName, String password) {
         MqttConnectOptions connectOptions = new MqttConnectOptions();

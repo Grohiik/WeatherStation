@@ -17,8 +17,7 @@ public class DataUI {
     private String batV;
 
     /**
-     * Default constructor for DataUI, initializes the devices,
-     * used for the device table.
+     * Constructor for DataUI, initializes the devices. Is used for the device table.
      *
      * @param device Which device the data is sent from.
      */
@@ -27,8 +26,7 @@ public class DataUI {
     }
 
     /**
-     * Constructor for DataUI, initializes the remaining variables,
-     * .
+     * Default constructor for DataUI, initializes the remaining variables.
      *
      * @param time Indicates the time when the data was gathered.
      * @param temperature The temperature at the given time.

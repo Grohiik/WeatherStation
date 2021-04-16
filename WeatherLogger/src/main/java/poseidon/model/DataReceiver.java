@@ -5,9 +5,9 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 /**
- * This class is used to specify which data we want to add to the DB, each set of data is specified
- * by a
- * @Column mark. It implements serializable because of it being sent across a stream.
+ * This class is used to specify which data excluding which device we want to add to the DB, each
+ * set of data is specified by a @Column mark. It implements serializable because of it being sent
+ * across a stream.
  *
  * @author Marcus Linné
  * @author Erik Kellgren
@@ -34,17 +34,20 @@ public class DataReceiver implements Serializable {
     private DeviceReceiver device;
 
     /**
-     * Protected constructor required by Spring
+     * Protected constructor required by Spring.
      */
     protected DataReceiver() {}
 
     /**
-     * Constructor for DataUI, initializes the variables of this class.
+     * Default Constructor for DataReceiver. Initializes all the variables of this class, including
+     * the Device originating from DeviceReceiver.
      *
      * @param time Indicates the time when the data was gathered.
      * @param temperature The temperature at the given time.
      * @param humidity The humidity at the given time.
      * @param light The light-level at the given time.
+     * @param batV The current battery voltage remaining.
+     * @param device The device the data originates from.
      */
     public DataReceiver(String time, String temperature, String humidity, String light, String batV,
                         DeviceReceiver device) {
@@ -56,6 +59,15 @@ public class DataReceiver implements Serializable {
         this.device = device;
     }
 
+    /**
+     * Constructor for DataReceiver, initializes the variables belonging to this class.
+     *
+     * @param time Indicates the time when the data was gathered.
+     * @param temperature The temperature at the given time.
+     * @param humidity The humidity at the given time.
+     * @param light The light-level at the given time.
+     * @param batV The current battery voltage remaining.
+     */
     public DataReceiver(String time, String temperature, String humidity, String light,
                         String batV) {
         this.time = time;

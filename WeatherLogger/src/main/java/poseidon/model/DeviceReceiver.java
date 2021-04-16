@@ -7,8 +7,7 @@ import javax.persistence.*;
 
 /**
  * This class is used to specify which devices we want to add to the DB, each set of data is
- * specified by a
- * @Column mark. It implements serializable because of it being sent across a stream.
+ * specified by a @Column mark. It implements serializable because of it being sent across a stream.
  *
  * @author Erik Kellgren
  * @author Marcus Linné
@@ -25,7 +24,7 @@ public class DeviceReceiver implements Serializable {
     @OneToMany(mappedBy = "device") private Set<DataReceiver> weatherData;
 
     /**
-     * Protected constructor required by Spring
+     * Protected constructor required by Spring.
      */
     protected DeviceReceiver() {}
 
