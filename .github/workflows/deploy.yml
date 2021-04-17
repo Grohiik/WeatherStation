@@ -1,0 +1,32 @@
+name: deploy-stable
+
+on:
+  push:
+    branches: [stable]
+  pull_request:
+    branches: [stable]
+    types: [closed]
+
+  workflow_dispatch:
+
+jobs:
+  # Wacky deployment script
+  deploy:
+    if: github.event.pull_request.merged == true
+    name: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        # Much security risk right here
+      - name: Deploying...
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ${{ secrets.APP_DIRECTORY }}
+            docker-compose down
+            git checkout stable && git fetch origin && git reset --hard origin/stable
+            docker-compose up -d --build
