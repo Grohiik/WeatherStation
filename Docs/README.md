@@ -36,9 +36,9 @@ This project follows the [Semantic Versioning 2.0.0](https://semver.org/). Make 
 
 ## Deployment
 
-The `sample.env` file is the sample environment variables for deploying the service with `docker-compose`. Create `.env` in the root of the this project where `docker-compose.yml` lives and paste in the content from the `sample.env`.
+The `sample.env` file is the sample environment variables for deploying the service with `docker-compose`. Create `.env` in the root of the this project where `docker-compose.yml` lives and paste in the content from the `sample.env`. Change to your own configuration accordingly.
 
-Auto deploy with Github Actions needs these value. Create it in the secret tab in the repository settings.
+Auto deploy with Github Actions need these value. Create it in the secret tab in the repository settings.
 
 ```
 SSH_HOST
