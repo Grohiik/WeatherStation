@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main, stable]
+    branches: [main]
 
   workflow_dispatch:
 
@@ -28,7 +28,7 @@ jobs:
       - name: Setup NodeJS
         uses: actions/setup-node@v2
         with:
-          node-version: '15.12.0'
+          node-version: '15.14.0'
       - name: Installing nodejs packages
         run: cd WebApp && npm i
       - name: Building webapp

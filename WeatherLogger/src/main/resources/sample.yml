@@ -1,2 +1,23 @@
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+      properties.jdbc.lob.non_contextual_creation: true
+
+  datasource:
+    platform: postgres
+    url: <the url to your database>
+    username: <your username>
+    password: <your password>
+    initialization-mode: always
+
 server:
-  port: 3000
+  port: 8080
+
+Host: <your mqtt brokers URL>
+Username: <your username>
+Key: <your password to the mqtt broker>
+Feed: <the feed you want to subscribe to>
