@@ -1,9 +1,17 @@
 version: '3.3'
 
 services:
-  weather-logger:
+  weatherlogger:
     build: WeatherLogger
-    image: weather-logger
+    image: weatherlogger
     restart: always
     ports:
-      - '${WEATHER_PORT}:8080'
+      - '${WEATHER_PORT:-8080}:8080'
+    volumes:
+      - ./data/weather:/app/data
+
+  webapp:
+    build: WebApp
+    image: webapp
+    volumes:
+      - ./data/webapp:/app/dist
