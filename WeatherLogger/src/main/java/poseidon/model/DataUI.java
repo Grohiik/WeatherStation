@@ -42,6 +42,16 @@ public class DataUI {
         this.batV = batV;
     }
 
+    public DataUI(String device, String time, String temperature, String humidity, String light, String batV)
+    {
+        this.device = device;
+        this.time = time;
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.light = light;
+        this.batV = batV;
+    }
+
     public String getDevice() {
         return device;
     }
