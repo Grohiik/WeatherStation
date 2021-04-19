@@ -41,8 +41,7 @@ constexpr auto MAX_CONNECTION_TRIES = 5U;  // Connection max tries
 // Header
 constexpr auto MESSAGE_HEADER = "device,time,temp,hum,light,batv";
 constexpr auto MESSAGE_BUFFER_SIZE = 256;
-// Boards baud rate
-constexpr auto BAUD_RATE = 115200U;
+constexpr auto BAUD_RATE = 115200U;  // Boards baud rate
 
 char messageBuffer[MESSAGE_BUFFER_SIZE];
 
@@ -108,8 +107,8 @@ void send(const char* data) {
 }
 
 /**
- * @brief setup and main "loop" starts all sensors, collects all data and
- * decides what to so next
+ * @brief Setup and main "loop" starts all sensors, collects all data and
+ *        decides what to so next
  */
 void setup() {
     delay(500);

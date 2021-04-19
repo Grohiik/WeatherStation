@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Temperature.hpp"
 
 DHTesp dht;
