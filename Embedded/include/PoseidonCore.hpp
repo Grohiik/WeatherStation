@@ -14,11 +14,17 @@
 #ifndef POSEIDON_CONFIGURATION
 constexpr auto WIFI_SSID      = "YOUR_SSID";
 constexpr auto WIFI_PASSWORD  = "YOUR_WIFI_PASSWORD";
+constexpr auto WIFI_SSID1     = "YOUR_SSID";
+constexpr auto WIFI_PASSWORD1 = "YOUR_WIFI_PASSWORD";
+
 constexpr auto MQTT_BROKER_IP = "YOUR_BROKER_IP";
 constexpr auto MQTT_USERNAME  = "YOUR_BROKER_USERNAME";
 constexpr auto MQTT_KEY       = "YOUR_MQTT_KEY";
+constexpr auto DEVICE_ID      = "YOUR_DEVICE_ID";
 
-constexpr auto WEATHER_TOPIC = "/weather";
+constexpr auto WEATHER_TOPIC  = "YOUR_TOPIC";
+#else
+#include "PoseidonEnv.hpp"
 #endif
 
 #ifndef POSEIDON_MAJOR_VERSION

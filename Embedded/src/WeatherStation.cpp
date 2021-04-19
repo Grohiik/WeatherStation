@@ -13,42 +13,30 @@
  */
 
 #include <Arduino.h>
-#include <Wire.h>
-#include <SPI.h>
-#include <SD.h>
 #include <WiFi.h>
+#include <WiFiMulti.h>
 #include <MQTT.h>
 
-#include "sensors/Temperature.hpp"
-#include "sensors/LightSensor.hpp"
-#include "sensors/Clock.hpp"
-#include "sensors/BatteryVoltage.hpp"
-
-#ifdef POSEIDON_CONFIGURATION
-#include "PoseidonEnv.hpp"
-#endif
 #include "PoseidonCore.hpp"
+#include "WeatherData.hpp"
 
-// Filenames
-constexpr auto DATALOG_FILENAME = "/datalog.csv";
-constexpr auto SD_CARD_CHIP_SELECT = 33;
+// clang-format off
 
-// Sleep configurations
-constexpr auto uS_TO_S_FACTOR = 1000000U;  // μs to s conversion factor
-constexpr auto TIME_TO_SLEEP = 10U;        // Time to sleep in seconds
-constexpr auto MAX_CONNECTION_TRIES = 5U;  // Connection max tries
+constexpr auto uS_TO_S_FACTOR       = 1000000U;        // μs to s conversion factor
+constexpr auto TIME_TO_SLEEP        = 25U;             // Time to sleep in seconds
+constexpr auto BAUD_RATE            = 115200U;         // Boards baud rate
+constexpr auto MAX_CONNECTION_TRIES = 10U;
+constexpr auto MESSAGE_BUFFER_SIZE  = 256;
+constexpr auto DATALOG_FILENAME     = "/datalog.csv";  // Filename
+constexpr auto SD_CARD_CHIP_SELECT  = 33;
 
-// Header
-constexpr auto MESSAGE_HEADER = "device,time,temp,hum,light,batv";
-constexpr auto MESSAGE_BUFFER_SIZE = 256;
-constexpr auto BAUD_RATE = 115200U;  // Boards baud rate
+// clang-format on
 
-char messageBuffer[MESSAGE_BUFFER_SIZE];
-
-// Objects for the sensor components
-WiFiClient wifi;
-MQTTClient client;
-File dataLogger;
+// Global objects
+WiFiMulti wifiMulti;                // WiFi multi access point
+WiFiClient wifiClient;              // WiFi Client for MQTT
+MQTTClient mqttClient;              // MQTT connection client
+poseidon::WeatherData weatherData;  // Weather data collection and storage
 
 /**
  * @brief Check WiFi connection status and connect to MQTT server.
@@ -59,9 +47,9 @@ File dataLogger;
 bool connect() {
     uint16_t counter = 0;
     Serial.print("Checking wifi...");
-    while (WiFi.status() != WL_CONNECTED) {
+    while (wifiMulti.run() != WL_CONNECTED) {
         Serial.print(".");
-        delay(1000);
+        delay(250);
         if (counter >= MAX_CONNECTION_TRIES) {
             Serial.println();
             return false;
@@ -72,9 +60,9 @@ bool connect() {
     Serial.println("\nConnected to WiFi!");
 
     Serial.println("\nConnecting to MQTT...");
-    while (!client.connect("station1", MQTT_USERNAME, MQTT_KEY)) {
+    while (!mqttClient.connect("station1", MQTT_USERNAME, MQTT_KEY)) {
         Serial.print(".");
-        delay(1000);
+        delay(250);
         if (counter >= MAX_CONNECTION_TRIES) {
             Serial.println();
             return false;
@@ -87,84 +75,38 @@ bool connect() {
 }
 
 /**
+ * @brief Publishes data to WEATHER_TOPIC
+ */
+void send(const char* data) {
+    mqttClient.publish(WEATHER_TOPIC, data, false, 2);
+}
+
+/**
  * @brief Puts the micro controller into deep sleep for TIME_TO_SLEEP seconds.
  *        Is called whenever it is done with sending or writing to SD-Card
  */
 void sleep() {
-    Serial.println("Going to sleep...");
+    Serial.println("SLEEP");
     esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
     esp_deep_sleep_start();
 }
 
-/**
- * @brief Publishes data to WEATHER_TOPIC
- */
-void send(const char* data) {
-    String message = MESSAGE_HEADER;
-    message += "\n";
-    message += data;
-    client.publish(WEATHER_TOPIC, message, false, 2);
-}
-
-/**
- * @brief Setup and main "loop" starts all sensors, collects all data and
- *        decides what to so next
- */
 void setup() {
-    delay(500);
-
     Serial.begin(BAUD_RATE);
-    const bool sdStatus = SD.begin(SD_CARD_CHIP_SELECT);
+    weatherData.init();
+    mqttClient.begin(MQTT_BROKER_IP, wifiClient);
 
-    Serial.println("Waking up");
-    setupTemperatureAndHumiditySensor();
-    setupLightsensor();
+    wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD);
+    wifiMulti.addAP(WIFI_SSID1, WIFI_PASSWORD1);
 
-    // Connect to WiFi
-    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-    client.begin(MQTT_BROKER_IP, wifi);
+    weatherData.collectData();
 
-    const auto isConnected = connect();
+    const bool connectionStatus = connect();
 
-    TempAndHumidity tempandhumidity = getTemp();
-    sprintf(messageBuffer, "%s,%d,%f,%f,%f,%f", DEVICE_ID, getUnixTime(),
-            tempandhumidity.temperature, tempandhumidity.humidity,
-            getLightData().lux, getBatteryVoltage());
-
-    if (isConnected) {
-        if (sdStatus) {
-            char* collectedData = nullptr;
-            String sdCardData;
-
-            dataLogger = SD.open(DATALOG_FILENAME, FILE_READ);
-
-            const auto size = dataLogger.size();
-
-            if (size != 0) collectedData = new char[size + 1];
-            if (collectedData != nullptr) {
-                size_t dataIndex = 0;
-                while (dataLogger.available() && dataIndex < size) {
-                    collectedData[dataIndex] = dataLogger.read();
-                    dataIndex++;
-                }
-
-                dataLogger.close();
-                collectedData[dataIndex] = 0;
-                send(collectedData);
-                delete[] collectedData;
-            }
-
-            dataLogger = SD.open(DATALOG_FILENAME, FILE_WRITE);
-            if (dataLogger) dataLogger.print("");
-            dataLogger.close();
-        }
-
-        send(messageBuffer);
+    if (connectionStatus) {
+        send(weatherData.toCSV());
     } else {
-        Serial.println("Logging to SD-card...");
-        dataLogger = SD.open(DATALOG_FILENAME, FILE_APPEND);
-        if (dataLogger) dataLogger.println(messageBuffer);
-        dataLogger.close();
+        // TODO: Log to SD-card
     }
 
     sleep();
