@@ -11,7 +11,7 @@ import javax.persistence.*;
  *
  * @author Erik Kellgren
  * @author Marcus Linné
- * @version 0.0.0
+ * @version 0.1.0
  */
 @Entity
 @Table(name = "devices")

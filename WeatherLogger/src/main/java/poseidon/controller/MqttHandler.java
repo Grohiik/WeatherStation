@@ -23,8 +23,7 @@ import poseidon.repository.DeviceRepository;
  * This class handles the mqtt communication with the embedded system.
  *
  * @author Eric Lundin
- * @version 1.0.0
- *
+ * @version 0.1.0
  */
 @SpringBootApplication
 public class MqttHandler implements MqttCallback {

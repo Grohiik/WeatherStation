@@ -9,7 +9,7 @@ import poseidon.repository.DataRepository;
  * WeatherApp is the main Application for start up.
  *
  * @author Marcus Linné
- * @version 0.0.0
+ * @version 0.1.0
  */
 @SpringBootApplication
 public class WeatherApp {

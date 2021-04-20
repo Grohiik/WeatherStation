@@ -6,7 +6,7 @@ package poseidon.model;
  *
  * @author Marcus Linné
  * @author Erik Kellgren
- * @version 0.0.0
+ * @version 0.1.0
  */
 public class DataUI {
     private String device;
@@ -42,8 +42,8 @@ public class DataUI {
         this.batV = batV;
     }
 
-    public DataUI(String device, String time, String temperature, String humidity, String light, String batV)
-    {
+    public DataUI(String device, String time, String temperature, String humidity, String light,
+                  String batV) {
         this.device = device;
         this.time = time;
         this.temperature = temperature;

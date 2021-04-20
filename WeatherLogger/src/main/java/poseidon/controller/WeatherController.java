@@ -17,13 +17,13 @@ import poseidon.repository.DeviceRepository;
  * @author Marcus Linné
  * @author Erik Kellgren
  * @author Linnéa Mörk
- *
+ * @version 0.1.0
  */
 @RestController
 @RequestMapping(value = "api")
 public class WeatherController {
-    @Autowired DataRepository dataRepository;
     @Autowired DeviceRepository deviceRepository;
+    @Autowired DataRepository dataRepository;
 
     /**
      * Method used to create and save data onto the SQL DB,
@@ -49,7 +49,7 @@ public class WeatherController {
                           new DataReceiver("13.15.55", "80.1", "40", "80", "4.4", test3),
                           new DataReceiver("18.01.35", " 60.5", "88", "8", "4", test4)));
 
-        return "much data made";
+        return "Added test data to the DB";
     }
 
     @PostMapping("/create")
@@ -59,7 +59,7 @@ public class WeatherController {
                                              dataUI.getHumidity(), dataUI.getLight(),
                                              dataUI.getBatV()));
 
-        return "one is created";
+        return "Tables and columns are created";
     }
 
     /**
@@ -70,35 +70,15 @@ public class WeatherController {
      */
     @GetMapping("/findall")
     public List<DataUI> findAll() {
-        List<DataReceiver> data = dataRepository.findAll();
+        List<DataReceiver> dataReceiverList = dataRepository.findAll();
+        List<DeviceReceiver> deviceReceiverList = deviceRepository.findAll();
         List<DataUI> dataUI = new ArrayList<>();
-        List<DeviceReceiver> aDevices = deviceRepository.findAll();
 
-        for (DeviceReceiver meh : aDevices) {
-            for (DataReceiver dataReceiver : data) {
-                dataUI.add(new DataUI(meh.getDevice(), dataReceiver.getTime(),
+        for (DeviceReceiver deviceReceiver : deviceReceiverList) {
+            for (DataReceiver dataReceiver : dataReceiverList) {
+                dataUI.add(new DataUI(deviceReceiver.getDevice(), dataReceiver.getTime(),
                                       dataReceiver.getTemperature(), dataReceiver.getHumidity(),
                                       dataReceiver.getLight(), dataReceiver.getBatV()));
-            }
-        }
-
-        return dataUI;
-    }
-
-    @RequestMapping("/searchbydevice/{device}")
-    public List<DataUI> fetchDataByDevice(@PathVariable String test) {
-        List<DeviceReceiver> aDevices = deviceRepository.findByDevice(test);
-        List<DataReceiver> data = dataRepository.findByDevice(test);
-        List<DataUI> dataUI = new ArrayList<>();
-
-        for (DeviceReceiver meh : aDevices) {
-            if (test == meh.getDevice()) {
-                for (DataReceiver dataReceiver : data) {
-                    dataUI.add(new DataUI(meh.getDevice()));
-                    dataUI.add(new DataUI(dataReceiver.getTime(), dataReceiver.getTemperature(),
-                                          dataReceiver.getHumidity(), dataReceiver.getLight(),
-                                          dataReceiver.getBatV()));
-                }
             }
         }
         return dataUI;
@@ -106,66 +86,26 @@ public class WeatherController {
 
     @GetMapping("/getdevices")
     public List<DataUI> getdevices() {
+        List<DeviceReceiver> deviceReceiverList = deviceRepository.findAll();
         List<DataUI> dataUI = new ArrayList<>();
-        List<DeviceReceiver> aDevices = deviceRepository.findAll();
 
-        for (DeviceReceiver meh : aDevices) {
-            dataUI.add(new DataUI(meh.getDevice()));
+        for (DeviceReceiver deviceReceiver : deviceReceiverList) {
+            dataUI.add(new DataUI(deviceReceiver.getDevice()));
         }
-
         return dataUI;
     }
 
-    //    @GetMapping("/test")
-    //    public List<DataUI> finder()
-    //    {
-    //        List<DataReceiver> data = dataRepository.findAllById();
-    //        List<DataUI> dataUI = new ArrayList<>();
-    //        List<DeviceReceiver> aDevices = deviceRepository.findAllById();
-    //
-    //        for (DeviceReceiver meh : aDevices) {
-    //            dataUI.add(new DataUI(meh.getDevice()));
-    //
-    //            for (DataReceiver dataReceiver : data) {
-    //                dataUI.add(new DataUI(dataReceiver.getTime(), dataReceiver.getTemperature(),
-    //                        dataReceiver.getHumidity(), dataReceiver.getLight(),
-    //                        dataReceiver.getBatV()));
-    //            }
-    //        }
-    //        return dataUI;
-    //    }
-
-    //        @GetMapping("/findbydevice")
-    //        public List<DataUI> findByDevice(@RequestParam(required = false) String test) {
-    //            List<DataReceiver> data = dataRepository.findByDevice(test);
-    //            List<DataUI> dataUI = new ArrayList<>();
-    //            List<DeviceReceiver> aDevices = deviceRepository.findByDevice(test);
-    //
-    //            for (DeviceReceiver meh : aDevices) {
-    //                if (meh.getDevice().equals(test))
-    //                {
-    //                    for (DataReceiver dataReceiver : data)
-    //                    {
-    //                        dataReceiver.
-    //                    }
-    //
-    //                }
-    //
-    //            }
-    //        }
-    //@RequestMapping ("/search/{id}")
-//    public String search(@PathVariable long id)
     @GetMapping("/findbydevice")
     @ResponseBody
-    public List<DataUI> findByDevice(@RequestParam String requestedname) {
-        List<DataReceiver> data = dataRepository.findAll();
+    public List<DataUI> findByDevice(@RequestParam String input) {
+        List<DataReceiver> dataReceiverList = dataRepository.findAll();
+        List<DeviceReceiver> deviceReceiverList = deviceRepository.findAll();
         List<DataUI> dataUI = new ArrayList<>();
-        List<DeviceReceiver> aDevices = deviceRepository.findAll();
 
-        for (DeviceReceiver meh : aDevices) {
-            if (meh.getDevice().equals(requestedname)) {
-                for (DataReceiver dataReceiver : data) {
-                    dataUI.add(new DataUI(meh.getDevice(), dataReceiver.getTime(),
+        for (DeviceReceiver deviceReceiver : deviceReceiverList) {
+            if (deviceReceiver.getDevice().equals(input)) {
+                for (DataReceiver dataReceiver : dataReceiverList) {
+                    dataUI.add(new DataUI(deviceReceiver.getDevice(), dataReceiver.getTime(),
                                           dataReceiver.getTemperature(), dataReceiver.getHumidity(),
                                           dataReceiver.getLight(), dataReceiver.getBatV()));
                 }
