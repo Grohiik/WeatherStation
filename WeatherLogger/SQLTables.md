@@ -66,6 +66,27 @@ public class DataReceiver implements Serializable
 
 #### WeatherController/MqttHandler
 
+## WeatherController/MqttHandler
+The MqttHandler.java class communicates with the database and the mqtt broker. 
+
+
+### Communication with mqtt
+Communication with the broker is achieved through a mqtt client set up with Paho: https://www.eclipse.org/paho/index.php?page=clients/java/index.php
+
+#### Setup of the mqtt client
+MqttHandler uses the rows "Host" and "Feed" in application.yml to configure wich broker and feed to connect to.
+"Username", and "Key" in to generate the connectOptions. This is used to connect and authorize the client towards the broker.
+application.yml stores data that is too sensitive to be shipped in the source code.
+
+
+sample.yml shows how application.yml should be set up.
+
+
+#### The mqtt client
+MqttHandler.java uses a synchronized mqtt client, This is used for simplicitys sake. 
+Paho also offer the abillity to set up an asynchronous mqtt client but since MqttHandler is run as a spring app i.e in it's own thread this is not necessary.
+
+
 ```java
 
 
