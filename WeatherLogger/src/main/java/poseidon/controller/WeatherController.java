@@ -4,25 +4,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import poseidon.model.DataReceiver;
 import poseidon.model.DataUI;
+import poseidon.model.DeviceReceiver;
 import poseidon.repository.DataRepository;
+import poseidon.repository.DeviceRepository;
 
 /**
  * Controller class used to handling all different requests that can be made to the server.
  *
  * @author Marcus Linné
  * @author Erik Kellgren
- *
+ * @author Linnéa Mörk
+ * @version 0.1.0
  */
 @RestController
 @RequestMapping(value = "api")
 public class WeatherController {
+    @Autowired DeviceRepository deviceRepository;
     @Autowired DataRepository dataRepository;
 
     /**
@@ -32,24 +32,34 @@ public class WeatherController {
      * @return informs that the data has been created on the DB
      */
     @GetMapping("/fillWithTrashData")
+
     public String fillWithTrashData() {
-        dataRepository.save(new DataReceiver("lm25", "12.00.15", "20.5", "90", "20", "3.4"));
+        DeviceReceiver test = new DeviceReceiver("lsgsgs");
+        deviceRepository.save(test);
+        dataRepository.save(new DataReceiver("12.00.15", "20.5", "90", "20", "3.4", test));
+
+        DeviceReceiver test2 = new DeviceReceiver("lmao");
+        DeviceReceiver test3 = new DeviceReceiver("sfs");
+        DeviceReceiver test4 = new DeviceReceiver("difisgts");
+
+        deviceRepository.saveAll(Arrays.asList(test2, test3, test4));
 
         dataRepository.saveAll(
-            Arrays.asList(new DataReceiver("sfsdfm2325", "12.05.15", "2220.5", "15", "28", "4.2"),
-                          new DataReceiver("bleh", "13.15.55", "80.1", "40", "80", "4.4"),
-                          new DataReceiver("sfsd", "18.01.35", " 60.5", "88", "8", "4")));
+            Arrays.asList(new DataReceiver("12.05.15", "2220.5", "15", "28", "4.2", test2),
+                          new DataReceiver("13.15.55", "80.1", "40", "80", "4.4", test3),
+                          new DataReceiver("18.01.35", " 60.5", "88", "8", "4", test4)));
 
-        return "much data made";
+        return "Added test data to the DB";
     }
 
     @PostMapping("/create")
     public String create(@RequestBody DataUI dataUI) {
-        dataRepository.save(new DataReceiver(dataUI.getDevice(), dataUI.getTime(),
-                                             dataUI.getTemperature(), dataUI.getHumidity(),
-                                             dataUI.getLight(), dataUI.getBatV()));
+        deviceRepository.save(new DeviceReceiver(dataUI.getDevice()));
+        dataRepository.save(new DataReceiver(dataUI.getTime(), dataUI.getTemperature(),
+                                             dataUI.getHumidity(), dataUI.getLight(),
+                                             dataUI.getBatV()));
 
-        return "one is created";
+        return "Tables and columns are created";
     }
 
     /**
@@ -60,15 +70,53 @@ public class WeatherController {
      */
     @GetMapping("/findall")
     public List<DataUI> findAll() {
-        List<DataReceiver> data = dataRepository.findAll();
+        List<DataReceiver> dataReceiverList = dataRepository.findAll();
+        List<DeviceReceiver> deviceReceiverList = deviceRepository.findAll();
         List<DataUI> dataUI = new ArrayList<>();
 
-        for (DataReceiver dataReceiver : data) {
-            dataUI.add(new DataUI(dataReceiver.getDevice(), dataReceiver.getTime(),
-                                  dataReceiver.getTemperature(), dataReceiver.getHumidity(),
-                                  dataReceiver.getLight(), dataReceiver.getBatV()));
+        for (DeviceReceiver deviceReceiver : deviceReceiverList) {
+            for (DataReceiver dataReceiver : dataReceiverList) {
+                if (dataReceiver.getDeviceId() == deviceReceiver.getId()) {
+                    dataUI.add(new DataUI(deviceReceiver.getDevice(), dataReceiver.getTime(),
+                                          dataReceiver.getTemperature(), dataReceiver.getHumidity(),
+                                          dataReceiver.getLight(), dataReceiver.getBatV()));
+                }
+            }
         }
+        return dataUI;
+    }
 
+    @GetMapping("/getdevices")
+    public List<DataUI> getdevices() {
+        List<DeviceReceiver> deviceReceiverList = deviceRepository.findAll();
+        List<DataUI> dataUI = new ArrayList<>();
+
+        for (DeviceReceiver deviceReceiver : deviceReceiverList) {
+            dataUI.add(new DataUI(deviceReceiver.getDevice()));
+        }
+        return dataUI;
+    }
+
+    @GetMapping("/findbydevice")
+    @ResponseBody
+    public List<DataUI> findByDevice(@RequestParam String input) {
+        List<DataReceiver> dataReceiverList = dataRepository.findAll();
+        List<DeviceReceiver> deviceReceiverList = deviceRepository.findAll();
+        List<DataUI> dataUI = new ArrayList<>();
+
+        for (DeviceReceiver deviceReceiver : deviceReceiverList) {
+            if (deviceReceiver.getDevice().equals(input)) {
+                for (DataReceiver dataReceiver : dataReceiverList) {
+                    if (dataReceiver.getDeviceId() == deviceReceiver.getId()) {
+                        dataUI.add(new DataUI(deviceReceiver.getDevice(), dataReceiver.getTime(),
+                                              dataReceiver.getTemperature(),
+                                              dataReceiver.getHumidity(), dataReceiver.getLight(),
+                                              dataReceiver.getBatV()));
+                    }
+                }
+                return dataUI;
+            }
+        }
         return dataUI;
     }
 }
