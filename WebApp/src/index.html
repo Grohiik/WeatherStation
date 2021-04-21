@@ -19,20 +19,55 @@
     <link rel="stylesheet" href="main.css" />
   </head>
   <body>
-    <h1>Weather Station</h1>
-            <h4>Ademir,Christian,Gabriella</h4>
-    <div>
-      <canvas id="myChart" width="50" height="50"></canvas>
+    <style>
+      body {
+        background-image: url('https://static.posters.cz/image/1300/fototapet/above-the-clouds-sky-416x254-cm-premium-non-woven-130gsm-i77999.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: 100% 100%;
+      }
+      </style>
+      <div class="Logo"> 
+        <a href="https://imgbb.com/"><img src="https://i.ibb.co/YfFF0jw/Poseidon.png" alt="Poseidon" border="0"></a>
+      </div>
+
+      <style>
+        .Logo {
+          text-align: center;
+          position: relative;
+          top: 20px
+        }
+      </style>
+      
+      
+      <div class="chart-container">
+        <canvas id="myChart"></canvas>
     </div>
+  </style>
+      </head>
+      <body>
+
 
     <script src="scripts/app.ts"></script>
-    
+
+    <div class="Datatypes"> 
       <input type="radio" id="temperature" name="datavalue" value="temperature">
-      <label for="temperature">Temperatur</label>
+      <label for="temperature">Temperature</label>
       <input type="radio" id="humidity" name="datavalue" value="humidity">
       <label for="humidity">Humidity</label>
       <input type="radio" id="brightness" name="datavalue" value="brightness">
       <label for="brightness">Brightness</label>
+    </div>
+
+    <style>
+      .Datatypes {
+        text-align: center;
+        position: relative;
+        top: 20px
+      }
+    </style>
+    
+      
     
   </body>
 </html>
