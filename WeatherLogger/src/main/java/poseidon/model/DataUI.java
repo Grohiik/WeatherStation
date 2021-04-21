@@ -1,11 +1,12 @@
 package poseidon.model;
 
 /**
- * This class represents what the sending data contains, what parameters etc are included.
+ * This class represents what the data in the DB contains
+ * and which parameters that are included.
  *
  * @author Marcus Linné
  * @author Erik Kellgren
- * @version 0.0.0
+ * @version 0.1.0
  */
 public class DataUI {
     private String device;
@@ -16,9 +17,35 @@ public class DataUI {
     private String batV;
 
     /**
-     * Constructor for DataUI, initializes the variables of this class.
+     * Constructor for DataUI, initializes the devices. Is used for the device table.
      *
-     * @param device Which device is the data sent from.
+     * @param device Which device the data is sent from.
+     */
+    public DataUI(String device) {
+        this.device = device;
+    }
+
+    /**
+     * Default constructor for DataUI, initializes the remaining variables.
+     *
+     * @param time Indicates the time when the data was gathered.
+     * @param temperature The temperature at the given time.
+     * @param humidity The humidity at the given time.
+     * @param light The light-level at the given time.
+     * @param batV The current battery voltage.
+     */
+    public DataUI(String time, String temperature, String humidity, String light, String batV) {
+        this.time = time;
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.light = light;
+        this.batV = batV;
+    }
+
+    /**
+     * Third constructor for DataUI, initializes all the variables.
+     *
+     * @param device Which device the data is sent from.
      * @param time Indicates the time when the data was gathered.
      * @param temperature The temperature at the given time.
      * @param humidity The humidity at the given time.
@@ -88,7 +115,8 @@ public class DataUI {
      */
     public String toString() {
         return String.format(
-            "weatherlog[device='%s', time='%s', temperature='%s', humidity='%s', light='%s', batV='%s']",
-            device, time, temperature, humidity, light, batV);
+            "dev[device='%s']",
+            "weatherlog[time='%s', temperature='%s', humidity='%s', light='%s', batV='%s']", device,
+            time, temperature, humidity, light, batV);
     }
 }
