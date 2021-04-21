@@ -22,7 +22,7 @@ constexpr auto MQTT_USERNAME  = "YOUR_BROKER_USERNAME";
 constexpr auto MQTT_KEY       = "YOUR_MQTT_KEY";
 constexpr auto DEVICE_ID      = "YOUR_DEVICE_ID";
 
-constexpr auto WEATHER_TOPIC  = "YOUR_TOPIC";
+constexpr auto MQTT_TOPIC     = "YOUR_MQTT_TOPIC";
 #else
 #include "PoseidonEnv.hpp"
 #endif
@@ -35,4 +35,12 @@ constexpr auto WEATHER_TOPIC  = "YOUR_TOPIC";
 #endif
 #ifndef POSEIDON_PATCH_VERSION
 #define POSEIDON_PATCH_VERSION 0
+#endif
+
+#ifdef POSEIDON_DEBUG
+#define POSEIDON_ENABLE_LOG(x)  Serial.begin(x)
+#define POSEIDON_LOG(...)       Serial.printf(__VA_ARGS__)
+#else
+#define POSEIDON_ENABLE_LOG(x)
+#define POSEIDON_LOG(...)
 #endif

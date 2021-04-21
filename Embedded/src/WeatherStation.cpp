@@ -23,10 +23,9 @@
 // clang-format off
 
 constexpr auto uS_TO_S_FACTOR       = 1000000U;        // μs to s conversion factor
-constexpr auto TIME_TO_SLEEP        = 25U;             // Time to sleep in seconds
+constexpr auto TIME_TO_SLEEP        = 900U;            // Time to sleep in seconds
 constexpr auto BAUD_RATE            = 115200U;         // Boards baud rate
-constexpr auto MAX_CONNECTION_TRIES = 10U;
-constexpr auto MESSAGE_BUFFER_SIZE  = 256;
+constexpr auto MAX_CONNECTION_TRIES = 60U;
 constexpr auto DATALOG_FILENAME     = "/datalog.csv";  // Filename
 constexpr auto SD_CARD_CHIP_SELECT  = 33;
 
@@ -46,53 +45,53 @@ poseidon::WeatherData weatherData;  // Weather data collection and storage
  */
 bool connect() {
     uint16_t counter = 0;
-    Serial.print("Checking wifi...");
+    POSEIDON_LOG("Checking WiFi...\n");
+
     while (wifiMulti.run() != WL_CONNECTED) {
-        Serial.print(".");
-        delay(250);
+        POSEIDON_LOG(".");
+        delay(1000);
         if (counter >= MAX_CONNECTION_TRIES) {
-            Serial.println();
+            POSEIDON_LOG("\n");
             return false;
         }
         counter++;
     }
+    POSEIDON_LOG("\nConnected to WiFi!\n");
     counter = 0;
-    Serial.println("\nConnected to WiFi!");
 
-    Serial.println("\nConnecting to MQTT...");
+    POSEIDON_LOG("\nConnecting to MQTT...\n");
     while (!mqttClient.connect("station1", MQTT_USERNAME, MQTT_KEY)) {
-        Serial.print(".");
+        POSEIDON_LOG(".");
         delay(250);
-        if (counter >= MAX_CONNECTION_TRIES) {
-            Serial.println();
+        if (counter >= MAX_CONNECTION_TRIES / 2) {
+            POSEIDON_LOG("\n");
             return false;
         }
         counter++;
     }
-    Serial.println("\nConnected to MQTT!");
 
+    POSEIDON_LOG("\nConnected to MQTT!\n");
     return true;
 }
 
 /**
  * @brief Publishes data to WEATHER_TOPIC
  */
-void send(const char* data) {
-    mqttClient.publish(WEATHER_TOPIC, data, false, 2);
-}
+void send(const char* data) { mqttClient.publish(MQTT_TOPIC, data, false, 2); }
 
 /**
  * @brief Puts the micro controller into deep sleep for TIME_TO_SLEEP seconds.
  *        Is called whenever it is done with sending or writing to SD-Card
  */
 void sleep() {
-    Serial.println("SLEEP");
+    POSEIDON_LOG("SLEEP");
     esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
     esp_deep_sleep_start();
 }
 
 void setup() {
-    Serial.begin(BAUD_RATE);
+    POSEIDON_ENABLE_LOG(BAUD_RATE);
+
     weatherData.init();
     mqttClient.begin(MQTT_BROKER_IP, wifiClient);
 

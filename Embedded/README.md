@@ -25,7 +25,9 @@ monitor_port = <your-port>
 
 # To use this you need to create PoseidonEnv.hpp
 [env:featheresp32]
-build_flags = -DPOSEIDON_CONFIGURATION
+build_flags = 
+    -DPOSEIDON_CONFIGURATION
+    -DPOSEIDON_DEBUG
 ```
 
 The `POSEIDON_CONFIGURATION` macro needs `PoseidonEnv.hpp` file to work. Create the file and copy the sample below and input your own config.
@@ -44,7 +46,7 @@ constexpr auto MQTT_USERNAME  = "YOUR_BROKER_USERNAME";
 constexpr auto MQTT_KEY       = "YOUR_MQTT_KEY";
 constexpr auto DEVICE_ID      = "YOUR_DEVICE_ID";
 
-constexpr auto WEATHER_TOPIC  = "YOUR_TOPIC";
+constexpr auto MQTT_TOPIC     = "YOUR_MQTT_TOPIC";
 ```
 
 ### Visual Studio Code
