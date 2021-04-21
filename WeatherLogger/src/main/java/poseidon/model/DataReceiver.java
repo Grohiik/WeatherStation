@@ -125,6 +125,10 @@ public class DataReceiver implements Serializable {
         this.batV = batV;
     }
 
+    public long getDeviceId() {
+        return device.getId();
+    }
+
     /**
      * The toString method used to sort the data from the db into the correct order.
      */

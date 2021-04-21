@@ -76,9 +76,11 @@ public class WeatherController {
 
         for (DeviceReceiver deviceReceiver : deviceReceiverList) {
             for (DataReceiver dataReceiver : dataReceiverList) {
-                dataUI.add(new DataUI(deviceReceiver.getDevice(), dataReceiver.getTime(),
-                                      dataReceiver.getTemperature(), dataReceiver.getHumidity(),
-                                      dataReceiver.getLight(), dataReceiver.getBatV()));
+                if (dataReceiver.getDeviceId() == deviceReceiver.getId()) {
+                    dataUI.add(new DataUI(deviceReceiver.getDevice(), dataReceiver.getTime(),
+                                          dataReceiver.getTemperature(), dataReceiver.getHumidity(),
+                                          dataReceiver.getLight(), dataReceiver.getBatV()));
+                }
             }
         }
         return dataUI;
@@ -105,9 +107,12 @@ public class WeatherController {
         for (DeviceReceiver deviceReceiver : deviceReceiverList) {
             if (deviceReceiver.getDevice().equals(input)) {
                 for (DataReceiver dataReceiver : dataReceiverList) {
-                    dataUI.add(new DataUI(deviceReceiver.getDevice(), dataReceiver.getTime(),
-                                          dataReceiver.getTemperature(), dataReceiver.getHumidity(),
-                                          dataReceiver.getLight(), dataReceiver.getBatV()));
+                    if (dataReceiver.getDeviceId() == deviceReceiver.getId()) {
+                        dataUI.add(new DataUI(deviceReceiver.getDevice(), dataReceiver.getTime(),
+                                              dataReceiver.getTemperature(),
+                                              dataReceiver.getHumidity(), dataReceiver.getLight(),
+                                              dataReceiver.getBatV()));
+                    }
                 }
                 return dataUI;
             }

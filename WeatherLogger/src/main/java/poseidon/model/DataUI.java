@@ -42,6 +42,16 @@ public class DataUI {
         this.batV = batV;
     }
 
+    /**
+     * Third constructor for DataUI, initializes all the variables.
+     *
+     * @param device Which device the data is sent from.
+     * @param time Indicates the time when the data was gathered.
+     * @param temperature The temperature at the given time.
+     * @param humidity The humidity at the given time.
+     * @param light The light-level at the given time.
+     * @param batV The current battery voltage.
+     */
     public DataUI(String device, String time, String temperature, String humidity, String light,
                   String batV) {
         this.device = device;
