@@ -11,6 +11,8 @@ async function getData() {
   console.log(data)
 } */
 
+chartIt()
+
 async function getData(){
   let response = await fetch(API_URL)
   let data = await response.json()
