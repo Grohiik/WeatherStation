@@ -3,6 +3,7 @@ import { Chart } from 'chart.js'
 const API_URL = process.env.API_URL as string
 const xlabels: string[] = []
 const ytemps: number[] = []
+
 /*
 async function getData() {
   const response = await fetch(API_URL)
@@ -10,22 +11,20 @@ async function getData() {
   console.log(data)
 } */
 
-chartIt()
+async function getData(){
+  let response = await fetch(API_URL)
+  let data = await response.json()
 
-async function getData() {
-  const response = await fetch(API_URL)
-  const data = await response.text()
+  console.log(data[0])
 
-  const table = data.split('\n').slice(2)
+  for(var i = 0; i < data.length; i++) {
+    let datapoint = data[i]
 
-  table.forEach(row => {2
-    const cols = row.split(',')
-    const year = cols[0]
-    xlabels.push(year)
-    const temp = cols[1]
-    ytemps.push(parseFloat(temp) +14) // Adds 14 to the graph for mean value
-    console.log(year, temp)
-  })
+    let date = (new Date(datapoint.time * 1000)).toLocaleTimeString();
+    xlabels.push(date)
+    ytemps.push(parseFloat(datapoint.temperature))   
+    console.log(datapoint)
+  }
 }
 
 async function chartIt() {
@@ -36,7 +35,7 @@ async function chartIt() {
     data: {
       labels: xlabels,
       datasets: [{
-        label: 'Global Average Temperature in C°,',
+        label: 'Temperature from weather station',
         data: ytemps,
         fill:true,    // Shadow under the graph
         backgroundColor:  [
