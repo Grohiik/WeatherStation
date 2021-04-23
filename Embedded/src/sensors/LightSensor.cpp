@@ -16,6 +16,7 @@ void setupLightsensor() {
  * @returns A struct with ir, full and lux from the light sensor
  */
 LightSensor getLightData() {
+    // TODO: Auto adjust light sensor GAIN
     LightSensor data;
     uint32_t rawData = lightsensor.getFullLuminosity();
     data.ir = rawData >> 16;

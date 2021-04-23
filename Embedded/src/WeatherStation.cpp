@@ -16,6 +16,7 @@
 #include <WiFi.h>
 #include <WiFiMulti.h>
 #include <MQTT.h>
+#include <SD.h>
 
 #include "PoseidonCore.hpp"
 #include "WeatherData.hpp"
@@ -90,7 +91,7 @@ void sleep() {
 }
 
 void setup() {
-    POSEIDON_ENABLE_LOG(BAUD_RATE);
+    POSEIDON_SET_BAUD_RATE(BAUD_RATE);
 
     weatherData.init();
     mqttClient.begin(MQTT_BROKER_IP, wifiClient);
@@ -98,6 +99,7 @@ void setup() {
     wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD);
     wifiMulti.addAP(WIFI_SSID1, WIFI_PASSWORD1);
 
+    const bool sdStatus = SD.begin(SD_CARD_CHIP_SELECT);
     weatherData.collectData();
 
     const bool connectionStatus = connect();

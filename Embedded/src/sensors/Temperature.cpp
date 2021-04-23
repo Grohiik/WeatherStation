@@ -5,7 +5,7 @@ DHTesp dht;
 /**
  * @brief setsup the temperatur and humidity sensor
  */
-void setupTemperatureAndHumiditySensor() { dht.setup(13, DHTesp::DHT22); }
+void setupTemperatureAndHumiditySensor() { dht.setup(A7, DHTesp::DHT22); }
 
 /**
  * @returns Temperature and humidity

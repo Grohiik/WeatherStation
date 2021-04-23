@@ -38,9 +38,9 @@ constexpr auto MQTT_TOPIC     = "YOUR_MQTT_TOPIC";
 #endif
 
 #ifdef POSEIDON_DEBUG
-#define POSEIDON_ENABLE_LOG(x)  Serial.begin(x)
-#define POSEIDON_LOG(...)       Serial.printf(__VA_ARGS__)
+#define POSEIDON_SET_BAUD_RATE(x) Serial.begin(x)
+#define POSEIDON_LOG(...)         Serial.printf(__VA_ARGS__)
 #else
-#define POSEIDON_ENABLE_LOG(x)
+#define POSEIDON_SET_BAUD_RATE(x)
 #define POSEIDON_LOG(...)
 #endif
