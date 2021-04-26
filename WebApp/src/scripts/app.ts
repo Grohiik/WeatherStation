@@ -1,70 +1,82 @@
-import { Chart } from 'chart.js'
+import { Chart, DomPlatform } from 'chart.js'
 
-const API_URL = process.env.API_URL as string
-const xlabels: string[] = []
-const ytemps: number[] = []
+import { API_URL } from './env'
+import { isDarkMode, addPreferColorSchemeEvent } from './events/theme'
 
-/*
-async function getData() {
-  const response = await fetch(API_URL)
-  const data = await response.json()
-  console.log(data)
-} */
+async function main() {
+  addPreferColorSchemeEvent((e: any) => {
+    // Makes it possible to change theme, darkmode or lightmode
+    console.log('is dark mode: ' + e)
+  })
 
-chartIt()
+  const canvasContext = document.querySelector(
+    '#graph-display'
+  ) as HTMLCanvasElement
 
-async function getData(){
-  let response = await fetch(API_URL)
-  let data = await response.json()
+  const dataChart = new Chart(canvasContext, {
+    type: 'line',
+    data: {
+      labels: [''],
+      datasets: [],
+    },
+  })
 
-  console.log(data[0])
+  const dropDownDevices = document.getElementById(
+    'selectDevice'
+  ) as HTMLSelectElement
+  const dropDownDataList = document.getElementById(
+    'selectData'
+  ) as HTMLSelectElement
 
-  for(var i = 0; i < data.length; i++) {
-    let datapoint = data[i]
+  // TODO: Use new the new path instead of /getdevices
+  const deviceList = await fetch(API_URL + '/getdevices').then((res) =>
+    res.json()
+  )
 
-    let date = (new Date(datapoint.time * 1000)).toLocaleTimeString();
-    xlabels.push(date)
-    ytemps.push(parseFloat(datapoint.temperature))   
-    console.log(datapoint)
+  deviceList.forEach((el: any) => {
+    const opt = document.createElement('option')
+    opt.text = el.device
+    dropDownDevices.appendChild(opt)
+  })
+
+  // TODO: Add event listeners when user select
+  //       an item from the dropdown menu for devices
+
+  dropDownDevices.onchange = async (e) => {
+    const index = dropDownDevices.options.selectedIndex
+
+    const deviceDatas = await fetch(
+      API_URL + '/findbydevice?input=' + dropDownDevices.options[index].text
+    ).then((res) => res.json())
+
+    clearData(dataChart)
+
+    const labels: string[] = []
+    const data: number[] = []
+    for (let i = 0; i < deviceDatas.length; i++) {
+      data.push(deviceDatas[i].temperature)
+      labels.push(new Date(deviceDatas[i].time * 1000).toLocaleTimeString())
+    }
+    dataChart.data.labels = labels
+    dataChart.data.datasets.push({
+      data,
+      label: 'temperature',
+      borderColor: '#ff776e',
+    })
+
+    updateChart(dataChart)
   }
 }
 
-async function chartIt() {
-  await getData()
-  const ctx = document.getElementById('myChart') as HTMLCanvasElement
-  const myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: xlabels,
-      datasets: [{
-        label: 'Temperature from weather station',
-        data: ytemps,
-        fill:true,    // Shadow under the graph
-        backgroundColor:  [
-          'rgba(255, 99, 132, 0.2)',
-        ],
-        borderColor:  [
-          'rgba(255, 99, 132, 1)',
-        ],
-
-        borderWidth: 2 // Thickness of the row
-      }]
-    },
-    options: {
-      elements: {
-        point:{
-          radius: 0
-        }
-      },
-      scales: {
-        y: {
-          ticks: {
-            callback: function(value, index, values) {
-              return value + '°'
-            }
-          }
-        }
-      }
-    }
-  })
+function updateChart(chart: Chart): void {
+  // Updates chart
+  chart.update()
 }
+
+function clearData(chart: Chart): void {
+  // Clears datachart
+  chart.data.labels = []
+  chart.data.datasets = []
+}
+
+window.onload = main

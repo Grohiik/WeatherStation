@@ -1,67 +1,80 @@
 html,
 body {
-  grid-template-columns: 12em 1fr;
-  grid-template-rows: auto 1fr auto;
+  margin: 0;
   font-family: 'Roboto', sans-serif;
-  grid-template-areas:
-  'banner banner'
-  'nav main'
-  'nav footer'
-  ;
-}
-header{
-  grid-column: span 2;
-  grid-area: banner;
-}
-nav{
-  grid-row: span 2;
-  grid-area: nav;
-}
-main{ grid-area: nav;}
-footer{grid-area: footer;}
 
+  background-color: #101010;
+  color: #ececec;
 
-
-h1,
-h2,
-h3,
-h4 {
-    margin: .1rem 0;
+  height: 100%;
 }
 
-h1 {
-    font-size: 3rem;
-    font-display: [blop];
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; /** typ av font*/
-    font;
+body {
+  display: flex;
+  flex-direction: column;
 }
 
-
-h2 {
-    font-size: 1.5rem;
-    padding-left: 20px;
+header,
+main,
+footer {
+  margin: 10pt 22pt;
 }
 
-h3 {
-    font-size: 1.2rem;
-    padding-left: 40px;
+header {
+  height: 64pt;
 }
 
-h4 {
-
-    font-size: 1rem;
-    font-style: italic;
-    padding-left: 60px;
-    /**
-    * font size;
-    * font style; 
-    * normal; 
-    * italic;
-    * oblique;
-    * oblique 10 deg;
-    * inherit;
-    * initial;
-    *unset;
-    */
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: 100%;
 }
 
+main .data-viewer {
+  height: 100%;
+}
+
+main .data-selector {
+  height: 30%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+main .data-selector .dropdown-a {
+  width: 100%;
+  padding: 10pt;
+}
+
+main .data-selector .dropdown-b {
+  width: 100%;
+  padding: 10pt;
+}
+
+footer {
+  height: 32pt;
+}
+
+footer #github-link {
+  text-decoration: none;
+  color: #686868;
+}
+
+footer #github-link:hover {
+  text-decoration: underline;
+  color: #686868;
+}
+
+@media (prefers-color-scheme: light) {
+  body {
+    background-color: #ffffff;
+    color: #000000;
+  }
+
+  footer #github-link {
+    text-decoration: none;
+    color: #050505;
+  }
+}

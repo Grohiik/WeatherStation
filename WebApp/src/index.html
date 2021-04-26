@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,55 +18,30 @@
     <link rel="stylesheet" href="main.css" />
   </head>
   <body>
-    <style>
-      body {
-        background-image: url('https://static.posters.cz/image/1300/fototapet/above-the-clouds-sky-416x254-cm-premium-non-woven-130gsm-i77999.jpg');
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-size: 100% 100%;
-      }
-      </style>
-      <div class="Logo"> 
-        <a href="https://imgbb.com/"><img src="https://i.ibb.co/YfFF0jw/Poseidon.png" alt="Poseidon" border="0"></a>
+    <header>
+      <h1>Weather Station Group</h1>
+    </header>
+    <main>
+      <div class="data-viewer">
+        <canvas id="graph-display"></canvas>
       </div>
-
-      <style>
-        .Logo {
-          text-align: center;
-          position: relative;
-          top: 20px
-        }
-      </style>
-      
-      
-      <div class="chart-container">
-        <canvas id="myChart"></canvas>
-    </div>
-  </style>
-      </head>
-      <body>
-
-
+      <div class="data-selector">
+        <div class="dropdown-a">
+          <select id="selectDevice"></select>
+        </div>
+        <div class="dropdown-b">
+          <select id="selectData"></select>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <a
+        id="github-link"
+        title="Github repository"
+        href="https://github.com/Grohiik/WeatherStation"
+        >2021 © Weather Station Group</a
+      >
+    </footer>
     <script src="scripts/app.ts"></script>
-
-    <div class="Datatypes"> 
-      <input type="radio" id="temperature" name="datavalue" value="temperature">
-      <label for="temperature">Temperature</label>
-      <input type="radio" id="humidity" name="datavalue" value="humidity">
-      <label for="humidity">Humidity</label>
-      <input type="radio" id="brightness" name="datavalue" value="brightness">
-      <label for="brightness">Brightness</label>
-    </div>
-
-    <style>
-      .Datatypes {
-        text-align: center;
-        position: relative;
-        top: 20px
-      }
-    </style>
-    
-      
-    
   </body>
 </html>
