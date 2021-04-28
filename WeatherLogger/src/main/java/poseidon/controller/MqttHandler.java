@@ -15,8 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.yaml.snakeyaml.Yaml;
 import poseidon.model.DataReceiver;
+import poseidon.model.DataTypeReceiver;
 import poseidon.model.DeviceReceiver;
 import poseidon.repository.DataRepository;
+import poseidon.repository.DataTypeRepository;
 import poseidon.repository.DeviceRepository;
 
 /**
@@ -36,6 +38,7 @@ public class MqttHandler implements MqttCallback {
 
     @Autowired DataRepository dataRepository;
     @Autowired DeviceRepository deviceRepository;
+    @Autowired DataTypeRepository dataTypeRepository;
 
     public MqttHandler() {
         startClient();
@@ -118,33 +121,47 @@ public class MqttHandler implements MqttCallback {
         var keyData = data[0].split(",");   // splits the header at each ","
         HashMap<String, String> dataMap = new HashMap<String, String>();
 
+        if (checkDevice(keyData[0])) {
+            for (int i = 1; i < keyData.length; i++) {
+            }
+        }
+
         for (int i = 1; i < data.length; i++) {
             var valData = data[i].split(",");
             for (int j = 0; j < valData.length; j++) {
                 dataMap.put(keyData[j], valData[j]);
             }
-
-            boolean deviceFlag = false;
-            List<DeviceReceiver> checkForDevices = deviceRepository.findAll();
-            for (DeviceReceiver deviceReceiver : checkForDevices) {
-                if (deviceReceiver.getDevice().equals(dataMap.get("device"))) {
-                    dataRepository.save(new DataReceiver(dataMap.get("time"), dataMap.get("temp"),
-                                                         dataMap.get("hum"), dataMap.get("light"),
-                                                         dataMap.get("batv"), deviceReceiver));
-                    deviceFlag = true;
-                    break;
-                }
-            }
-
-            if (!deviceFlag) {
-                DeviceReceiver deviceReceiver = new DeviceReceiver(dataMap.get("device"));
-                deviceRepository.save(deviceReceiver);
-                dataRepository.save(new DataReceiver(dataMap.get("time"), dataMap.get("temp"),
-                                                     dataMap.get("hum"), dataMap.get("light"),
-                                                     dataMap.get("batv"), deviceReceiver));
-            }
         }
     }
+
+    /**
+     * deviceExists
+     * dataTypeExtists
+     *
+     * @return
+     */
+    private boolean checkDevice(String device) {
+        boolean deviceExists = false;
+
+        List<DeviceReceiver> checkForDevices = deviceRepository.findAll();
+        for (DeviceReceiver deviceReceiver : checkForDevices) {
+            if (deviceReceiver.getDevice().equals(device)) {
+                deviceExists = true;
+            }
+        }
+
+        return deviceExists;
+    }
+
+    private boolean checkDataType(String dataType, String device) {
+        List<DataTypeReceiver> checkForDataTypes = dataTypeRepository.findByDevice(device);
+
+        boolean dataTypeExtists = checkForDataTypes.contains(dataType);
+
+        return dataTypeExtists;
+    }
+
+    public void store() {}
 
     /**
      * Creates the connectOptions object used to connect to the mqtt broker.
