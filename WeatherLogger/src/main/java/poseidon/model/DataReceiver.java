@@ -17,7 +17,7 @@ import javax.persistence.*;
 @Table(name = "DATA_STORED")
 public class DataReceiver implements Serializable {
     @Serial private static final long serialVersionUID = -2343243243242432341L;
-    @Id @GeneratedValue(strategy = GenerationType.AUTO) private long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private long id;
 
     @Column(name = "value") private String value;
 

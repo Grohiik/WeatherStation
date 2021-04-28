@@ -18,8 +18,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "DATA_TYPES")
 public class DataTypeReceiver implements Serializable {
-    @Serial private static final long serialVersionUID = -2343243243242432341L;
-    @Id @GeneratedValue(strategy = GenerationType.AUTO) private long id;
+    //@Serial private static final long serialVersionUID = -2343243243242432341L;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private long id;
 
     @Column(name = "type") private String type;
 
@@ -31,7 +31,7 @@ public class DataTypeReceiver implements Serializable {
     @Column(name = "count") private long count;
 
     // TODO Date?
-    @Column(name = "created") private String created;
+    //@Column(name = "created") private String created;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "device_id", nullable = false)
@@ -39,20 +39,18 @@ public class DataTypeReceiver implements Serializable {
 
     protected DataTypeReceiver() {}
 
-    public DataTypeReceiver(String type, String name, long count, String created,
+    public DataTypeReceiver(String type, String name, long count,
                             DeviceReceiver device) {
         this.type = type;
         this.name = name;
         this.count = count;
-        this.created = created;
         this.device = device;
     }
 
-    public DataTypeReceiver(String type, String name, long count, String created) {
+    public DataTypeReceiver(String type, String name, long count) {
         this.type = type;
         this.name = name;
         this.count = count;
-        this.created = created;
     }
 
     public long getId() {
@@ -87,13 +85,13 @@ public class DataTypeReceiver implements Serializable {
         this.count = count;
     }
 
-    public String getCreated() {
-        return created;
-    }
-
-    public void setCreated(String created) {
-        this.created = created;
-    }
+//    public String getCreated() {
+//        return created;
+//    }
+//
+//    public void setCreated(String created) {
+//        this.created = created;
+//    }
 
     public long getDeviceId() {
         return device.getId();
@@ -105,7 +103,7 @@ public class DataTypeReceiver implements Serializable {
     @Override
     public String toString() {
         return String.format(
-            "DataTypeReceiver[id=%d, type='%s', name='%s', count='%d', created='%s']", id, type,
-            name, count, created);
+            "DataTypeReceiver[id=%d, type='%s', name='%s', count='%d']", id, type,
+            name, count);
     }
 }
