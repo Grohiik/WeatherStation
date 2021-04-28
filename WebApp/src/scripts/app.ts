@@ -32,7 +32,7 @@ async function main() {
   const deviceList = await fetch(API_URL + '/getdevices').then((res) =>
     res.json()
   )
-
+  // populate dropdown devices
   deviceList.forEach((el: any) => {
     const opt = document.createElement('option')
     opt.text = el.device
@@ -43,29 +43,47 @@ async function main() {
   //       an item from the dropdown menu for devices
 
   dropDownDevices.onchange = async (e) => {
-    const index = dropDownDevices.options.selectedIndex
-
-    const deviceDatas = await fetch(
-      API_URL + '/findbydevice?input=' + dropDownDevices.options[index].text
-    ).then((res) => res.json())
-
-    clearData(dataChart)
-
-    const labels: string[] = []
-    const data: number[] = []
-    for (let i = 0; i < deviceDatas.length; i++) {
-      data.push(deviceDatas[i].temperature)
-      labels.push(new Date(deviceDatas[i].time * 1000).toLocaleTimeString())
-    }
-    dataChart.data.labels = labels
-    dataChart.data.datasets.push({
-      data,
-      label: 'temperature',
-      borderColor: '#ff776e',
-    })
-
-    updateChart(dataChart)
+    // TODO: repopulate dropdowndatalist
+    // vad du väljer (temperatur,fuktighet,osv)
   }
+
+  // När du valt device, och sen vilken typ av data, så ska grafen displayas
+  dropDownDataList.onchange = async (e) =>
+    updateData(dropDownDataList, dropDownDataList, dataChart)
+}
+
+async function updateData(
+  dropDownDevices: HTMLSelectElement,
+  dropDownDataList: HTMLSelectElement,
+  dataChart
+) {
+  const index = dropDownDevices.options.selectedIndex
+
+  const deviceDatas = await fetch(
+    API_URL + '/findbydevice?input=' + dropDownDevices.options[index].text
+    // TODO: change so you fetch data based on both dropdown lists
+  ).then((res) => res.json())
+
+  clearData(dataChart)
+
+  const labels: string[] = []
+  const data: number[] = []
+  for (let i = 0; i < deviceDatas.length; i++) {
+    data.push(deviceDatas[i].temperature)
+    // TODO: change to use .value (outlined in
+    // https://docs.google.com/document/d/
+    // 1AwDHoVpT954-cFfatYslbGSSbv55w_OpvKCfZGuGQX8/edit#heading=h.51b9hfysfiws)
+    labels.push(new Date(deviceDatas[i].time * 1000).toLocaleTimeString())
+  }
+  dataChart.data.labels = labels
+  dataChart.data.datasets.push({
+    data,
+    label: 'temperature',
+    // TODO: change to use the selected item in dropdowndatalist
+    borderColor: '#ff776e',
+  })
+
+  updateChart(dataChart)
 }
 
 function updateChart(chart: Chart): void {
