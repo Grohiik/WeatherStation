@@ -7,7 +7,9 @@ import java.util.Set;
 import javax.persistence.*;
 
 /**
- * This class is used to arrange different type of data the devices can contain
+ * This class is used to specify which data types the devices can contain when added to the DB, each
+ * set of data is specified by a @Column mark. It implements serializable because of it being sent
+ * across a stream.
  *
  * @author Marcus Linné
  * @version 0.1.0
@@ -29,7 +31,7 @@ public class DataTypeReceiver implements Serializable {
     @Column(name = "count") private long count;
 
     // TODO Date?
-    //@Column(name = "created") private Date
+    @Column(name = "created") private String created;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "device_id", nullable = false)
@@ -37,21 +39,20 @@ public class DataTypeReceiver implements Serializable {
 
     protected DataTypeReceiver() {}
 
-//    public DataTypeReceiver(String type) {
-//        this.type = type;
-//    }
-
-    public DataTypeReceiver(String type, String name, long count, DeviceReceiver device) {
+    public DataTypeReceiver(String type, String name, long count, String created,
+                            DeviceReceiver device) {
         this.type = type;
         this.name = name;
         this.count = count;
+        this.created = created;
         this.device = device;
     }
 
-    public DataTypeReceiver(String type, String name, long count) {
+    public DataTypeReceiver(String type, String name, long count, String created) {
         this.type = type;
         this.name = name;
         this.count = count;
+        this.created = created;
     }
 
     public long getId() {
@@ -86,6 +87,14 @@ public class DataTypeReceiver implements Serializable {
         this.count = count;
     }
 
+    public String getCreated() {
+        return created;
+    }
+
+    public void setCreated(String created) {
+        this.created = created;
+    }
+
     public long getDeviceId() {
         return device.getId();
     }
@@ -95,7 +104,8 @@ public class DataTypeReceiver implements Serializable {
      */
     @Override
     public String toString() {
-        return String.format("DataTypeReceiver[id=%d, type='%s', name='%s', count='%d']", id, type,
-                             name, count);
+        return String.format(
+            "DataTypeReceiver[id=%d, type='%s', name='%s', count='%d', created='%s']", id, type,
+            name, count, created);
     }
 }

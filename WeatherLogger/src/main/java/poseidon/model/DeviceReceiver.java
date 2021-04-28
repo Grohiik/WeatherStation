@@ -25,7 +25,6 @@ public class DeviceReceiver implements Serializable {
 
     @Column(name = "description") private String description;
 
-
     /**
      * Protected constructor required by Spring.
      */
@@ -35,6 +34,7 @@ public class DeviceReceiver implements Serializable {
      * The constructor of this class initializes the variables of this class.
      *
      * @param device The device the data is received from.
+     * @param description The description of the device the data is received from.
      */
     public DeviceReceiver(String device, String description) {
         this.device = device;
@@ -70,6 +70,7 @@ public class DeviceReceiver implements Serializable {
      */
     @Override
     public String toString() {
-        return String.format("devices[id=%d, device='%s', description='%s']", id, device, description);
+        return String.format("devices[id=%d, device='%s', description='%s']", id, device,
+                             description);
     }
 }
