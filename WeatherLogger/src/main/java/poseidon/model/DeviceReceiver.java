@@ -36,8 +36,9 @@ public class DeviceReceiver implements Serializable {
      *
      * @param device The device the data is received from.
      */
-    public DeviceReceiver(String device) {
+    public DeviceReceiver(String device, String description) {
         this.device = device;
+        this.description = description;
     }
 
     public long getId() {

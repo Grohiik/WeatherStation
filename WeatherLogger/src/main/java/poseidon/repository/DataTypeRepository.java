@@ -13,4 +13,5 @@ import poseidon.model.DataTypeReceiver;
 public interface DataTypeRepository extends JpaRepository<DataTypeReceiver, Long> {
     List<DataTypeReceiver> findAll();
     //List<DataTypeReceiver> findByDevice(String device);
+    List<DataTypeReceiver> findAllByDevice_id (long id);
 }
