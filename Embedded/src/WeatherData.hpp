@@ -24,7 +24,8 @@
 namespace poseidon {
 
     constexpr auto MESSAGE_BUFFER = 256;
-    constexpr auto WEATHER_DATA_HEADER = "device,time,temp,hum,light,batv";
+    constexpr auto WEATHER_DATA_HEADER =
+        "device,time,temp:C,hum:relative,light:lux,bat:V";
 
     class WeatherData : public CSVData {
        public:
