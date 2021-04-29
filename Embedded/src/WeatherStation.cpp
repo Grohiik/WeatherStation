@@ -5,7 +5,7 @@
  * @brief   WeatherStation is a microcontroller with sensor suite for reading
  *          the environment. It reports back the data to a server for logging
  *          and for later analysis.
- * @version 0.2.0
+ * @version 0.3.0
  * @date    2021-03-31
  *
  * @copyright Copyright (c) 2021
@@ -20,15 +20,16 @@
 
 #include "PoseidonCore.hpp"
 #include "WeatherData.hpp"
+#include "Log.hpp"
 
 // clang-format off
 
-constexpr auto uS_TO_S_FACTOR       = 1000000U;        // μs to s conversion factor
-constexpr auto TIME_TO_SLEEP        = 900U;            // Time to sleep in seconds
-constexpr auto BAUD_RATE            = 115200U;         // Boards baud rate
-constexpr auto MAX_CONNECTION_TRIES = 60U;
-constexpr auto DATALOG_FILENAME     = "/datalog.csv";  // Filename
-constexpr auto SD_CARD_CHIP_SELECT  = 33;
+constexpr auto uS_TO_S_FACTOR            = 1000000U;        // μs to s conversion factor
+constexpr auto TIME_TO_SLEEP             = 900U;            // Time to sleep in seconds
+constexpr auto BAUD_RATE                 = 115200U;         // Boards baud rate
+constexpr auto MAX_CONNECTION_TRIES      = 10U;
+constexpr auto WIFI_CONNECTION_WAIT_TIME = 250U;            // Time in ms
+constexpr auto MQTT_CONNECTION_WAIT_TIME = 250U;            // Time in ms
 
 // clang-format on
 
@@ -37,6 +38,7 @@ WiFiMulti wifiMulti;                // WiFi multi access point
 WiFiClient wifiClient;              // WiFi Client for MQTT
 MQTTClient mqttClient;              // MQTT connection client
 poseidon::WeatherData weatherData;  // Weather data collection and storage
+poseidon::Log logger;
 
 /**
  * @brief Check WiFi connection status and connect to MQTT server.
@@ -46,11 +48,11 @@ poseidon::WeatherData weatherData;  // Weather data collection and storage
  */
 bool connect() {
     uint16_t counter = 0;
-    POSEIDON_LOG("Checking WiFi...\n");
 
+    POSEIDON_LOG("Checking WiFi...\n");
     while (wifiMulti.run() != WL_CONNECTED) {
         POSEIDON_LOG(".");
-        delay(1000);
+        delay(WIFI_CONNECTION_WAIT_TIME);
         if (counter >= MAX_CONNECTION_TRIES) {
             POSEIDON_LOG("\n");
             return false;
@@ -63,7 +65,7 @@ bool connect() {
     POSEIDON_LOG("\nConnecting to MQTT...\n");
     while (!mqttClient.connect("station1", MQTT_USERNAME, MQTT_KEY)) {
         POSEIDON_LOG(".");
-        delay(250);
+        delay(MQTT_CONNECTION_WAIT_TIME);
         if (counter >= MAX_CONNECTION_TRIES / 2) {
             POSEIDON_LOG("\n");
             return false;
@@ -93,21 +95,24 @@ void sleep() {
 void setup() {
     POSEIDON_SET_BAUD_RATE(BAUD_RATE);
 
+    logger.init();
     weatherData.init();
+    logger.logBattery();
+
+    weatherData.toCSV();
     mqttClient.begin(MQTT_BROKER_IP, wifiClient);
 
     wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD);
     wifiMulti.addAP(WIFI_SSID1, WIFI_PASSWORD1);
 
-    const bool sdStatus = SD.begin(SD_CARD_CHIP_SELECT);
     weatherData.collectData();
-
     const bool connectionStatus = connect();
 
     if (connectionStatus) {
         send(weatherData.toCSV());
     } else {
-        // TODO: Log to SD-card
+        POSEIDON_LOG("LOG TO SD-CARD\n");
+        logger.logData(weatherData);
     }
 
     sleep();

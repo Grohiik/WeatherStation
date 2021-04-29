@@ -20,7 +20,8 @@
 
 namespace poseidon {
 
-    WeatherData::WeatherData() {}
+    WeatherData::WeatherData()
+        : m_time(0), m_batteryVoltage(0), m_temperature(0), m_humidity(0) {}
     WeatherData::~WeatherData() {}
 
     void WeatherData::init() {
@@ -31,16 +32,21 @@ namespace poseidon {
 
     void WeatherData::collectData() {
         m_batteryVoltage = getBatteryVoltage();
-        m_lux = getLightData().lux;
+        m_light = getLightData();
+        m_time = getUnixTime();
         auto tempHum = getTemp();
         m_temperature = tempHum.temperature;
         m_humidity = tempHum.humidity;
     }
 
-    char* WeatherData::toCSV() {
-        sprintf(m_message, "%s\n%s,%u,%.3f,%.3f,%.3f,%.3f", WEATHER_DATA_HEADER,
-                DEVICE_ID, getUnixTime(), m_temperature, m_humidity, m_lux,
-                m_batteryVoltage);
+    char* WeatherData::toCSV(const boolean& headerOn) {
+        if (headerOn)
+            sprintf(m_message, "%s\n%s,%u,%.3f,%.3f,%.3f,%.3f",
+                    WEATHER_DATA_HEADER, DEVICE_ID, m_time, m_temperature,
+                    m_humidity, m_light.lux, m_batteryVoltage);
+        else
+            sprintf(m_message, "%s,%u,%.3f,%.3f,%.3f,%.3f", DEVICE_ID, m_time,
+                    m_temperature, m_humidity, m_light.lux, m_batteryVoltage);
         return m_message;
     }
 
