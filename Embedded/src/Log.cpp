@@ -32,4 +32,13 @@ namespace poseidon {
         file.close();
     }
 
+    void Log::logAllData(WeatherData& weather) {
+        if (!m_isInit) return;
+
+        auto file = SD.open(DATALOG_ALL_FILENAME, FILE_APPEND);
+        sprintf(m_buffer, "%s\n", weather.toCSV(false));
+        file.print(m_buffer);
+        file.close();
+    }
+
 }  // namespace poseidon

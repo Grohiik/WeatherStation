@@ -27,8 +27,8 @@
 constexpr auto uS_TO_S_FACTOR            = 1000000U;        // μs to s conversion factor
 constexpr auto TIME_TO_SLEEP             = 900U;            // Time to sleep in seconds
 constexpr auto BAUD_RATE                 = 115200U;         // Boards baud rate
-constexpr auto MAX_CONNECTION_TRIES      = 10U;
-constexpr auto WIFI_CONNECTION_WAIT_TIME = 250U;            // Time in ms
+constexpr auto MAX_CONNECTION_TRIES      = 60U;
+constexpr auto WIFI_CONNECTION_WAIT_TIME = 500U;            // Time in ms
 constexpr auto MQTT_CONNECTION_WAIT_TIME = 250U;            // Time in ms
 
 // clang-format on
@@ -54,7 +54,7 @@ bool connect() {
         POSEIDON_LOG(".");
         delay(WIFI_CONNECTION_WAIT_TIME);
         if (counter >= MAX_CONNECTION_TRIES) {
-            POSEIDON_LOG("\n");
+            POSEIDON_LOG("\nFailed to connect to WiFi.\n");
             return false;
         }
         counter++;
@@ -67,7 +67,7 @@ bool connect() {
         POSEIDON_LOG(".");
         delay(MQTT_CONNECTION_WAIT_TIME);
         if (counter >= MAX_CONNECTION_TRIES / 2) {
-            POSEIDON_LOG("\n");
+            POSEIDON_LOG("\nFailed to connect to MQTT.\n");
             return false;
         }
         counter++;
@@ -106,6 +106,8 @@ void setup() {
     wifiMulti.addAP(WIFI_SSID1, WIFI_PASSWORD1);
 
     weatherData.collectData();
+    logger.logAllData(weatherData);
+
     const bool connectionStatus = connect();
 
     if (connectionStatus) {

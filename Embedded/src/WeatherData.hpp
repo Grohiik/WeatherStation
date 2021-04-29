@@ -29,6 +29,8 @@ namespace poseidon {
     class WeatherData : public CSVData {
        public:
         WeatherData();
+        WeatherData(const WeatherData& data) = delete;
+
         ~WeatherData();
 
         void init();
