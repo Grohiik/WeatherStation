@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.xml.crypto.Data;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -20,6 +21,7 @@ import poseidon.model.DeviceReceiver;
 import poseidon.repository.DataRepository;
 import poseidon.repository.DataTypeRepository;
 import poseidon.repository.DeviceRepository;
+
 
 /**
  * This class handles the mqtt communication with the embedded system.
@@ -122,7 +124,11 @@ public class MqttHandler implements MqttCallback {
         HashMap<String, String> dataMap = new HashMap<String, String>();
 
         if (checkDevice(keyData[0])) {
+            DataReceiver dReceiver = deviceRepository.findByDevice(keyData[0]);
             for (int i = 1; i < keyData.length; i++) {
+                if (checkDataType(keyData[i], keyData[0])) {
+                    dataTypeRepository.save(new)
+                }
             }
         }
 
