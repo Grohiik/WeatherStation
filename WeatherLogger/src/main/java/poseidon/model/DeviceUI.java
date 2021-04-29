@@ -8,16 +8,15 @@ package poseidon.model;
  * @version 0.1.0
  */
 
-public class DeviceUI
-{
+public class DeviceUI {
     private String device;
     private String description;
 
     public DeviceUI(String device) {
         this.device = device;
     }
-    public DeviceUI (String device, String description)
-    {
+
+    public DeviceUI(String device, String description) {
         this.description = description;
         this.device = device;
     }

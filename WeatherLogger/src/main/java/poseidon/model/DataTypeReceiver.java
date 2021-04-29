@@ -14,11 +14,10 @@ import javax.persistence.*;
  * @author Marcus Linné
  * @version 0.1.0
  */
-
 @Entity
 @Table(name = "DATA_TYPES")
 public class DataTypeReceiver implements Serializable {
-    //@Serial private static final long serialVersionUID = -2343243243242432341L;
+    @Serial private static final long serialVersionUID = -2343243243242432341L;
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private long id;
 
     @Column(name = "type") private String type;
@@ -39,8 +38,7 @@ public class DataTypeReceiver implements Serializable {
 
     protected DataTypeReceiver() {}
 
-    public DataTypeReceiver(String type, String name, long count,
-                            DeviceReceiver device) {
+    public DataTypeReceiver(String type, String name, long count, DeviceReceiver device) {
         this.type = type;
         this.name = name;
         this.count = count;
@@ -85,13 +83,13 @@ public class DataTypeReceiver implements Serializable {
         this.count = count;
     }
 
-//    public String getCreated() {
-//        return created;
-//    }
-//
-//    public void setCreated(String created) {
-//        this.created = created;
-//    }
+    //    public String getCreated() {
+    //        return created;
+    //    }
+    //
+    //    public void setCreated(String created) {
+    //        this.created = created;
+    //    }
 
     public long getDeviceId() {
         return device.getId();
@@ -102,8 +100,7 @@ public class DataTypeReceiver implements Serializable {
      */
     @Override
     public String toString() {
-        return String.format(
-            "DataTypeReceiver[id=%d, type='%s', name='%s', count='%d']", id, type,
-            name, count);
+        return String.format("DataTypeReceiver[id=%d, type='%s', name='%s', count='%d']", id, type,
+                             name, count);
     }
 }

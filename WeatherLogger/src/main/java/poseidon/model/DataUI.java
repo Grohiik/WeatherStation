@@ -9,10 +9,8 @@ package poseidon.model;
  * @version 0.2.0
  */
 public class DataUI {
-
     private String value;
     private String created;
-
 
     /**
      * Constructor for DataUI
