@@ -22,7 +22,6 @@ import poseidon.repository.DataRepository;
 import poseidon.repository.DataTypeRepository;
 import poseidon.repository.DeviceRepository;
 
-
 /**
  * This class handles the mqtt communication with the embedded system.
  *
@@ -119,25 +118,75 @@ public class MqttHandler implements MqttCallback {
      * @param inData The message string from the mqtt broker.
      */
     public void splitStore(String inData) {
-        var data = inData.split("\\r?\\n"); // splits the message at each line
-        var keyData = data[0].split(",");   // splits the header at each ","
+        var lines = inData.split("\\r?\\n"); // splits the message at each line
+        var header = lines[0].split(",");    // splits the header at each ","
+        var dataString = lines[1].split(",");
+
+        var deviceName = dataString[0];
+
         HashMap<String, String> dataMap = new HashMap<String, String>();
 
-        if (checkDevice(keyData[0])) {
-            DataReceiver dReceiver = deviceRepository.findByDevice(keyData[0]);
-            for (int i = 1; i < keyData.length; i++) {
-                if (checkDataType(keyData[i], keyData[0])) {
-                    dataTypeRepository.save(new)
-                }
+        if (header.length == dataString.length) {
+            for (int j = 0; j < header.length; j++) {
+                dataMap.put(header[j], dataString[j]);
             }
         }
 
-        for (int i = 1; i < data.length; i++) {
-            var valData = data[i].split(",");
-            for (int j = 0; j < valData.length; j++) {
-                dataMap.put(keyData[j], valData[j]);
+        int headerIndex = 2;
+        if (checkDevice(header[0])) {
+            DeviceReceiver dReceiver = deviceRepository.findByDevice(header[0]);
+            long id = dReceiver.getId();
+
+            for (int i = 0; i < header.length && headerIndex <= header.length; i++) {
+                if (checkDataType(header[headerIndex], id)) {
+                    for (String finalDataString : dataString) {
+                        var dataType = dataTypeRepository.findByType(finalDataString);
+                        dataRepository.save(
+                            new DataReceiver(finalDataString, dataMap.get("time"), dataType));
+                    }
+                } else {
+                    var typeArr = header[headerIndex].split(":");
+                    DataTypeReceiver dataTypereceiver =
+                        new DataTypeReceiver("number", typeArr[0], 1, dReceiver);
+                    dataTypeRepository.save(dataTypereceiver);
+
+                    for (String finalDataString : dataString) {
+                        dataRepository.save(new DataReceiver(finalDataString, dataMap.get("time"),
+                                                             dataTypereceiver));
+                    }
+                }
+                headerIndex++;
+            }
+
+        } else {
+            var device = storeDevice(deviceName);
+
+            for (int i = 2; i < header.length; i++) {
+                var typeArr = header[i].split(":");
+                DataTypeReceiver dataTypeReceiver =
+                    new DataTypeReceiver("number", typeArr[0], 1, device);
+                dataTypeRepository.save(dataTypeReceiver);
+
+                dataRepository.save(
+                    new DataReceiver(dataString[i], dataMap.get("time"), dataTypeReceiver));
             }
         }
+    }
+
+    public void storeData(DataTypeReceiver type, String data, String time) {
+        dataRepository.save(new DataReceiver(data, time, type));
+    }
+
+    public DataTypeReceiver storeType(DeviceReceiver device, String name, String type) {
+        DataTypeReceiver dataType = new DataTypeReceiver(type, name, 0, device);
+        dataTypeRepository.save(dataType);
+        return dataType;
+    }
+
+    public DeviceReceiver storeDevice(String deviceName) {
+        var device = new DeviceReceiver(deviceName, "n/a");
+        deviceRepository.save(device);
+        return device;
     }
 
     /**
@@ -159,8 +208,8 @@ public class MqttHandler implements MqttCallback {
         return deviceExists;
     }
 
-    private boolean checkDataType(String dataType, String device) {
-        List<DataTypeReceiver> checkForDataTypes = dataTypeRepository.findByDevice(device);
+    private boolean checkDataType(String dataType, long device) {
+        List<DataTypeReceiver> checkForDataTypes = dataTypeRepository.findAllByDevice_id(device);
 
         boolean dataTypeExtists = checkForDataTypes.contains(dataType);
 
