@@ -48,8 +48,9 @@ async function main() {
   }
 
   // När du valt device, och sen vilken typ av data, så ska grafen displayas
-  dropDownDataList.onchange = async (e) =>
-    updateData(dropDownDataList, dropDownDataList, dataChart)
+  dropDownDataList.onchange = async (e) =>{
+    updateData(dropDownDevices, dropDownDataList, dataChart)
+  }
 }
 
 async function updateData(
@@ -70,6 +71,7 @@ async function updateData(
   const data: number[] = []
   for (let i = 0; i < deviceDatas.length; i++) {
     data.push(deviceDatas[i].temperature)
+    console.log(deviceDatas[i].temperature)
     // TODO: change to use .value (outlined in
     // https://docs.google.com/document/d/
     // 1AwDHoVpT954-cFfatYslbGSSbv55w_OpvKCfZGuGQX8/edit#heading=h.51b9hfysfiws)
