@@ -35,8 +35,6 @@ public class MqttHandler implements MqttCallback {
     private String username;
     private String password;
 
-    private HashMap<String, DeviceReceiver> devicemap = new HashMap<String, DeviceReceiver>();
-
     @Autowired DataRepository dataRepository;
     @Autowired DeviceRepository deviceRepository;
     @Autowired DataTypeRepository dataTypeRepository;
@@ -109,11 +107,6 @@ public class MqttHandler implements MqttCallback {
      * Stores the data from the mqtt broker in the database according to the header in the
      * message(the first line in the message) This function assumes that each line is formatted the
      * same way as the header.
-     * First the database is checked for existing Devices, if the device exists a new device will
-     * not be created and the data will be linked to an existing device with the same device_id.
-     * However, if the device doesn't exist, a new object will be created and sent with its
-     * corresponding data.
-     * The data is related to it's own device by the device_id, shown in the database-table.
      *
      * @param inData The message string from the mqtt broker.
      */
@@ -141,18 +134,14 @@ public class MqttHandler implements MqttCallback {
                 if (checkDataType(header[headerIndex], id)) {
                     for (String finalDataString : dataString) {
                         var dataType = dataTypeRepository.findByType(finalDataString);
-                        dataRepository.save(
-                            new DataReceiver(finalDataString, dataMap.get("time"), dataType));
+                        storeData(dataType, finalDataString, dataMap.get("time"));
                     }
                 } else {
                     var typeArr = header[headerIndex].split(":");
-                    DataTypeReceiver dataTypereceiver =
-                        new DataTypeReceiver("number", typeArr[0], 1, dReceiver);
-                    dataTypeRepository.save(dataTypereceiver);
+                    var dataTypeReceiver = storeType(dReceiver, typeArr[0], "number");
 
                     for (String finalDataString : dataString) {
-                        dataRepository.save(new DataReceiver(finalDataString, dataMap.get("time"),
-                                                             dataTypereceiver));
+                        storeData(dataTypeReceiver, finalDataString, dataMap.get("time"));
                     }
                 }
                 headerIndex++;
@@ -163,26 +152,43 @@ public class MqttHandler implements MqttCallback {
 
             for (int i = 2; i < header.length; i++) {
                 var typeArr = header[i].split(":");
-                DataTypeReceiver dataTypeReceiver =
-                    new DataTypeReceiver("number", typeArr[0], 1, device);
-                dataTypeRepository.save(dataTypeReceiver);
-
-                dataRepository.save(
-                    new DataReceiver(dataString[i], dataMap.get("time"), dataTypeReceiver));
+                var dataTypeReceiver = storeType(device, typeArr[0], "number");
+                storeData(dataTypeReceiver, dataString[i], dataMap.get("time"));
             }
         }
     }
 
+    /**
+     * Stores data with a datatype in the database
+     *
+     * @param type  the datatype to be sent with the data
+     * @param data  the string containing the data to be sent
+     * @param time  the timestamp to be sent with the data
+     */
     public void storeData(DataTypeReceiver type, String data, String time) {
         dataRepository.save(new DataReceiver(data, time, type));
     }
 
+    /**
+     * Stores and returns a data type in the database
+     *
+     * @param device    the device to be sent with the data type
+     * @param name      the name of the datatype
+     * @param type      the type of data sent ie numbers charachters etc
+     * @return          returns a DataTypeReceiver with the afforementioned properties
+     */
     public DataTypeReceiver storeType(DeviceReceiver device, String name, String type) {
         DataTypeReceiver dataType = new DataTypeReceiver(type, name, 0, device);
         dataTypeRepository.save(dataType);
         return dataType;
     }
 
+    /**
+     * Stores and returns a device in the database
+     *
+     * @param deviceName    the name of the device, every device needs a unique name
+     * @return              returns a DeviceReceiver with the name deviceName
+     */
     public DeviceReceiver storeDevice(String deviceName) {
         var device = new DeviceReceiver(deviceName, "n/a");
         deviceRepository.save(device);
@@ -190,10 +196,9 @@ public class MqttHandler implements MqttCallback {
     }
 
     /**
-     * deviceExists
-     * dataTypeExtists
+     * checks if the device exists in the database
      *
-     * @return
+     * @return  returns true if the device exists
      */
     private boolean checkDevice(String device) {
         boolean deviceExists = false;
@@ -208,6 +213,13 @@ public class MqttHandler implements MqttCallback {
         return deviceExists;
     }
 
+    /**
+     * checks if a datatype exists in the database
+     *
+     * @param dataType  the datatype to be checked
+     * @param device    the device who owns the datatype
+     * @return          returns true if the datatype exists
+     */
     private boolean checkDataType(String dataType, long device) {
         List<DataTypeReceiver> checkForDataTypes = dataTypeRepository.findAllByDevice_id(device);
 
