@@ -9,7 +9,7 @@ import poseidon.model.DataTypeReceiver;
  * Interface for the DataTypes
  *
  * @author Marcus Linné
- * @version 0.1.0
+ * @version 0.2.0
  */
 @Repository
 public interface DataTypeRepository extends JpaRepository<DataTypeReceiver, Long> {
@@ -17,5 +17,5 @@ public interface DataTypeRepository extends JpaRepository<DataTypeReceiver, Long
     // List<DataTypeReceiver> findByDevice(String device);
     List<DataTypeReceiver> findAllByDevice_id(long id);
     DataTypeReceiver findByType(String type);
-    List<DataTypeReceiver> findAllByType(String type);
+    List<DataTypeReceiver> findAllByName(String name);
 }
