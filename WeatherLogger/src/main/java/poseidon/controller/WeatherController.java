@@ -131,8 +131,8 @@ public class WeatherController {
      * Method to get a list of data from the attached datatype and device, the datatype has to exist
      * on the device.
      *
-     * @param deviceName The name of the device.
-     * @param name The type of data.
+     * @param deviceName    The name of the device.
+     * @param name          The type of data.
      *
      * @return A list of data.
      */

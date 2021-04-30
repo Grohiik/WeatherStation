@@ -4,7 +4,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.xml.crypto.Data;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -92,8 +91,8 @@ public class MqttHandler implements MqttCallback {
     /**
      * Callback method for when the mqtt client receives a message.
      *
-     * @param arg0 contains the sender and feed.
-     * @param arg1 contains the message.
+     * @param arg0 Contains the sender and feed.
+     * @param arg1 Contains the message.
      */
     @Override
     public void messageArrived(String arg0, MqttMessage arg1) throws Exception {
@@ -159,23 +158,24 @@ public class MqttHandler implements MqttCallback {
     }
 
     /**
-     * Stores data with a datatype in the database
+     * Stores data with a datatype in the database.
      *
-     * @param type  the datatype to be sent with the data
-     * @param data  the string containing the data to be sent
-     * @param time  the timestamp to be sent with the data
+     * @param type  The datatype to be sent with the data.
+     * @param data  The string containing the data to be sent.
+     * @param time  The timestamp to be sent with the data.
      */
     public void storeData(DataTypeReceiver type, String data, String time) {
         dataRepository.save(new DataReceiver(data, time, type));
     }
 
     /**
-     * Stores and returns a data type in the database
+     * Stores and returns a data type in the database.
      *
-     * @param device    the device to be sent with the data type
-     * @param name      the name of the datatype
-     * @param type      the type of data sent ie numbers charachters etc
-     * @return          returns a DataTypeReceiver with the afforementioned properties
+     * @param device    The device to be sent with the data type.
+     * @param name      The name of the datatype.
+     * @param type      The type of data sent ie numbers characters etc.
+     *
+     * @return          Returns a DataTypeReceiver with the aforementioned properties.
      */
     public DataTypeReceiver storeType(DeviceReceiver device, String name, String type,
                                       String unit) {
@@ -187,10 +187,11 @@ public class MqttHandler implements MqttCallback {
     }
 
     /**
-     * Stores and returns a device in the database
+     * Stores and returns a device in the database.
      *
-     * @param deviceName    the name of the device, every device needs a unique name
-     * @return              returns a DeviceReceiver with the name deviceName
+     * @param deviceName    The name of the device, every device needs a unique name.
+     *
+     * @return              Returns a DeviceReceiver with the name deviceName.
      */
     public DeviceReceiver storeDevice(String deviceName) {
         var device = new DeviceReceiver(deviceName, "n/a");
@@ -199,9 +200,9 @@ public class MqttHandler implements MqttCallback {
     }
 
     /**
-     * checks if the device exists in the database
+     * Checks if the device exists in the database.
      *
-     * @return  returns true if the device exists
+     * @return  Returns true if the device exists.
      */
     private boolean checkDevice(String device) {
         boolean deviceExists = false;
@@ -221,7 +222,7 @@ public class MqttHandler implements MqttCallback {
      *
      * @param dataType  the datatype to be checked
      * @param device    the device who owns the datatype
-     * @return          returns true if the datatype exists
+     * @return          Returns true if the datatype exists
      */
     private boolean checkDataType(String dataType, long device) {
         List<DataTypeReceiver> checkForDataTypes = dataTypeRepository.findAllByDevice_id(device);
