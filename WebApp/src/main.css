@@ -3,8 +3,8 @@ body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
 
-  background-color: #101010;
-  color: #ececec;
+  background-color: #fff;
+  color: #000;
 
   height: 100%;
 }
@@ -14,67 +14,10 @@ body {
   flex-direction: column;
 }
 
-header,
-main,
-footer {
-  margin: 10pt 22pt;
-}
-
-header {
-  height: 64pt;
-}
-
-main {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+main{
   height: 100%;
 }
 
-main .data-viewer {
-  height: 100%;
-}
-
-main .data-selector {
-  height: 30%;
-
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-}
-
-main .data-selector .dropdown-a {
-  width: 100%;
-  padding: 10pt;
-}
-
-main .data-selector .dropdown-b {
-  width: 100%;
-  padding: 10pt;
-}
-
-footer {
-  height: 32pt;
-}
-
-footer #github-link {
-  text-decoration: none;
-  color: #686868;
-}
-
-footer #github-link:hover {
-  text-decoration: underline;
-  color: #686868;
-}
-
-@media (prefers-color-scheme: light) {
-  body {
-    background-color: #ffffff;
-    color: #000000;
-  }
-
-  footer #github-link {
-    text-decoration: none;
-    color: #050505;
-  }
+footer{
+  height: 50pt;
 }
