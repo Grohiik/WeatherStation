@@ -1,5 +1,6 @@
-// FIXME: Change to correct type for lambda function
-export function addPreferColorSchemeEvent(callback: any): void {
+export function addPreferColorSchemeEvent(
+  callback: (isDark: boolean) => void
+): void {
   window
     .matchMedia('(prefers-color-scheme: dark)')
     .addEventListener('change', (e) => {

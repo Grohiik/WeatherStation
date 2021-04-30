@@ -1,13 +1,14 @@
-export function createCanvas(parent:HTMLElement)
-: HTMLCanvasElement {
+export function createCanvas(parent: HTMLElement): HTMLCanvasElement {
   const canvas = document.createElement('canvas')
   canvas.id = 'dataviewer'
   parent.appendChild(canvas)
   return canvas
 }
 
-export function createDropdown(parent:HTMLElement,
-  defaultvalue = 'select'): HTMLSelectElement {
+export function createDropdown(
+  parent: HTMLElement,
+  defaultvalue = 'select'
+): HTMLSelectElement {
   const dropdown = document.createElement('select')
   const option = document.createElement('option')
   option.value = 'default-value'
@@ -18,14 +19,15 @@ export function createDropdown(parent:HTMLElement,
   return dropdown
 }
 
-export function addOptionToDropdown(dropdown:HTMLSelectElement,
-  name: string): void {
+export function addOptionToDropdown(
+  dropdown: HTMLSelectElement,
+  name: string
+): void {
   const option = document.createElement('option')
   option.text = name
   dropdown.appendChild(option)
 }
 
-export function clearOptionsFromDropdrown(dropdown:HTMLSelectElement): void {
+export function clearOptionsFromDropdrown(dropdown: HTMLSelectElement): void {
   dropdown.innerHTML = ''
 }
-

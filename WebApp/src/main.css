@@ -3,8 +3,8 @@ body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
 
-  background-color: #fff;
-  color: #000;
+  background-color: #ffffff;
+  color: #000000;
 
   height: 100%;
 }
@@ -14,10 +14,10 @@ body {
   flex-direction: column;
 }
 
-main{
+main {
   height: 100%;
 }
 
-footer{
+footer {
   height: 50pt;
 }
