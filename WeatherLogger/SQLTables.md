@@ -29,8 +29,10 @@ In the class **DeviceReceiver**, the `@OneToMany(mappedBy = "device")` is used t
 is to be related to multiple columns.
 
 In the class **DataTypeReceiver**, the `@ManyToOne(fetch = FetchType.LAZY, optional = false)`
-`@JoinColumn(name = "device_id", nullable = false)` 
-private DeviceReceiver device;
+`@JoinColumn(name = "device_id", nullable = false)`
+
+    private DeviceReceiver device;
+
 Is used to make the entries in the DataType table belong to a specific device id. 
 It  has a `@OneToMany(mappedBy = "type")` to clarify that the data from the column named "type" is to be related to multiple columns.
 
@@ -43,8 +45,8 @@ private DeviceReceiver device;`
 ### Model classes
 
 #### **DeviceReceiver**
-```java
 
+```java
 @Entity
 @Table(name = "devices")
 public class DeviceReceiver implements Serializable
@@ -63,7 +65,6 @@ public class DeviceReceiver implements Serializable
 #### **DataReceiver class**
 
 ```java
-
 @Entity
 @Table(name = "DATA_STORED")
 public class DataReceiver implements Serializable
@@ -82,8 +83,8 @@ public class DataReceiver implements Serializable
 ```
 
 #### **DeviceUI class**
-```java
 
+```java
 public class DeviceUI 
 {
     private String device;
@@ -111,7 +112,6 @@ public class DeviceUI
 #### **DataUI class**
 
 ```java
-
 public class DataUI
 {
     private String value;
@@ -134,7 +134,6 @@ public class DataUI
 #### **OLD DataUI class**
 
 ```java
-
 public class DataUI
 {
     private String device;
@@ -154,6 +153,40 @@ public class DataUI
         this.light = light;
         this.batV = batV;
     }
+}
+```
+### Repository classes
+
+#### DataRepository
+
+```java
+@Repository
+public interface DataRepository extends JpaRepository<DataReceiver, Long>
+{
+    List<DataReceiver> findAll();
+}
+```
+
+#### DataTypeRepository
+
+```java
+@Repository
+public interface DataTypeRepository extends JpaRepository<DataTypeReceiver, Long> 
+{
+    List<DataTypeReceiver> findAll();
+    List<DataTypeReceiver> findAllByDevice_id(long id);
+    DataTypeReceiver findByType(String type);
+}
+```
+
+#### DeviceRepository
+
+```java
+@Repository
+public interface DeviceRepository extends JpaRepository<DeviceReceiver, Long> 
+{
+    List<DeviceReceiver> findAll();
+    DeviceReceiver findByDevice(String device);
 }
 ```
 
