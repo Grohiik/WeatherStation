@@ -29,6 +29,7 @@ public class DataTypeReceiver implements Serializable {
     // TODO better name for count
     @Column(name = "count") private long count;
 
+    @Column(name = "unit") private String unit;
     // TODO Date?
     //@Column(name = "created") private String created;
 
@@ -38,17 +39,20 @@ public class DataTypeReceiver implements Serializable {
 
     protected DataTypeReceiver() {}
 
-    public DataTypeReceiver(String type, String name, long count, DeviceReceiver device) {
+    public DataTypeReceiver(String type, String name, long count, String unit,
+                            DeviceReceiver device) {
         this.type = type;
         this.name = name;
         this.count = count;
+        this.unit = unit;
         this.device = device;
     }
 
-    public DataTypeReceiver(String type, String name, long count) {
+    public DataTypeReceiver(String type, String name, long count, String unit) {
         this.type = type;
         this.name = name;
         this.count = count;
+        this.unit = unit;
     }
 
     public long getId() {
@@ -83,6 +87,13 @@ public class DataTypeReceiver implements Serializable {
         this.count = count;
     }
 
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
     //    public String getCreated() {
     //        return created;
     //    }
@@ -100,7 +111,7 @@ public class DataTypeReceiver implements Serializable {
      */
     @Override
     public String toString() {
-        return String.format("DataTypeReceiver[id=%d, type='%s', name='%s', count='%d']", id, type,
-                             name, count);
+        return String.format("DataTypeReceiver[id=%d, type='%s', name='%s', count='%d', unit='%s']", id, type,
+                             name, count, unit);
     }
 }

@@ -8,16 +8,16 @@ package poseidon.model;
  * @version 0.1.0
  */
 
-public class DataTypeUI
-{
+public class DataTypeUI {
     private String name;
     private String type;
+    private String unit;
     private long count;
 
-    public DataTypeUI(String name, String type, long count)
-    {
+    public DataTypeUI(String name, String type, String unit, long count) {
         this.count = count;
         this.name = name;
+        this.unit = unit;
         this.type = type;
     }
 
@@ -27,6 +27,14 @@ public class DataTypeUI
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public String getType() {
@@ -50,6 +58,7 @@ public class DataTypeUI
      */
     @Override
     public String toString() {
-        return String.format("data_types[name='%s', type='%s', count='%d']", name, type, count);
+        return String.format("data_types[name='%s', unit='%s', type='%s', count='%d']", name, unit,
+                             type, count);
     }
 }
