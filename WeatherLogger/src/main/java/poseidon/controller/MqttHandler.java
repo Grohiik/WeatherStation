@@ -138,7 +138,7 @@ public class MqttHandler implements MqttCallback {
                     }
                 } else {
                     var typeArr = header[headerIndex].split(":");
-                    var dataTypeReceiver = storeType(dReceiver, typeArr[0], "number");
+                    var dataTypeReceiver = storeType(dReceiver, typeArr[0], typeArr[1], "number");
 
                     for (String finalDataString : dataString) {
                         storeData(dataTypeReceiver, finalDataString, dataMap.get("time"));
@@ -152,7 +152,7 @@ public class MqttHandler implements MqttCallback {
 
             for (int i = 2; i < header.length; i++) {
                 var typeArr = header[i].split(":");
-                var dataTypeReceiver = storeType(device, typeArr[0], "number");
+                var dataTypeReceiver = storeType(device, typeArr[0], typeArr[1], "number");
                 storeData(dataTypeReceiver, dataString[i], dataMap.get("time"));
             }
         }
@@ -177,9 +177,11 @@ public class MqttHandler implements MqttCallback {
      * @param type      the type of data sent ie numbers charachters etc
      * @return          returns a DataTypeReceiver with the afforementioned properties
      */
-    public DataTypeReceiver storeType(DeviceReceiver device, String name, String type) {
+    public DataTypeReceiver storeType(DeviceReceiver device, String name, String type,
+                                      String unit) {
         // TODO add unit ie m, m/s etc
-        DataTypeReceiver dataType = new DataTypeReceiver(type, name, 0, device);
+        long count = 0;
+        DataTypeReceiver dataType = new DataTypeReceiver(type, name, count, unit, device);
         dataTypeRepository.save(dataType);
         return dataType;
     }
