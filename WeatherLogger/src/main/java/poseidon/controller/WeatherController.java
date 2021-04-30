@@ -16,7 +16,7 @@ import poseidon.repository.DeviceRepository;
  * @author Marcus Linné
  * @author Erik Kellgren
  * @author Linnéa Mörk
- * @version 0.1.0
+ * @version 0.2.0
  */
 @RestController
 @RequestMapping(value = "api")
@@ -29,60 +29,132 @@ public class WeatherController {
      * Method used to create and save data onto the SQL DB,
      * using the GET request with specified mapping.
      *
-     * @return informs that the data has been created on the DB
+     * @return Informs that the data has been created on the DB.
      */
-    @GetMapping("/fillWithTrashData")
+    @GetMapping("/test")
+    public String testData() {
+        DeviceReceiver EriksDevice = new DeviceReceiver("Eriks_Device_1", "Measures weatherdata");
 
-    public String fillWithTrashData() {
-        DeviceReceiver test = new DeviceReceiver("lsgsgs", "sdkfsdfksdjfksl");
-        DataTypeReceiver hejsvejs = new DataTypeReceiver("123", "Erik", 234465462, test);
-        deviceRepository.save(test);
-        dataTypeRepository.save(hejsvejs);
-        dataRepository.save(new DataReceiver("1234", "230501", hejsvejs));
+        DataTypeReceiver DataTyp1 =
+            new DataTypeReceiver("Number", "Temperature", 0, "C", EriksDevice);
+        DataTypeReceiver DataTyp2 =
+            new DataTypeReceiver("Number", "Humidity", 0, "C", EriksDevice);
+        DataTypeReceiver DataTyp3 =
+            new DataTypeReceiver("Number", "LightLevel", 0, "C", EriksDevice);
 
-        DeviceReceiver test2 = new DeviceReceiver("lmao", "inget viktigt");
-        DeviceReceiver test3 = new DeviceReceiver("sfs", "inget viktigt2");
-        DeviceReceiver test4 = new DeviceReceiver("difisgts", "inget viktigt3");
-        DataTypeReceiver hejsvejs2 = new DataTypeReceiver("12334435", "Erik2", 234462, test2);
-        DataTypeReceiver hejsvejs3 = new DataTypeReceiver("12435343", "Erik3", 23462, test3);
-        DataTypeReceiver hejsvejs4 = new DataTypeReceiver("1234523", "Erik4", 235462, test4);
+        DataReceiver Data1 = new DataReceiver("12.6", "300421", DataTyp1);
+        DataReceiver Data2 = new DataReceiver("0.65", "300421", DataTyp2);
+        DataReceiver Data3 = new DataReceiver("0.2", "300421", DataTyp3);
 
-        deviceRepository.saveAll(Arrays.asList(test2, test3, test4));
-        dataTypeRepository.saveAll(Arrays.asList(hejsvejs2, hejsvejs3, hejsvejs4));
+        //-----------------------------------------------------------------------------------------------------------
 
-        dataRepository.saveAll(Arrays.asList(new DataReceiver("123", "090812", hejsvejs2),
-                                             new DataReceiver("567", "121121", hejsvejs3),
-                                             new DataReceiver("999", "010104", hejsvejs4)));
+        DeviceReceiver MarcusDevice = new DeviceReceiver("Marcus_Device_1", "Measures weatherdata");
+
+        DataTypeReceiver DataTyp4 =
+            new DataTypeReceiver("Number", "Temperature", 0, "C", MarcusDevice);
+        DataTypeReceiver DataTyp5 =
+            new DataTypeReceiver("Number", "Humidity", 0, "C", MarcusDevice);
+        DataTypeReceiver DataTyp6 =
+            new DataTypeReceiver("Number", "LightLevel", 0, "C", MarcusDevice);
+
+        DataReceiver Data4 = new DataReceiver("26.3", "300421", DataTyp4);
+        DataReceiver Data5 = new DataReceiver("0.95", "300421", DataTyp5);
+        DataReceiver Data6 = new DataReceiver("0.8", "300421", DataTyp6);
+
+        //------------------------------------------------------------------------------------------------------------
+
+        DeviceReceiver AdemirsDevice =
+            new DeviceReceiver("Ademirs_Device_1", "Measures weatherdata");
+
+        DataTypeReceiver DataTyp7 =
+            new DataTypeReceiver("Number", "Temperature", 0, "C", AdemirsDevice);
+        DataTypeReceiver DataTyp8 =
+            new DataTypeReceiver("Number", "Humidity", 0, "C", AdemirsDevice);
+        DataTypeReceiver DataTyp9 =
+            new DataTypeReceiver("Number", "LightLevel", 0, "C", AdemirsDevice);
+
+        DataReceiver Data7 = new DataReceiver("40.2", "300421", DataTyp7);
+        DataReceiver Data8 = new DataReceiver("0.22", "300421", DataTyp8);
+        DataReceiver Data9 = new DataReceiver("0.5", "300421", DataTyp9);
+
+        //------------------------------------------------------------------------------------------------------------
+
+        deviceRepository.saveAll(Arrays.asList(EriksDevice, MarcusDevice, AdemirsDevice));
+        dataTypeRepository.saveAll(Arrays.asList(DataTyp1, DataTyp2, DataTyp3, DataTyp4, DataTyp5,
+                                                 DataTyp6, DataTyp7, DataTyp8, DataTyp9));
+        dataRepository.saveAll(
+            Arrays.asList(Data1, Data2, Data3, Data4, Data5, Data6, Data7, Data8, Data9));
 
         return "Added test data to the DB";
     }
 
+    /**
+     * Method to get a list of devices currently on the DB.
+     *
+     * @return A list of existing devices.
+     */
     @GetMapping("/ListDevices")
+    public List<DeviceUI> deviceList() {
+        List<DeviceUI> deviceUI = new ArrayList<>();
+        List<DeviceReceiver> deviceReceiverList = deviceRepository.findAll();
 
-    public List<DeviceUI> listDevices() {
-        List<DeviceUI> dataUI = new ArrayList<>();
-        List<DeviceReceiver> devices = deviceRepository.findAll();
-
-        for (DeviceReceiver deviceList : devices) {
-            dataUI.add(new DeviceUI(deviceList.getDevice()));
+        for (DeviceReceiver deviceReceiver : deviceReceiverList) {
+            deviceUI.add(new DeviceUI(deviceReceiver.getDevice(), deviceReceiver.getDescription()));
         }
-        return dataUI;
+
+        return deviceUI;
     }
 
+    /**
+     * Method to get a list of data types from the attached device.
+     *
+     * @param deviceName The name of the device.
+     *
+     * @return A list of data types.
+     */
     @GetMapping("/{deviceName}/datatypes")
+    public List<DataTypeUI> dataTypeList(@PathVariable String deviceName) {
+        List<DataTypeUI> dataTypeUI = new ArrayList<>();
+        DeviceReceiver deviceReceiver = deviceRepository.findByDevice(deviceName);
+        List<DataTypeReceiver> dataTypeReceiverList =
+            dataTypeRepository.findAllByDevice_id(deviceReceiver.getId());
 
-    public List<DataTypeUI> listContainingDataTypes(@PathVariable String deviceName) {
-        List<DataTypeUI> theList = new ArrayList<>();
-
-        DeviceReceiver hej = deviceRepository.findByDevice("lmao");
-        List<DataTypeReceiver> types = dataTypeRepository.findAllByDevice_id(hej.getId());
-        for (DataTypeReceiver hejsvejs : types) {
-            theList.add(
-                new DataTypeUI(hejsvejs.getName(), hejsvejs.getType(), hejsvejs.getCount()));
+        for (DataTypeReceiver dataTypeReceiver : dataTypeReceiverList) {
+            dataTypeUI.add(new DataTypeUI(dataTypeReceiver.getName(), dataTypeReceiver.getType(),
+                                          dataTypeReceiver.getUnit(), dataTypeReceiver.getCount()));
         }
-        System.out.println(new DeviceUI(hej.getDevice(), hej.getDescription()));
 
-        return theList;
+        return dataTypeUI;
+    }
+
+    /**
+     * Method to get a list of data from the attached datatype and device, the datatype has to exist
+     * on the device.
+     *
+     * @param deviceName The name of the device.
+     * @param name The type of data.
+     *
+     * @return A list of data.
+     */
+    @GetMapping("/{deviceName}/{name}/data")
+    public List<DataUI> dataList(@PathVariable("deviceName") String deviceName,
+                                 @PathVariable("name") String name) {
+        List<DataUI> dataUI = new ArrayList<>();
+        DeviceReceiver deviceReceiver = deviceRepository.findByDevice(deviceName);
+        List<DataTypeReceiver> dataTypeReceiverList = dataTypeRepository.findAllByName(name);
+        List<DataReceiver> dataReceiverList = dataRepository.findAll();
+
+        for (DataTypeReceiver dataTypeReceiver : dataTypeReceiverList) {
+            if (deviceReceiver.getId() == dataTypeReceiver.getDeviceId()) {
+                for (DataReceiver dataReceiver : dataReceiverList) {
+                    if (dataReceiver.getDataTypeId() == dataTypeReceiver.getId()) {
+                        dataUI.add(new DataUI(dataReceiver.getValue(), dataReceiver.getCreated()));
+                    }
+                }
+            }
+        }
+
+        return dataUI;
     }
     /*
         @PostMapping("/create")
