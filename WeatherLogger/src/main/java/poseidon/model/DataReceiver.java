@@ -17,12 +17,11 @@ import javax.persistence.*;
 @Table(name = "DATA_STORED")
 public class DataReceiver implements Serializable {
     @Serial private static final long serialVersionUID = -2343243243242432341L;
-    @Id @GeneratedValue(strategy = GenerationType.AUTO) private long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private long id;
 
     @Column(name = "value") private String value;
 
     @Column(name = "created") private String created;
-
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "type_id", nullable = false)
@@ -33,12 +32,26 @@ public class DataReceiver implements Serializable {
      */
     protected DataReceiver() {}
 
+    /**
+     * Default Constructor for DataReceiver. Initializes all the variables of this class, including
+     * the data type originating from DataTypeReceiver.
+     *
+     * @param value     The value as such of the data received.
+     * @param created   The time the data was created.
+     * @param type      The type of data it is.
+     */
     public DataReceiver(String value, String created, DataTypeReceiver type) {
         this.value = value;
         this.created = created;
         this.type = type;
     }
 
+    /**
+     * Constructor for DataReceiver, initializes the variables belonging to this class.
+     *
+     * @param value The value as such of the data received.
+     * @param created The time the data was created.
+     */
     public DataReceiver(String value, String created) {
         this.value = value;
         this.created = created;
