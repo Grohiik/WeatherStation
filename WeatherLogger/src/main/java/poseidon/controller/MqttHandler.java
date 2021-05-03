@@ -125,7 +125,7 @@ public class MqttHandler implements MqttCallback {
         }
 
         int headerIndex = 2;
-        if (checkDevice(header[0])) {
+        if (checkDevice(dataString[0])) {
             DeviceReceiver dReceiver = deviceRepository.findByDevice(header[0]);
             long id = dReceiver.getId();
 
@@ -204,12 +204,12 @@ public class MqttHandler implements MqttCallback {
      *
      * @return  Returns true if the device exists.
      */
-    private boolean checkDevice(String device) {
+    private boolean checkDevice(String deviceName) {
         boolean deviceExists = false;
 
         List<DeviceReceiver> checkForDevices = deviceRepository.findAll();
         for (DeviceReceiver deviceReceiver : checkForDevices) {
-            if (deviceReceiver.getDevice().equals(device)) {
+            if (deviceReceiver.getDevice().equals(deviceName)) {
                 deviceExists = true;
             }
         }
