@@ -15,15 +15,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.yaml.snakeyaml.Yaml;
 import poseidon.model.DataReceiver;
+import poseidon.model.DataTypeReceiver;
 import poseidon.model.DeviceReceiver;
 import poseidon.repository.DataRepository;
+import poseidon.repository.DataTypeRepository;
 import poseidon.repository.DeviceRepository;
 
 /**
  * This class handles the mqtt communication with the embedded system.
  *
  * @author Eric Lundin
- * @version 0.1.0
+ * @version 0.2.0
  */
 @SpringBootApplication
 public class MqttHandler implements MqttCallback {
@@ -32,10 +34,9 @@ public class MqttHandler implements MqttCallback {
     private String username;
     private String password;
 
-    private HashMap<String, DeviceReceiver> devicemap = new HashMap<String, DeviceReceiver>();
-
     @Autowired DataRepository dataRepository;
     @Autowired DeviceRepository deviceRepository;
+    @Autowired DataTypeRepository dataTypeRepository;
 
     public MqttHandler() {
         startClient();
@@ -90,8 +91,8 @@ public class MqttHandler implements MqttCallback {
     /**
      * Callback method for when the mqtt client receives a message.
      *
-     * @param arg0 contains the sender and feed.
-     * @param arg1 contains the message.
+     * @param arg0 Contains the sender and feed.
+     * @param arg1 Contains the message.
      */
     @Override
     public void messageArrived(String arg0, MqttMessage arg1) throws Exception {
@@ -105,46 +106,133 @@ public class MqttHandler implements MqttCallback {
      * Stores the data from the mqtt broker in the database according to the header in the
      * message(the first line in the message) This function assumes that each line is formatted the
      * same way as the header.
-     * First the database is checked for existing Devices, if the device exists a new device will
-     * not be created and the data will be linked to an existing device with the same device_id.
-     * However, if the device doesn't exist, a new object will be created and sent with its
-     * corresponding data.
-     * The data is related to it's own device by the device_id, shown in the database-table.
      *
      * @param inData The message string from the mqtt broker.
      */
     public void splitStore(String inData) {
-        var data = inData.split("\\r?\\n"); // splits the message at each line
-        var keyData = data[0].split(",");   // splits the header at each ","
+        var lines = inData.split("\\r?\\n"); // splits the message at each line
+        var header = lines[0].split(",");    // splits the header at each ","
+        var dataString = lines[1].split(",");
+
+        var deviceName = dataString[0];
+
         HashMap<String, String> dataMap = new HashMap<String, String>();
 
-        for (int i = 1; i < data.length; i++) {
-            var valData = data[i].split(",");
-            for (int j = 0; j < valData.length; j++) {
-                dataMap.put(keyData[j], valData[j]);
+        if (header.length == dataString.length) {
+            for (int j = 0; j < header.length; j++) {
+                dataMap.put(header[j], dataString[j]);
             }
+        }
 
-            boolean deviceFlag = false;
-            List<DeviceReceiver> checkForDevices = deviceRepository.findAll();
-            for (DeviceReceiver deviceReceiver : checkForDevices) {
-                if (deviceReceiver.getDevice().equals(dataMap.get("device"))) {
-                    dataRepository.save(new DataReceiver(dataMap.get("time"), dataMap.get("temp"),
-                                                         dataMap.get("hum"), dataMap.get("light"),
-                                                         dataMap.get("batv"), deviceReceiver));
-                    deviceFlag = true;
-                    break;
+        int headerIndex = 2;
+        if (checkDevice(header[0])) {
+            DeviceReceiver dReceiver = deviceRepository.findByDevice(header[0]);
+            long id = dReceiver.getId();
+
+            for (int i = 0; i < header.length && headerIndex <= header.length; i++) {
+                if (checkDataType(header[headerIndex], id)) {
+                    for (String finalDataString : dataString) {
+                        var dataType = dataTypeRepository.findByType(finalDataString);
+                        storeData(dataType, finalDataString, dataMap.get("time"));
+                    }
+                } else {
+                    var typeArr = header[headerIndex].split(":");
+                    var dataTypeReceiver = storeType(dReceiver, typeArr[0], typeArr[1], "number");
+
+                    for (String finalDataString : dataString) {
+                        storeData(dataTypeReceiver, finalDataString, dataMap.get("time"));
+                    }
                 }
+                headerIndex++;
             }
 
-            if (!deviceFlag) {
-                DeviceReceiver deviceReceiver = new DeviceReceiver(dataMap.get("device"));
-                deviceRepository.save(deviceReceiver);
-                dataRepository.save(new DataReceiver(dataMap.get("time"), dataMap.get("temp"),
-                                                     dataMap.get("hum"), dataMap.get("light"),
-                                                     dataMap.get("batv"), deviceReceiver));
+        } else {
+            var device = storeDevice(deviceName);
+
+            for (int i = 2; i < header.length; i++) {
+                var typeArr = header[i].split(":");
+                var dataTypeReceiver = storeType(device, typeArr[0], typeArr[1], "number");
+                storeData(dataTypeReceiver, dataString[i], dataMap.get("time"));
             }
         }
     }
+
+    /**
+     * Stores data with a datatype in the database.
+     *
+     * @param type  The datatype to be sent with the data.
+     * @param data  The string containing the data to be sent.
+     * @param time  The timestamp to be sent with the data.
+     */
+    public void storeData(DataTypeReceiver type, String data, String time) {
+        dataRepository.save(new DataReceiver(data, time, type));
+    }
+
+    /**
+     * Stores and returns a data type in the database.
+     *
+     * @param device    The device to be sent with the data type.
+     * @param name      The name of the datatype.
+     * @param type      The type of data sent ie numbers characters etc.
+     *
+     * @return          Returns a DataTypeReceiver with the aforementioned properties.
+     */
+    public DataTypeReceiver storeType(DeviceReceiver device, String name, String type,
+                                      String unit) {
+        // TODO add unit ie m, m/s etc
+        long count = 0;
+        DataTypeReceiver dataType = new DataTypeReceiver(type, name, count, unit, device);
+        dataTypeRepository.save(dataType);
+        return dataType;
+    }
+
+    /**
+     * Stores and returns a device in the database.
+     *
+     * @param deviceName    The name of the device, every device needs a unique name.
+     *
+     * @return              Returns a DeviceReceiver with the name deviceName.
+     */
+    public DeviceReceiver storeDevice(String deviceName) {
+        var device = new DeviceReceiver(deviceName, "n/a");
+        deviceRepository.save(device);
+        return device;
+    }
+
+    /**
+     * Checks if the device exists in the database.
+     *
+     * @return  Returns true if the device exists.
+     */
+    private boolean checkDevice(String device) {
+        boolean deviceExists = false;
+
+        List<DeviceReceiver> checkForDevices = deviceRepository.findAll();
+        for (DeviceReceiver deviceReceiver : checkForDevices) {
+            if (deviceReceiver.getDevice().equals(device)) {
+                deviceExists = true;
+            }
+        }
+
+        return deviceExists;
+    }
+
+    /**
+     * Checks if a datatype exists in the database.
+     *
+     * @param dataType  The datatype to be checked.
+     * @param device    The device who owns the datatype.
+     * @return          Returns true if the datatype exists.
+     */
+    private boolean checkDataType(String dataType, long device) {
+        List<DataTypeReceiver> checkForDataTypes = dataTypeRepository.findAllByDevice_id(device);
+
+        boolean dataTypeExtists = checkForDataTypes.contains(dataType);
+
+        return dataTypeExtists;
+    }
+
+    public void store() {}
 
     /**
      * Creates the connectOptions object used to connect to the mqtt broker.

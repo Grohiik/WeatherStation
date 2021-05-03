@@ -3,7 +3,6 @@ package poseidon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import poseidon.repository.DataRepository;
 
 /**
  * WeatherApp is the main Application for start up.
@@ -13,7 +12,7 @@ import poseidon.repository.DataRepository;
  */
 @SpringBootApplication
 public class WeatherApp {
-    @Autowired DataRepository dataRepository;
+    @Autowired
     public static void main(String[] args) {
         SpringApplication.run(WeatherApp.class, args);
     }

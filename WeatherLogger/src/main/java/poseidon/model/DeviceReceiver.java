@@ -17,11 +17,13 @@ import javax.persistence.*;
 @Table(name = "devices")
 public class DeviceReceiver implements Serializable {
     @Serial private static final long serialVersionUID = -2343243243242432341L;
-    @Id @GeneratedValue(strategy = GenerationType.AUTO) private long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private long id;
 
     @Column(name = "device") private String device;
 
-    @OneToMany(mappedBy = "device") private Set<DataReceiver> weatherData;
+    @OneToMany(mappedBy = "device") private Set<DataTypeReceiver> dataTypes;
+
+    @Column(name = "description") private String description;
 
     /**
      * Protected constructor required by Spring.
@@ -32,9 +34,11 @@ public class DeviceReceiver implements Serializable {
      * The constructor of this class initializes the variables of this class.
      *
      * @param device The device the data is received from.
+     * @param description The description of the device the data is received from.
      */
-    public DeviceReceiver(String device) {
+    public DeviceReceiver(String device, String description) {
         this.device = device;
+        this.description = description;
     }
 
     public long getId() {
@@ -53,11 +57,20 @@ public class DeviceReceiver implements Serializable {
         this.device = device;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     /**
      * The toString method used to sort the devices into the correct order.
      */
     @Override
     public String toString() {
-        return String.format("devices[id=%d, device='%s']", id, device);
+        return String.format("devices[id=%d, device='%s', description='%s']", id, device,
+                             description);
     }
 }

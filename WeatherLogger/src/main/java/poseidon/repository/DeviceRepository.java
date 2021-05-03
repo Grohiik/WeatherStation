@@ -14,5 +14,6 @@ import poseidon.model.DeviceReceiver;
 @Repository
 public interface DeviceRepository extends JpaRepository<DeviceReceiver, Long> {
     List<DeviceReceiver> findAll();
-    List<DeviceReceiver> findByDevice(String device);
+    // List<DeviceReceiver> findByDevice(String device);
+    DeviceReceiver findByDevice(String device);
 }

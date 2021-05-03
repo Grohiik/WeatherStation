@@ -11,7 +11,15 @@ type-relationship. One topic, device in our case, is directly connected to many 
     Table 1: Devices
     Table 2: Temperature, humidity, light level, battery voltage, time, device_id
 
-These 2 tables are created separately by 2 different classes, one for each table and then linked together.
+**UPDATED**
+
+#### 3 tables more to be added
+
+    Table 1: Devices
+    Table 2: DataTypes
+    Table 3: Data that is stored
+
+These 3 tables are created separately by 3 different classes, one for each table and then linked together.
 To indicate which table that should be used or created the annotation `@Table` is used.
 
 The annotation `@Entity` is used to clarify on both classes creating tables where device table class would look kinda like.
@@ -19,6 +27,14 @@ Look into how the DataRepository "interface" is implemented and used by the cont
 
 In the class **DeviceReceiver**, the `@OneToMany(mappedBy = "device")` is used to clarify that the data from column named "device"
 is to be related to multiple columns.
+
+In the class **DataTypeReceiver**, the `@ManyToOne(fetch = FetchType.LAZY, optional = false)`
+`@JoinColumn(name = "device_id", nullable = false)`
+
+    private DeviceReceiver device;
+
+Is used to make the entries in the DataType table belong to a specific device id. 
+It  has a `@OneToMany(mappedBy = "type")` to clarify that the data from the column named "type" is to be related to multiple columns.
 
 In the class **DataReceiver**, the `@ManyToOne(fetch = FetchType.LAZY, optional = false)`
 `@JoinColumn(name = "device_id", nullable = false)`
@@ -29,51 +45,95 @@ private DeviceReceiver device;`
 ### Model classes
 
 #### **DeviceReceiver**
-```java
 
+```java
 @Entity
 @Table(name = "devices")
 public class DeviceReceiver implements Serializable
 {
     @Serial private static final long serialVersionUID = -2343243243242432341L;
-    @Id @GeneratedValue(strategy = GenerationType.AUTO) private long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private long id;
     
     @Column(name = "device") private String device;
 
     @OneToMany(mappedBy = "device") private Set<DataReceiver> weatherData;
+
+    @Column(name = "description") private String description;
 }
 ```
 
 #### **DataReceiver class**
 
 ```java
-
 @Entity
-@Table(name = "weatherlog")
+@Table(name = "DATA_STORED")
 public class DataReceiver implements Serializable
 {
     @Serial private static final long serialVersionUID = -2343243243242432341L;
-    @Id @GeneratedValue(strategy = GenerationType.AUTO) private long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private long id;
 
-    @Column(name = "time") private String time;
+    @Column(name = "value") private String value;
 
-    @Column(name = "temperature") private String temperature;
-
-    @Column(name = "humidity") private String humidity;
-
-    @Column(name = "light") private String light;
-
-    @Column(name = "batV") private String batV;
+    @Column(name = "created") private String created;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "device_id", nullable = false)
-    private DeviceReceiver device;
+    @JoinColumn(name = "type_id", nullable = false)
+    private DataTypeReceiver type;
 }
 ```
+
+#### **DeviceUI class**
+
+```java
+public class DeviceUI 
+{
+    private String device;
+    private String description;
+
+    public DeviceUI(String device) 
+    {
+        this.device = device;
+    }
+
+    public DeviceUI(String device, String description) 
+    {
+        this.description = description;
+        this.device = device;
+    }
+
+    @Override
+    public String toString() 
+    {
+        return String.format("devices[device='%s', description='%s']", device, description);
+    }
+}
+```
+
 #### **DataUI class**
 
 ```java
+public class DataUI
+{
+    private String value;
+    private String created;
 
+    public DataUI(String value, String created) 
+    {
+        this.value = value;
+        this.created = created;
+    }
+
+    @Override
+    public String toString() 
+    {
+        return String.format("data_stored[value='%s', created='%s']", value, created);
+    }
+}
+```
+
+#### **OLD DataUI class**
+
+```java
 public class DataUI
 {
     private String device;
@@ -93,6 +153,40 @@ public class DataUI
         this.light = light;
         this.batV = batV;
     }
+}
+```
+### Repository classes
+
+#### DataRepository
+
+```java
+@Repository
+public interface DataRepository extends JpaRepository<DataReceiver, Long>
+{
+    List<DataReceiver> findAll();
+}
+```
+
+#### DataTypeRepository
+
+```java
+@Repository
+public interface DataTypeRepository extends JpaRepository<DataTypeReceiver, Long> 
+{
+    List<DataTypeReceiver> findAll();
+    List<DataTypeReceiver> findAllByDevice_id(long id);
+    DataTypeReceiver findByType(String type);
+}
+```
+
+#### DeviceRepository
+
+```java
+@Repository
+public interface DeviceRepository extends JpaRepository<DeviceReceiver, Long> 
+{
+    List<DeviceReceiver> findAll();
+    DeviceReceiver findByDevice(String device);
 }
 ```
 
