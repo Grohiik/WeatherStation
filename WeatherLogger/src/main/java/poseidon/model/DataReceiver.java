@@ -14,24 +14,18 @@ import javax.persistence.*;
  * @version 0.1.0
  */
 @Entity
-@Table(name = "weatherlog")
+@Table(name = "DATA_STORED")
 public class DataReceiver implements Serializable {
     @Serial private static final long serialVersionUID = -2343243243242432341L;
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private long id;
 
-    @Column(name = "time") private String time;
+    @Column(name = "value") private String value;
 
-    @Column(name = "temperature") private String temperature;
-
-    @Column(name = "humidity") private String humidity;
-
-    @Column(name = "light") private String light;
-
-    @Column(name = "batV") private String batV;
+    @Column(name = "created") private String created;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "device_id", nullable = false)
-    private DeviceReceiver device;
+    @JoinColumn(name = "type_id", nullable = false)
+    private DataTypeReceiver type;
 
     /**
      * Protected constructor required by Spring.
@@ -40,41 +34,27 @@ public class DataReceiver implements Serializable {
 
     /**
      * Default Constructor for DataReceiver. Initializes all the variables of this class, including
-     * the Device originating from DeviceReceiver.
+     * the data type originating from DataTypeReceiver.
      *
-     * @param time Indicates the time when the data was gathered.
-     * @param temperature The temperature at the given time.
-     * @param humidity The humidity at the given time.
-     * @param light The light-level at the given time.
-     * @param batV The current battery voltage remaining.
-     * @param device The device the data originates from.
+     * @param value     The value as such of the data received.
+     * @param created   The time the data was created.
+     * @param type      The type of data it is.
      */
-    public DataReceiver(String time, String temperature, String humidity, String light, String batV,
-                        DeviceReceiver device) {
-        this.time = time;
-        this.temperature = temperature;
-        this.humidity = humidity;
-        this.light = light;
-        this.batV = batV;
-        this.device = device;
+    public DataReceiver(String value, String created, DataTypeReceiver type) {
+        this.value = value;
+        this.created = created;
+        this.type = type;
     }
 
     /**
      * Constructor for DataReceiver, initializes the variables belonging to this class.
      *
-     * @param time Indicates the time when the data was gathered.
-     * @param temperature The temperature at the given time.
-     * @param humidity The humidity at the given time.
-     * @param light The light-level at the given time.
-     * @param batV The current battery voltage remaining.
+     * @param value The value as such of the data received.
+     * @param created The time the data was created.
      */
-    public DataReceiver(String time, String temperature, String humidity, String light,
-                        String batV) {
-        this.time = time;
-        this.temperature = temperature;
-        this.humidity = humidity;
-        this.light = light;
-        this.batV = batV;
+    public DataReceiver(String value, String created) {
+        this.value = value;
+        this.created = created;
     }
 
     public long getId() {
@@ -85,48 +65,24 @@ public class DataReceiver implements Serializable {
         this.id = id;
     }
 
-    public String getTime() {
-        return time;
+    public String getValue() {
+        return value;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setValue(String value) {
+        this.value = value;
     }
 
-    public String getTemperature() {
-        return temperature;
+    public String getCreated() {
+        return created;
     }
 
-    public void setTemperature(String temperature) {
-        this.temperature = temperature;
+    public void setCreated(String created) {
+        this.created = created;
     }
 
-    public String getHumidity() {
-        return humidity;
-    }
-
-    public void setHumidity(String humidity) {
-        this.humidity = humidity;
-    }
-
-    public String getLight() {
-        return light;
-    }
-
-    public void setLight(String light) {
-        this.light = light;
-    }
-
-    public String getBatV() {
-        return batV;
-    }
-
-    public void setBatV(String batV) {
-        this.batV = batV;
-    }
-
-    public long getDeviceId() {
-        return device.getId();
+    public long getDataTypeId() {
+        return type.getId();
     }
 
     /**
@@ -134,8 +90,6 @@ public class DataReceiver implements Serializable {
      */
     @Override
     public String toString() {
-        return String.format(
-            "DataReceiver[id=%d, time='%s', temperature='%s', humidity='%s', light='%s', batV='%s']",
-            id, time, temperature, humidity, light, batV);
+        return String.format("DataReceiver[id=%d, value='%s', created='%s']", id, value, created);
     }
 }
