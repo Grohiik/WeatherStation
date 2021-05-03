@@ -2,7 +2,7 @@ import { API_URL } from './env'
 
 export function listDevicesPath(): string {
   // TODO change to the correct device path when posible
-  return API_URL + '/getdevices'
+  return API_URL + '/ListDevices'
 }
 
 export function listDataTypePath(deviceName: string): string {

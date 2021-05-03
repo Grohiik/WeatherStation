@@ -1,5 +1,4 @@
-import { listDevicesPath } from './endpoints'
-
+import { listDataPath, listDataTypePath, listDevicesPath } from './endpoints'
 interface IDevice {
   device: string
   description: string
@@ -37,7 +36,16 @@ export async function getDeviceContent(
 ): Promise<IDeviceContent[]> {
   return new Promise<IDeviceContent[]>((resolve, rejects) => {
     // TODO make a funktion that gets device content
-    resolve([])
+    fetch(listDataTypePath(deviceName))
+      .then((response) => {
+        return response.json()
+      })
+      .then((value) => {
+        resolve(value as IDeviceContent[])
+      })
+      .catch ((error) => {
+        resolve([])
+      })
   })
 }
 
@@ -46,7 +54,16 @@ export async function getSpecificData(
   datatypes: string
 ): Promise<IDeviceData[]> {
   return new Promise<IDeviceData[]>((resolve, rejects) => {
-    // TODO make a funktion that gets specifick data from the specifick device
-    resolve([])
+    // TODO make a funktion that gets specific data from the specific device
+    fetch(listDataPath(deviceName, datatypes))
+      .then((response) => {
+        return response.json()
+      })
+      .then((value) => {
+        resolve(value as IDeviceData[])
+      })
+      .catch((error) => {
+        resolve([])
+      })
   })
 }

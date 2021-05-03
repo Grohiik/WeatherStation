@@ -1,24 +1,26 @@
-import { getListOfDevices } from './datafetch'
+import { getListOfDevices, getDeviceContent, getSpecificData } from './datafetch'
 import { addOptionToDropdown, createCanvas, createDropdown } from './view'
+import { Chart, DomPlatform } from 'chart.js'
 
 async function main() {
-  getListOfDevices().then((devicelist) => {
-    console.log(devicelist)
-  })
-
   const mainView = document.querySelector('#mainView') as HTMLElement
-  const canvascontext = createCanvas(mainView)
 
   const dropdown = createDropdown(mainView)
-  addOptionToDropdown(dropdown, 'Ademir')
-  addOptionToDropdown(dropdown, 'Ademir')
-  addOptionToDropdown(dropdown, 'Ademir')
-  addOptionToDropdown(dropdown, 'Ademir')
+  getListOfDevices()
+    .then(devicelist => {
+      for (let i = 0; i < devicelist.length; i++) {
+        addOptionToDropdown(dropdown, devicelist[i].device)
+      }
+
+      console.log(devicelist)
+    })
+
+  const canvascontext = createCanvas(mainView)
 
   const dropdownA = createDropdown(mainView)
-  const dropdownB = createDropdown(mainView)
-  const dropdownC = createDropdown(mainView)
-  const dropdownD = createDropdown(mainView)
+  addOptionToDropdown(dropdownA, 'Ademir')
+  addOptionToDropdown(dropdownA, 'Chris')
+  addOptionToDropdown(dropdownA, 'Ademir')
+  addOptionToDropdown(dropdownA, 'Ademir')
 }
-
 window.onload = main
