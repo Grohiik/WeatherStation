@@ -125,8 +125,8 @@ public class MqttHandler implements MqttCallback {
         }
 
         int headerIndex = 2;
-        if (checkDevice(header[0])) {
-            DeviceReceiver dReceiver = deviceRepository.findByDevice(header[0]);
+        if (checkDevice(dataString[0])) {
+            DeviceReceiver dReceiver = deviceRepository.findByDevice(dataString[0]);
             long id = dReceiver.getId();
 
             for (int i = 0; i < header.length && headerIndex <= header.length; i++) {
