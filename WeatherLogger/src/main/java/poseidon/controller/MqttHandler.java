@@ -204,12 +204,12 @@ public class MqttHandler implements MqttCallback {
      *
      * @return  Returns true if the device exists.
      */
-    private boolean checkDevice(String device) {
+    private boolean checkDevice(String deviceName) {
         boolean deviceExists = false;
 
         List<DeviceReceiver> checkForDevices = deviceRepository.findAll();
         for (DeviceReceiver deviceReceiver : checkForDevices) {
-            if (deviceReceiver.getDevice().equals(device)) {
+            if (deviceReceiver.getDevice().equals(deviceName)) {
                 deviceExists = true;
             }
         }
