@@ -37,8 +37,7 @@ public class WeatherController {
 
         DataTypeReceiver DataTyp1 =
             new DataTypeReceiver("Number", "Temperature", 0, "C", EriksDevice);
-        DataTypeReceiver DataTyp2 =
-            new DataTypeReceiver("Number", "Humidity", 0, "C", EriksDevice);
+        DataTypeReceiver DataTyp2 = new DataTypeReceiver("Number", "Humidity", 0, "C", EriksDevice);
         DataTypeReceiver DataTyp3 =
             new DataTypeReceiver("Number", "LightLevel", 0, "C", EriksDevice);
 
@@ -156,71 +155,4 @@ public class WeatherController {
 
         return dataUI;
     }
-    /*
-        @PostMapping("/create")
-        public String create(@RequestBody DataUI dataUI) {
-            deviceRepository.save(new DeviceReceiver(dataUI.getDevice()));
-            dataRepository.save(new DataReceiver(dataUI.getTime(), dataUI.getTemperature(),
-                                                 dataUI.getHumidity(), dataUI.getLight(),
-                                                 dataUI.getBatV()));
-
-            return "Tables and columns are created";
-        }
-
-        /**
-         * Method used to find all data on the SQL DB,
-         * using the GET request with specified mapping.
-         *
-         * @return all data stored on the DB as JSON
-
-        @GetMapping("/findall")
-        public List<DataUI> findAll() {
-            List<DataReceiver> dataReceiverList = dataRepository.findAll();
-            List<DeviceReceiver> deviceReceiverList = deviceRepository.findAll();
-            List<DataUI> dataUI = new ArrayList<>();
-
-            for (DeviceReceiver deviceReceiver : deviceReceiverList) {
-                for (DataReceiver dataReceiver : dataReceiverList) {
-                    if (dataReceiver.getDeviceId() == deviceReceiver.getId()) {
-                        dataUI.add(new DataUI(deviceReceiver.getDevice(), dataReceiver.getTime(),
-                                              dataReceiver.getTemperature(),
-       dataReceiver.getHumidity(), dataReceiver.getLight(), dataReceiver.getBatV()));
-                    }
-                }
-            }
-            return dataUI;
-        }
-
-        @GetMapping("/getdevices")
-        public List<DataUI> getdevices() {
-            List<DeviceReceiver> deviceReceiverList = deviceRepository.findAll();
-            List<DataUI> dataUI = new ArrayList<>();
-
-            for (DeviceReceiver deviceReceiver : deviceReceiverList) {
-                dataUI.add(new DataUI(deviceReceiver.getDevice()));
-            }
-            return dataUI;
-        }
-
-        @GetMapping("/findbydevice")
-        @ResponseBody
-        public List<DataUI> findByDevice(@RequestParam String input) {
-            List<DataReceiver> dataReceiverList = dataRepository.findAll();
-            List<DeviceReceiver> deviceReceiverList = deviceRepository.findAll();
-            List<DataUI> dataUI = new ArrayList<>();
-
-            for (DeviceReceiver deviceReceiver : deviceReceiverList) {
-                if (deviceReceiver.getDevice().equals(input)) {
-                    for (DataReceiver dataReceiver : dataReceiverList) {
-                        if (dataReceiver.getDeviceId() == deviceReceiver.getId()) {
-                            dataUI.add(new DataUI(deviceReceiver.getDevice(),
-       dataReceiver.getTime(), dataReceiver.getTemperature(), dataReceiver.getHumidity(),
-       dataReceiver.getLight(), dataReceiver.getBatV()));
-                        }
-                    }
-                    return dataUI;
-                }
-            }
-            return dataUI;
-        }*/
 }

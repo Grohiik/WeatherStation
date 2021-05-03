@@ -218,11 +218,11 @@ public class MqttHandler implements MqttCallback {
     }
 
     /**
-     * checks if a datatype exists in the database
+     * Checks if a datatype exists in the database.
      *
-     * @param dataType  the datatype to be checked
-     * @param device    the device who owns the datatype
-     * @return          Returns true if the datatype exists
+     * @param dataType  The datatype to be checked.
+     * @param device    The device who owns the datatype.
+     * @return          Returns true if the datatype exists.
      */
     private boolean checkDataType(String dataType, long device) {
         List<DataTypeReceiver> checkForDataTypes = dataTypeRepository.findAllByDevice_id(device);
