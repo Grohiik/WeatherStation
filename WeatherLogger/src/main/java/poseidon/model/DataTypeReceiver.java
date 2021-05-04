@@ -111,7 +111,7 @@ public class DataTypeReceiver implements Serializable {
      */
     @Override
     public String toString() {
-        return String.format("DataTypeReceiver[id=%d, type='%s', name='%s', count='%d', unit='%s']", id, type,
-                             name, count, unit);
+        return String.format("DataTypeReceiver[id=%d, type='%s', name='%s', count='%d', unit='%s']",
+                             id, type, name, count, unit);
     }
 }
