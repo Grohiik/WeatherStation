@@ -114,47 +114,49 @@ public class MqttHandler implements MqttCallback {
         var header = lines[0].split(",");    // splits the header at each ","
         var dataString = lines[1].split(",");
 
-        var deviceName = dataString[0];
+        String deviceName = dataString[0];
+        String time = dataString[1];
+        DeviceReceiver deviceReceiver = new DeviceReceiver(deviceName, "n/a");
 
-        HashMap<String, String> dataMap = new HashMap<String, String>();
-
-        if (header.length == dataString.length) {
-            for (int j = 0; j < header.length; j++) {
-                dataMap.put(header[j], dataString[j]);
-            }
-        }
-
-        int headerIndex = 2;
-        if (checkDevice(dataString[0])) {
-            DeviceReceiver dReceiver = deviceRepository.findByDevice(dataString[0]);
-            long id = dReceiver.getId();
-
-            for (int i = 0; i < header.length && headerIndex <= header.length; i++) {
-                if (checkDataType(header[headerIndex], id)) {
-                    for (String finalDataString : dataString) {
-                        var dataType = dataTypeRepository.findByType(finalDataString);
-                        storeData(dataType, finalDataString, dataMap.get("time"));
-                    }
-                } else {
-                    var typeArr = header[headerIndex].split(":");
-                    var dataTypeReceiver = storeType(dReceiver, typeArr[0], typeArr[1], "number");
-
-                    for (String finalDataString : dataString) {
-                        storeData(dataTypeReceiver, finalDataString, dataMap.get("time"));
-                    }
-                }
-                headerIndex++;
-            }
-
+        // Checks if the device exists, if not creates and stores a new device
+        if (checkDevice(deviceName)) {
+            deviceReceiver = getExistingDevice(deviceName);
         } else {
-            var device = storeDevice(deviceName);
+            storeDevice(deviceReceiver);
+        }
 
-            for (int i = 2; i < header.length; i++) {
-                var typeArr = header[i].split(":");
-                var dataTypeReceiver = storeType(device, typeArr[0], typeArr[1], "number");
-                storeData(dataTypeReceiver, dataString[i], dataMap.get("time"));
+        // creates a hashmap where DatatypeReceivers for the current device where the types are
+        // mapped to the type-names.
+        var typeMap = mapDataTypes(deviceReceiver);
+
+        // checks if the datatypes in the header exists, if not creates and stores the new types
+        for (int i = 2; i < header.length; i++) {
+            var nameAndUnit = header[i].split(":");
+            if (!checkDataType(typeMap.get(nameAndUnit[0]), deviceReceiver)) {
+                storeType(deviceReceiver, nameAndUnit[0], "number", nameAndUnit[1]);
             }
         }
+
+        // updates the typeMap to represent the current database
+        typeMap = mapDataTypes(deviceReceiver);
+
+        // stores the data with appropriate dataTypes
+        for (int i = 2; i < header.length; i++) {
+            var nameAndUnit = header[i].split(":");
+            storeData(typeMap.get(nameAndUnit[0]), dataString[i], time);
+        }
+    }
+
+    public HashMap<String, DataTypeReceiver> mapDataTypes(DeviceReceiver device) {
+        long id = device.getId();
+
+        var typeList = dataTypeRepository.findAllByDevice_id(id);
+        HashMap<String, DataTypeReceiver> typeMap = new HashMap<>();
+
+        for (DataTypeReceiver dataTypeReceiver : typeList) {
+            typeMap.put(dataTypeReceiver.getName(), dataTypeReceiver);
+        }
+        return typeMap;
     }
 
     /**
@@ -165,7 +167,8 @@ public class MqttHandler implements MqttCallback {
      * @param time  The timestamp to be sent with the data.
      */
     public void storeData(DataTypeReceiver type, String data, String time) {
-        dataRepository.save(new DataReceiver(data, time, type));
+        DataReceiver dataReceiver = new DataReceiver(data, time, type);
+        dataRepository.save(dataReceiver);
     }
 
     /**
@@ -179,7 +182,6 @@ public class MqttHandler implements MqttCallback {
      */
     public DataTypeReceiver storeType(DeviceReceiver device, String name, String type,
                                       String unit) {
-        // TODO add unit ie m, m/s etc
         long count = 0;
         DataTypeReceiver dataType = new DataTypeReceiver(type, name, count, unit, device);
         dataTypeRepository.save(dataType);
@@ -193,12 +195,16 @@ public class MqttHandler implements MqttCallback {
      *
      * @return              Returns a DeviceReceiver with the name deviceName.
      */
-    public DeviceReceiver storeDevice(String deviceName) {
-        var device = new DeviceReceiver(deviceName, "n/a");
+    public DeviceReceiver storeDevice(DeviceReceiver device) {
         deviceRepository.save(device);
         return device;
     }
 
+    public DeviceReceiver getExistingDevice(String deviceName) {
+        var device = deviceRepository.findByDevice(deviceName);
+
+        return device;
+    }
     /**
      * Checks if the device exists in the database.
      *
@@ -224,10 +230,17 @@ public class MqttHandler implements MqttCallback {
      * @param device    The device who owns the datatype.
      * @return          Returns true if the datatype exists.
      */
-    private boolean checkDataType(String dataType, long device) {
-        List<DataTypeReceiver> checkForDataTypes = dataTypeRepository.findAllByDevice_id(device);
+    private boolean checkDataType(DataTypeReceiver dataType, DeviceReceiver device) {
+        boolean dataTypeExtists = false;
+        long id = device.getId();
+        List<DataTypeReceiver> checkForDataTypes = dataTypeRepository.findAllByDevice_id(id);
 
-        boolean dataTypeExtists = checkForDataTypes.contains(dataType);
+        for (DataTypeReceiver dataTypeReceiver : checkForDataTypes) {
+            if (dataType != null && dataTypeReceiver.getName().equals(dataType.getName())) {
+                dataTypeExtists = true;
+                break;
+            }
+        }
 
         return dataTypeExtists;
     }
