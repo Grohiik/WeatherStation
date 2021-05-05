@@ -12,7 +12,15 @@ import {
   createDropdown,
   clearOptionsFromDropdrown
 } from './view'
-import { createLineGraph } from './graph'
+import {
+  createLineGraph,
+  clearChartData,
+  addChartDataset,
+  addChartLabel,
+  setChartLabels,
+  updateChart,
+  IDataset,
+} from './graph'
 
 async function main() {
   let deviceList: IDevice[] = []
@@ -24,6 +32,29 @@ async function main() {
 
   const mainView = document.querySelector('#mainView') as HTMLElement
   const canvas = createCanvas(mainView)
+  const graph = createLineGraph(canvas)
+  const dataset = {
+    data: [0, 3, 5, 6],
+    label: 'inte ademir',
+    borderColor: '#ff0f0f'
+  }
+  const dataset2 = {
+    data: [1, 9, -1, 6],
+    label: 'christian',
+    borderColor: '#ffff00'
+  }
+  const dataset3 = {
+    data: [-19, 1.54, -33, 6],
+    label: 'send help',
+    borderColor: '#00ff00'
+  }
+  addChartLabel(graph, '1')
+  addChartLabel(graph, '2')
+  addChartLabel(graph, '3')
+  addChartLabel(graph, '4')
+  addChartDataset(graph, dataset)
+  addChartDataset(graph, dataset2)
+  addChartDataset(graph, dataset3)
 
   const dropdownDevice = createDropdown(mainView)
   const dropdownData = createDropdown(mainView)
@@ -57,9 +88,9 @@ async function main() {
       .then(datas => {
         currentData = datas
         // TODO: Draw to graph
+
       })
   }
-
 }
 
 window.onload = main

@@ -7,6 +7,7 @@ export interface IDevice {
 
 export interface IDeviceContent {
   name: string
+  
   type: string
   unit: string
   count: number
@@ -36,7 +37,6 @@ export async function getDeviceContent(
   deviceName: string
 ): Promise<IDeviceContent[]> {
   return new Promise<IDeviceContent[]>((resolve, rejects) => {
-    // TODO make a function that gets device content
     fetch(listDataTypePath(deviceName))
       .then((response) => {
         return response.json()
@@ -55,7 +55,6 @@ export async function getSpecificData(
   datatypes: string
 ): Promise<IDeviceData[]> {
   return new Promise<IDeviceData[]>((resolve, rejects) => {
-    // TODO make a function that gets specific data from the specific device
     fetch(listDataPath(deviceName, datatypes))
       .then((response) => {
         return response.json()

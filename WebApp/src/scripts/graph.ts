@@ -6,9 +6,17 @@ export interface ILineGraph {
   legend: string
 }
 
+export interface IDataset {
+  data: number[],
+  label: string,
+  borderColor: string
+}
+
+type TLineChart = Chart<'line', number[], string>
+
 export function createLineGraph(canvas: HTMLCanvasElement)
-  : Chart<'line', string[], number> {
-  return new Chart<'line', string[], number>(
+  : TLineChart {
+  return new Chart<'line', number[], string>(
     canvas, {
       type: 'line',
       data: {
@@ -19,20 +27,23 @@ export function createLineGraph(canvas: HTMLCanvasElement)
   )
 }
 
-export function setLineData(chart: Chart<'line', string[], number>,
-  data: ILineGraph) {
-  // TODO: Set the data into the graph
+export function addChartDataset(chart: Chart, dataset: IDataset): void {
+  chart.data.datasets.push(dataset)
 }
 
-export function updateGraph(chart: Chart) {
-  // TODO: Update graph
+export function setChartLabels(chart: Chart, labels: string[]): void {
+  chart.data.labels = labels;
+}
+
+export function addChartLabel(chart: Chart, label: string): void {
+  chart.data.labels?.push(label)
+}
+
+export function updateChart(chart: Chart): void {
   chart.update()
-  updateChart(chart:Chart):void {
-  }
 }
 
-export function clearData(chart: Chart): void {
-  // Clears the datachart
+export function clearChartData(chart: Chart): void {
   chart.data.labels = []
   chart.data.datasets = []
 }

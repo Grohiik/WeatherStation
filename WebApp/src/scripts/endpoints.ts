@@ -1,7 +1,6 @@
 import { API_URL } from './env'
 
 export function listDevicesPath(): string {
-  // TODO change to the correct device path when posible
   return API_URL + '/ListDevices'
 }
 
