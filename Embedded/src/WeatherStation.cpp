@@ -14,7 +14,6 @@
 
 #include <Arduino.h>
 #include <WiFi.h>
-#include <WiFiMulti.h>
 #include <MQTT.h>
 #include <SD.h>
 
@@ -34,7 +33,6 @@ constexpr auto MQTT_CONNECTION_WAIT_TIME = 250U;            // Time in ms
 // clang-format on
 
 // Global objects
-WiFiMulti wifiMulti;                // WiFi multi access point
 WiFiClient wifiClient;              // WiFi Client for MQTT
 MQTTClient mqttClient;              // MQTT connection client
 poseidon::WeatherData weatherData;  // Weather data collection and storage
@@ -50,7 +48,7 @@ bool connect() {
     uint16_t counter = 0;
 
     POSEIDON_LOG("Checking WiFi...\n");
-    while (wifiMulti.run() != WL_CONNECTED) {
+    while (WiFi.status() != WL_CONNECTED) {
         POSEIDON_LOG(".");
         delay(WIFI_CONNECTION_WAIT_TIME);
         if (counter >= MAX_CONNECTION_TRIES) {
@@ -99,14 +97,12 @@ void setup() {
     weatherData.init();
     logger.logBattery();
 
-    weatherData.toCSV();
     mqttClient.begin(MQTT_BROKER_IP, wifiClient);
 
-    wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD);
-    wifiMulti.addAP(WIFI_SSID1, WIFI_PASSWORD1);
+    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
     weatherData.collectData();
-    logger.logAllData(weatherData);
+    logger.logData(weatherData);
 
     const bool connectionStatus = connect();
 
@@ -114,7 +110,7 @@ void setup() {
         send(weatherData.toCSV());
     } else {
         POSEIDON_LOG("LOG TO SD-CARD\n");
-        logger.logData(weatherData);
+        logger.logBackup(weatherData);
     }
 
     sleep();

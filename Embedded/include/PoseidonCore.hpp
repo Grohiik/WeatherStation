@@ -2,7 +2,7 @@
  * @file    PoseidonCore.hpp
  * @author  Pratchaya Khansomboon (pratchaya.k.git@gmail.com)
  * @brief   Poseidon core configurations
- * @version 0.1.0
+ * @version 0.2.0
  * @date    2021-04-08
  *
  * @copyright Copyright (c) 2021
@@ -14,8 +14,6 @@
 #ifndef POSEIDON_CONFIGURATION
 constexpr auto WIFI_SSID      = "YOUR_SSID";
 constexpr auto WIFI_PASSWORD  = "YOUR_WIFI_PASSWORD";
-constexpr auto WIFI_SSID1     = "YOUR_SSID";
-constexpr auto WIFI_PASSWORD1 = "YOUR_WIFI_PASSWORD";
 
 constexpr auto MQTT_BROKER_IP = "YOUR_BROKER_IP";
 constexpr auto MQTT_USERNAME  = "YOUR_BROKER_USERNAME";
