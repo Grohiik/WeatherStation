@@ -4,13 +4,13 @@ import {
   getSpecificData,
   IDevice,
   IDeviceContent,
-  IDeviceData
+  IDeviceData,
 } from './datafetch'
 import {
   addOptionToDropdown,
   createCanvas,
   createDropdown,
-  clearOptionsFromDropdrown
+  clearOptionsFromDropdrown,
 } from './view'
 import {
   createLineGraph,
@@ -31,65 +31,71 @@ async function main() {
   let currentData: IDeviceData[] = []
 
   const mainView = document.querySelector('#mainView') as HTMLElement
+
+  const dropdownDevice = createDropdown(mainView)
+  const dropdownData = createDropdown(mainView)
+
   const canvas = createCanvas(mainView)
   const graph = createLineGraph(canvas)
+
   const dataset = {
     data: [0, 3, 5, 6],
     label: 'inte ademir',
-    borderColor: '#ff0f0f'
+    borderColor: '#ff0f0f',
   }
   const dataset2 = {
     data: [1, 9, -1, 6],
     label: 'christian',
-    borderColor: '#ffff00'
+    borderColor: '#ffff00',
   }
   const dataset3 = {
     data: [-19, 1.54, -33, 6],
     label: 'send help',
-    borderColor: '#00ff00'
+    borderColor: '#00ff00',
   }
   addChartLabel(graph, '1')
   addChartLabel(graph, '2')
   addChartLabel(graph, '3')
   addChartLabel(graph, '4')
-  addChartDataset(graph, dataset)
-  addChartDataset(graph, dataset2)
-  addChartDataset(graph, dataset3)
+  // addChartDataset(graph, dataset)
+  // addChartDataset(graph, dataset2)
+  // addChartDataset(graph, dataset3)
 
-  const dropdownDevice = createDropdown(mainView)
-  const dropdownData = createDropdown(mainView)
   dropdownDevice.addEventListener('change', onDeviceSelect)
   dropdownData.addEventListener('change', onDeviceContentSelect)
 
-  getListOfDevices()
-    .then(devices => {
-      deviceList = devices
-      deviceList.forEach(current => {
-        addOptionToDropdown(dropdownDevice, current.device)
-      })
+  getListOfDevices().then((devices) => {
+    deviceList = devices
+    deviceList.forEach((current) => {
+      addOptionToDropdown(dropdownDevice, current.device)
     })
+  })
 
   function onDeviceSelect() {
-    currentDevice = deviceList[dropdownDevice.selectedIndex -1]
+    currentDevice = deviceList[dropdownDevice.selectedIndex - 1]
     deviceContentList = []
     clearOptionsFromDropdrown(dropdownData)
-    getDeviceContent(currentDevice.device)
-      .then(contents => {
-        deviceContentList = contents
-        deviceContentList.forEach(content => {
-          addOptionToDropdown(dropdownData, content.name)
-        })
+    getDeviceContent(currentDevice.device).then((contents) => {
+      deviceContentList = contents
+      deviceContentList.forEach((content) => {
+        addOptionToDropdown(dropdownData, content.name)
       })
+    })
   }
 
   function onDeviceContentSelect() {
-    currentContent = deviceContentList[dropdownData.selectedIndex]
-    getSpecificData(currentDevice.device, currentContent.name)
-      .then(datas => {
-        currentData = datas
-        // TODO: Draw to graph
-
-      })
+    currentContent = deviceContentList[dropdownData.selectedIndex - 1]
+    getSpecificData(currentDevice.device, currentContent.name).then((datas) => {
+      currentData = datas
+      // TODO: Draw to graph
+      for (let i = 0; i < currentData.length; i++) {
+        console.log(currentData)
+        console.log(currentContent)
+        addChartDataset(graph, dataset)
+        updateChart(graph)
+        clearChartData(graph)
+      }
+    })
   }
 }
 

@@ -1,10 +1,3 @@
-export function createCanvas(parent: HTMLElement): HTMLCanvasElement {
-  const canvas = document.createElement('canvas')
-  canvas.id = 'dataviewer'
-  parent.appendChild(canvas)
-  return canvas
-}
-
 export function createDropdown(
   parent: HTMLElement,
   defaultvalue = 'Select'
@@ -27,6 +20,13 @@ export function addOptionToDropdown(
   const option = document.createElement('option')
   option.text = name
   dropdown.appendChild(option)
+}
+
+export function createCanvas(parent: HTMLElement): HTMLCanvasElement {
+  const canvas = document.createElement('canvas')
+  canvas.id = 'dataviewer'
+  parent.appendChild(canvas)
+  return canvas
 }
 
 export function clearOptionsFromDropdrown(dropdown: HTMLSelectElement): void {

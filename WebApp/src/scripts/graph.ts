@@ -7,24 +7,21 @@ export interface ILineGraph {
 }
 
 export interface IDataset {
-  data: number[],
-  label: string,
+  data: number[]
+  label: string
   borderColor: string
 }
 
 type TLineChart = Chart<'line', number[], string>
 
-export function createLineGraph(canvas: HTMLCanvasElement)
-  : TLineChart {
-  return new Chart<'line', number[], string>(
-    canvas, {
-      type: 'line',
-      data: {
-        labels: [],
-        datasets: [],
-      },
-    }
-  )
+export function createLineGraph(canvas: HTMLCanvasElement): TLineChart {
+  return new Chart<'line', number[], string>(canvas, {
+    type: 'line',
+    data: {
+      labels: [],
+      datasets: [],
+    },
+  })
 }
 
 export function addChartDataset(chart: Chart, dataset: IDataset): void {
@@ -32,7 +29,7 @@ export function addChartDataset(chart: Chart, dataset: IDataset): void {
 }
 
 export function setChartLabels(chart: Chart, labels: string[]): void {
-  chart.data.labels = labels;
+  chart.data.labels = labels
 }
 
 export function addChartLabel(chart: Chart, label: string): void {

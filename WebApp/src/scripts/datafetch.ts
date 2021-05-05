@@ -7,7 +7,6 @@ export interface IDevice {
 
 export interface IDeviceContent {
   name: string
-  
   type: string
   unit: string
   count: number
@@ -44,7 +43,7 @@ export async function getDeviceContent(
       .then((value) => {
         resolve(value as IDeviceContent[])
       })
-      .catch ((error) => {
+      .catch((error) => {
         resolve([])
       })
   })
