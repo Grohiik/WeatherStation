@@ -28,7 +28,6 @@ export function updateGraph(chart: Chart) {
   // TODO: Update graph
   chart.update()
   updateChart(chart:Chart):void {
-    
   }
 }
 

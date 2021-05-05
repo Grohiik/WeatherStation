@@ -39,7 +39,7 @@ async function main() {
     })
 
   function onDeviceSelect() {
-    currentDevice = deviceList[dropdownDevice.selectedIndex]
+    currentDevice = deviceList[dropdownDevice.selectedIndex -1]
     deviceContentList = []
     clearOptionsFromDropdrown(dropdownData)
     getDeviceContent(currentDevice.device)

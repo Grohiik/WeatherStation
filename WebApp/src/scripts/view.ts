@@ -30,5 +30,5 @@ export function addOptionToDropdown(
 }
 
 export function clearOptionsFromDropdrown(dropdown: HTMLSelectElement): void {
-  for (let i = 1; i < dropdown.length; i++) dropdown.remove(i)
+  for (let i = dropdown.length; i >= 1; i--) dropdown.remove(i)
 }
