@@ -7,10 +7,11 @@ export function createCanvas(parent: HTMLElement): HTMLCanvasElement {
 
 export function createDropdown(
   parent: HTMLElement,
-  defaultvalue = 'select'
+  defaultvalue = 'Select'
 ): HTMLSelectElement {
   const dropdown = document.createElement('select')
   const option = document.createElement('option')
+
   option.value = 'default-value'
   option.text = defaultvalue
   dropdown.appendChild(option)
@@ -29,5 +30,5 @@ export function addOptionToDropdown(
 }
 
 export function clearOptionsFromDropdrown(dropdown: HTMLSelectElement): void {
-  dropdown.innerHTML = ''
+  for (let i = 1; i < dropdown.length; i++) dropdown.remove(i)
 }

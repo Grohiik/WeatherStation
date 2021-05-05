@@ -1,26 +1,65 @@
-import { getListOfDevices, getDeviceContent, getSpecificData } from './datafetch'
-import { addOptionToDropdown, createCanvas, createDropdown } from './view'
-import { Chart, DomPlatform } from 'chart.js'
+import {
+  getListOfDevices,
+  getDeviceContent,
+  getSpecificData,
+  IDevice,
+  IDeviceContent,
+  IDeviceData
+} from './datafetch'
+import {
+  addOptionToDropdown,
+  createCanvas,
+  createDropdown,
+  clearOptionsFromDropdrown
+} from './view'
+import { createLineGraph } from './graph'
 
 async function main() {
+  let deviceList: IDevice[] = []
+  let deviceContentList: IDeviceContent[] = []
+
+  let currentDevice: IDevice
+  let currentContent: IDeviceContent
+  let currentData: IDeviceData[] = []
+
   const mainView = document.querySelector('#mainView') as HTMLElement
+  const canvas = createCanvas(mainView)
 
-  const dropdown = createDropdown(mainView)
+  const dropdownDevice = createDropdown(mainView)
+  const dropdownData = createDropdown(mainView)
+  dropdownDevice.addEventListener('change', onDeviceSelect)
+  dropdownData.addEventListener('change', onDeviceContentSelect)
+
   getListOfDevices()
-    .then(devicelist => {
-      for (let i = 0; i < devicelist.length; i++) {
-        addOptionToDropdown(dropdown, devicelist[i].device)
-      }
-
-      console.log(devicelist)
+    .then(devices => {
+      deviceList = devices
+      deviceList.forEach(current => {
+        addOptionToDropdown(dropdownDevice, current.device)
+      })
     })
 
-  const canvascontext = createCanvas(mainView)
+  function onDeviceSelect() {
+    currentDevice = deviceList[dropdownDevice.selectedIndex]
+    deviceContentList = []
+    clearOptionsFromDropdrown(dropdownData)
+    getDeviceContent(currentDevice.device)
+      .then(contents => {
+        deviceContentList = contents
+        deviceContentList.forEach(content => {
+          addOptionToDropdown(dropdownData, content.name)
+        })
+      })
+  }
 
-  const dropdownA = createDropdown(mainView)
-  addOptionToDropdown(dropdownA, 'Ademir')
-  addOptionToDropdown(dropdownA, 'Chris')
-  addOptionToDropdown(dropdownA, 'Ademir')
-  addOptionToDropdown(dropdownA, 'Ademir')
+  function onDeviceContentSelect() {
+    currentContent = deviceContentList[dropdownData.selectedIndex]
+    getSpecificData(currentDevice.device, currentContent.name)
+      .then(datas => {
+        currentData = datas
+        // TODO: Draw to graph
+      })
+  }
+
 }
+
 window.onload = main
