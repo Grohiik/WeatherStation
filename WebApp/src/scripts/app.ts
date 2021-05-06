@@ -21,6 +21,7 @@ import {
   updateChart,
   IDataset,
 } from './graph'
+import { Chart } from 'chart.js'
 
 async function main() {
   let deviceList: IDevice[] = []
@@ -39,7 +40,7 @@ async function main() {
   const graph = createLineGraph(canvas)
 
   const dataset = {
-    data: [0, 3, 5, 6],
+    data: [0, 3, 5, 6, 7],
     label: 'inte ademir',
     borderColor: '#ff0f0f',
   }
@@ -88,12 +89,38 @@ async function main() {
     getSpecificData(currentDevice.device, currentContent.name).then((datas) => {
       currentData = datas
       // TODO: Draw to graph
+      // Detta är bara en skiss på en lösning, ingen kommplet lösning
       for (let i = 0; i < currentData.length; i++) {
+        IDeviceData.push({})
+      }
+      var subjectsData = {
+        labels:Response.labels.split(','),
+        datasets:IDeviceData
+      }
+      var options={
+        scales:{
+          yAxes:[{
+            ticks:{
+              beginAtZero:true
+            },
+          scaleLabel:{
+            display:true,
+            labelString: 'Sky',
+            fontSize: 14
+            }
+          }]
+        }
+      };
+    var Skycollectdata = new Chart(IDeviceData,{
+      options: options
+      subjectsData: Value
+      
+    })
         console.log(currentData)
         console.log(currentContent)
-        addChartDataset(graph, dataset)
-        updateChart(graph)
-        clearChartData(graph)
+        // addChartDataset(graph, dataset)
+        // updateChart(graph)
+        // clearChartData(graph)
       }
     })
   }
