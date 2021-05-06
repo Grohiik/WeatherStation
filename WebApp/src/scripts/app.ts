@@ -86,43 +86,27 @@ async function main() {
 
   function onDeviceContentSelect() {
     currentContent = deviceContentList[dropdownData.selectedIndex - 1]
-    getSpecificData(currentDevice.device, currentContent.name).then((datas) => {
-      currentData = datas
-      // TODO: Draw to graph
-      // Detta är bara en skiss på en lösning, ingen kommplet lösning
-      for (let i = 0; i < currentData.length; i++) {
-        IDeviceData.push({})
-      }
-      var subjectsData = {
-        labels:Response.labels.split(','),
-        datasets:IDeviceData
-      }
-      var options={
-        scales:{
-          yAxes:[{
-            ticks:{
-              beginAtZero:true
-            },
-          scaleLabel:{
-            display:true,
-            labelString: 'Sky',
-            fontSize: 14
-            }
-          }]
+    getSpecificData(currentDevice.device, currentContent.name)
+      .then(datas => {
+        currentData = datas
+        const dataset: IDataset = {
+          data: [],
+          label: '',
+          borderColor: '#ff0000'
         }
-      };
-    var Skycollectdata = new Chart(IDeviceData,{
-      options: options
-      subjectsData: Value
-      
-    })
-        console.log(currentData)
-        console.log(currentContent)
-        // addChartDataset(graph, dataset)
-        // updateChart(graph)
-        // clearChartData(graph)
-      }
-    })
+        const labels: string[] = []
+        clearChartData(graph)
+
+        for (let i = 0; i < currentData.length; i++) {
+          const date = new Date(Number(currentData[i].created) * 1000)
+          labels.push(date.toLocaleString('se-SE', { timeZone: 'UTC' }))
+          dataset.data.push(Number(currentData[i].value))
+        }
+
+        setChartLabels(graph, labels)
+        addChartDataset(graph, dataset)
+        updateChart(graph)
+      })
   }
 }
 
