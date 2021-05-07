@@ -22,6 +22,9 @@
 ## NodeJS
 **/node_modules
 
+## Environments variables
+**/.env
+
 ## Spring server configuration
 **/application.yml
 

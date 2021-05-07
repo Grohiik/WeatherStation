@@ -1,4 +1,23 @@
 html,
 body {
+  margin: 0;
   font-family: 'Roboto', sans-serif;
+
+  background-color: #ffffff;
+  color: #000000;
+
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  height: 100%;
+}
+
+footer {
+  height: 50pt;
 }
