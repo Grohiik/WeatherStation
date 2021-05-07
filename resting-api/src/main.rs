@@ -25,17 +25,13 @@ struct Data {
 
 #[tokio::main]
 async fn main() {
-    let list_devices = warp::path("api")
-        .and(warp::path("list"))
-        .and(warp::path("devices"))
-        .map(|| {
-            let mut devices = Vec::new();
-            fetch_devices(&mut devices).expect("blub");
-            warp::reply::json(&devices)
-        });
+    let list_devices = warp::path("list").and(warp::path("devices")).map(|| {
+        let mut devices = Vec::new();
+        fetch_devices(&mut devices).expect("blub");
+        warp::reply::json(&devices)
+    });
 
-    let get_data_types = warp::path("api")
-        .and(warp::path("list"))
+    let get_data_types = warp::path("list")
         .and(warp::path("types"))
         .and(warp::path::param())
         .map(|device_name: String| {
@@ -44,8 +40,7 @@ async fn main() {
             warp::reply::json(&data_types)
         });
 
-    let get_data = warp::path("api")
-        .and(warp::path::path("data"))
+    let get_data = warp::path::path("data")
         .and(warp::path::param())
         .and(warp::path::param())
         .map(|device_name: String, data_type: String| {
@@ -60,10 +55,7 @@ async fn main() {
 }
 
 fn fetch_devices(output: &mut Vec<Devise>) -> Result<(), Error> {
-    let mut client = Client::connect(
-        "postgresql://miku:!EH^uG*x^bvLDC%K`(pPK2(qC5AR#U~Z@159.65.203.164/development",
-        NoTls,
-    )?;
+    let mut client = Client::connect("redacted", NoTls)?;
 
     for row in client.query("SELECT device_name, created_at FROM devices", &[])? {
         let devices = Devise {
@@ -77,10 +69,7 @@ fn fetch_devices(output: &mut Vec<Devise>) -> Result<(), Error> {
 }
 
 fn fetch_data_types(output: &mut Vec<DataType>, device: String) -> Result<(), Error> {
-    let mut client = Client::connect(
-        "postgresql://miku:!EH^uG*x^bvLDC%K`(pPK2(qC5AR#U~Z@159.65.203.164/development",
-        NoTls,
-    )?;
+    let mut client = Client::connect("redacted", NoTls)?;
     let q = format!("SELECT t.name, t.unit, t.count, t.created_at FROM devices d, data_types t WHERE t.device_id = d.id and d.device_name = '{}'", device);
     for row in client.query(q.as_str(), &[])? {
         let data_types = DataType {
@@ -97,10 +86,7 @@ fn fetch_data_types(output: &mut Vec<DataType>, device: String) -> Result<(), Er
 //"SELECT da.value, da.time FROM data_storeds da, data_types t, devices d WHERE t.id = da.type_id and t.name = '{}' and t.device_id = d.id and d.device_name = '{}'"
 
 fn fetch_data(output: &mut Vec<Data>, device: String, datatype: String) -> Result<(), Error> {
-    let mut client = Client::connect(
-        "postgresql://miku:!EH^uG*x^bvLDC%K`(pPK2(qC5AR#U~Z@159.65.203.164/development",
-        NoTls,
-    )?;
+    let mut client = Client::connect("redacted", NoTls)?;
     let q = format!("SELECT da.value, da.time FROM data_storeds da, data_types t, devices d WHERE t.id = da.type_id and t.name = '{}' and t.device_id = d.id and d.device_name = '{}'", datatype, device);
     for row in client.query(q.as_str(), &[])? {
         let data = Data {
