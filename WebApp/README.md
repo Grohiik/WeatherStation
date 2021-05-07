@@ -14,19 +14,37 @@ This project uses nodejs and npm for bundling the HTML, CSS and TypeScript. You'
 
 `cd` into the WebApp directory to start developing.
 
-Install the packages
+**Install the packages**
 
 ```
 npm install
 ```
 
-Run the development server
+**Run the development server**
 
 ```shell
 npm run dev
 ```
 
-Build the distribution
+**Clean the builds**
+
+```
+npm run clean
+```
+
+**Test the code style**
+
+```
+npm run test:eslint
+```
+
+**Run auto fix**
+
+```
+npm run fix:eslint
+```
+
+**Build the distribution**
 
 ```shell
 npm run build
@@ -45,6 +63,22 @@ These extensions are recommended when you're developing on vscode.
 
 The code documentation should follow [JSDoc](https://jsdoc.app).
 
+### Environments variables
+
+Create `.env` like the the one in the [WebApp Project Structure](#webapp-project-structure).
+
+Example: Define a key in `.env` file
+
+```
+API_URL='insert your API URL here'
+```
+
+USAGE:
+
+```ts
+console.log(process.env.API_URL)
+```
+
 ### WebApp Project Structure
 
 ```
@@ -54,6 +88,7 @@ WebApp
 │  │  └─ app.ts
 │  ├─ index.html
 │  └─ main.css
+├─ .env
 ├─ .eslintrc.yml
 ├─ .prettierrc
 ├─ package-lock.json
