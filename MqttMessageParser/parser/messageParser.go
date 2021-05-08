@@ -1,13 +1,21 @@
-package main
+package parser
 
 import (
 	"fmt"
 	"strings"
 
+	"MqttMessageParser/model"
+
 	"github.com/jinzhu/gorm"
 )
 
-func splitStore(msg []byte) {
+var db *gorm.DB
+
+func SetDatabaseConnection(conn *gorm.DB) {
+	db = conn
+}
+
+func SplitStore(msg []byte) {
 	fmt.Println("Parsing message....")
 	var msgString = string(msg)
 	lines := strings.Split(msgString, "\n")
@@ -26,24 +34,24 @@ func splitStore(msg []byte) {
 	fmt.Println("done")
 }
 
-func storeDevice(name string) Devices {
-	device := Devices{}
-	db.FirstOrCreate(&device, Devices{Name: name})
+func storeDevice(name string) model.Devices {
+	device := model.Devices{}
+	db.FirstOrCreate(&device, model.Devices{Name: name})
 
 	return device
 }
 
-func storeType(deviceid uint, name string, unit string) Data_Types {
-	dataType := Data_Types{}
-	db.FirstOrCreate(&dataType, Data_Types{Unit: unit, Name: name, DeviceID: deviceid})
+func storeType(deviceid uint, name string, unit string) model.Data_Types {
+	dataType := model.Data_Types{}
+	db.FirstOrCreate(&dataType, model.Data_Types{Unit: unit, Name: name, DeviceID: deviceid})
 
 	return dataType
 }
 
 func storeData(typeid uint, data string, time string) {
-	dataPoint := Data_Stored{Value: data, Time: time, Data_TypesID: typeid}
+	dataPoint := model.Data_Stored{Value: data, Time: time, Data_TypesID: typeid}
 
 	db.Create(&dataPoint)
-	db.Model(&Data_Types{}).Where("id = ?", typeid).Update("count", gorm.Expr("count + ?", 1))
+	db.Model(&model.Data_Types{}).Where("id = ?", typeid).Update("count", gorm.Expr("count + ?", 1))
 
 }

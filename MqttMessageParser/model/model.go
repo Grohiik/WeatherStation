@@ -1,17 +1,22 @@
-package main
+package model
 
 import (
+	"time"
+
 	"gorm.io/gorm"
 )
 
 type Model struct {
-	ID uint
+	ID        uint8      `gorm:"autoIncrement;primary_key;"`
+	CreatedAt time.Time  `gorm:"autoCreateTime"`
+	UpdatedAt time.Time  `gorm:"autoUpdateTime"`
+	DeletedAt *time.Time `sql:"index"`
 }
 
 type Devices struct {
 	gorm.Model
 	DataTypes []Data_Types
-	Name      string `gorm:"column:device_name"`
+	Name      string `gorm:"column:device_name;unique"`
 }
 
 type Data_Types struct {
