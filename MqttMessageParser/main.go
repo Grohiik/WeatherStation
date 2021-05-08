@@ -5,6 +5,10 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
+
+	"MqttMessageParser/model"
+	"MqttMessageParser/parser"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/jinzhu/gorm"
@@ -27,7 +31,6 @@ func init() {
 	dbHost := os.Getenv("db_host")
 
 	dbUri := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable password=%s", dbHost, username, dbName, password) //Build connection string
-	fmt.Println(dbUri)
 
 	conn, err := gorm.Open("postgres", dbUri)
 	if err != nil {
@@ -36,15 +39,21 @@ func init() {
 
 	db = conn
 
-	db.DropTable(&Devices{}, &Data_Types{}, Data_Stored{})
-	db.AutoMigrate(&Devices{}, &Data_Types{}, &Data_Stored{})
+	// db.DropTableIfExists(&model.Devices{}, &model.Data_Types{}, model.Data_Stored{})
+	db.AutoMigrate(&model.Devices{}, &model.Data_Types{}, &model.Data_Stored{})
+
+	parser.SetDatabaseConnection(db)
 
 	mqttConnect()
 }
 
 var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
-	fmt.Printf("received message : %s from topic: %s\n", msg.Payload(), msg.Topic())
-	go splitStore(msg.Payload())
+	fmt.Printf("---> [%s] received message: \n%s\n---> from topic: %s\n",
+		time.Now().Format("2006-01-02 15:04:05"),
+		msg.Payload(),
+		msg.Topic())
+
+	go parser.SplitStore(msg.Payload())
 }
 
 var connectHandler mqtt.OnConnectHandler = func(client mqtt.Client) {
@@ -67,7 +76,7 @@ func mqttConnect() {
 	pass := os.Getenv("mqtt_pass")
 	feed := os.Getenv("mqtt_feed")
 
-	fmt.Println("Starting client")
+	fmt.Printf("---> [%s] Starting client\n", time.Now().Format("2006-01-02 15:04:05"))
 
 	opts := mqtt.NewClientOptions()
 	opts.AddBroker(url)
@@ -96,5 +105,5 @@ func subscribe(client mqtt.Client, feed string) {
 	token := client.Subscribe(topic, 1, nil)
 
 	token.Wait()
-	fmt.Printf("Subscribed to: %s", topic)
+	fmt.Printf("Subscribed to: %s\n", topic)
 }
