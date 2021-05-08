@@ -10,3 +10,6 @@ AlignTrailingComments: true
 AlignAfterOpenBracket: Align
 UseCRLF: false
 AllowShortIfStatementsOnASingleLine: WithoutElse
+BreakAfterJavaFieldAnnotations: true
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortFunctionsOnASingleLine: Inline
