@@ -15,7 +15,7 @@ import poseidon.view.v2.*;
  * @version 0.1.0
  */
 @RestController
-@RequestMapping(value = "api/v2/")
+@RequestMapping(value = "api/v2")
 public class DataController {
     @Autowired
     DeviceRepository deviceRepository;
