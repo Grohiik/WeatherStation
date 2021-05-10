@@ -21,6 +21,7 @@ import {
   updateChart,
   IDataset,
 } from './graph'
+import { upperCasefirst } from './utilities'
 
 async function main() {
   let deviceList: IDevice[] = []
@@ -44,7 +45,8 @@ async function main() {
   getListOfDevices().then((devices) => {
     deviceList = devices
     deviceList.forEach((current) => {
-      addOptionToDropdown(dropdownDevice, current.device)
+      const name = upperCasefirst(current.device)
+      addOptionToDropdown(dropdownDevice, name)
     })
   })
 
@@ -55,7 +57,8 @@ async function main() {
     getDeviceContent(currentDevice.device).then((contents) => {
       deviceContentList = contents
       deviceContentList.forEach((content) => {
-        addOptionToDropdown(dropdownData, content.name)
+        const name = upperCasefirst(content.name)
+        addOptionToDropdown(dropdownData, name)
       })
     })
   }
@@ -66,7 +69,7 @@ async function main() {
       currentData = datas
       const dataset: IDataset = {
         data: [],
-        label: '',
+        label: upperCasefirst(currentContent.name),
         borderColor: '#ff0000',
       }
       const labels: string[] = []
@@ -82,7 +85,6 @@ async function main() {
       addChartDataset(graph, dataset)
       updateChart(graph)
     })
-    clearChartData(graph)
   }
 }
 
