@@ -18,7 +18,6 @@ type Data_Types struct {
 	gorm.Model
 	Datas    []Data_Stored
 	DeviceID uint
-	Type     string
 	Name     string
 	Count    uint
 	Unit     string

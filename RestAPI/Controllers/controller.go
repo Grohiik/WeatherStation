@@ -18,6 +18,29 @@ func GetDevices(c *gin.Context) {
 	}
 }
 
+func GetDataTypes(c *gin.Context) {
+	device := c.Params.ByName("device_name")
+	var data_types []Models.Data_Types
+	err := Models.GetDataTypesByDevice(&data_types, device)
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	} else {
+		c.JSON(http.StatusOK, data_types)
+	}
+}
+
+func GetAllData(c *gin.Context) {
+	data_types := c.Params.ByName("name")
+	device := c.Params.ByName("device")
+	var data_stored []Models.Data_Stored
+	err := Models.GetDataByDeviceAndDataType(&data_stored, data_types, device)
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	} else {
+		c.JSON(http.StatusOK, data_stored)
+	}
+}
+
 /*
 
 //CreateUser ... Create User

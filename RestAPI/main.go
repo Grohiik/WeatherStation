@@ -18,6 +18,8 @@ func main() {
 	}
 	defer Config.DB.Close()
 	Config.DB.AutoMigrate(&Models.Devices{})
+	Config.DB.AutoMigrate(&Models.Data_Types{})
+	Config.DB.AutoMigrate(&Models.Data_Stored{})
 	r := Routes.SetupRouter()
 	//running
 	r.Run()
