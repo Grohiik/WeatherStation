@@ -45,23 +45,30 @@ public class DataController {
     }
 
     @GetMapping("/list/datas/{deviceName}/{typeName}")
-    public List<DataView> listDataTypes(
-        @PathVariable String deviceName, @PathVariable String typeName,
-        @RequestParam(required = false, name = "start") String startDate,
-        @RequestParam(required = false, name = "end") String endDate) {
+    public List<DataView> listDatas(@PathVariable String deviceName, @PathVariable String typeName,
+                                    @RequestParam(required = false,
+                                                  name = "start") String startDate,
+                                    @RequestParam(required = false, name = "end") String endDate,
+                                    @RequestParam(required = false,
+                                                  name = "latest") String isLatest) {
         final var datas = new ArrayList<DataView>();
         final var device = deviceRepository.findByDeviceName(deviceName);
         if (device != null) {
             final var type = dataTypeRepository.findByNameAndDevice_id(typeName, device.getId());
             if (type != null) {
                 List<DataModel> dataList;
-                if (startDate != null && endDate != null)
-                    dataList = dataRepository.findByTimeGreaterThanEqualAndTimeLessThanEqual(
-                        startDate, endDate);
+                if (startDate == null && endDate == null && isLatest != null
+                    && isLatest.equalsIgnoreCase("true")) {
+                    dataList = dataRepository.findTop1ByType_idOrderByTimeDesc(type.getId());
+                } else if (startDate != null && endDate != null)
+                    dataList =
+                        dataRepository.findByType_idAndTimeGreaterThanEqualAndTimeLessThanEqual(
+                            type.getId(), startDate, endDate);
                 else if (startDate != null)
-                    dataList = dataRepository.findByTimeGreaterThanEqual(startDate);
+                    dataList = dataRepository.findByType_idAndTimeGreaterThanEqual(type.getId(),
+                                                                                   startDate);
                 else
-                    dataList = dataRepository.findByType_id(type.getId());
+                    dataList = dataRepository.findByType_idOrderByTimeAsc(type.getId());
                 for (var data : dataList) datas.add(new DataView(data));
             }
         }
