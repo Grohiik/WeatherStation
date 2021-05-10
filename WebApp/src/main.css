@@ -8,30 +8,40 @@ body {
 
   height: 100%;
 }
-.contain{
+
+.contain {
   max-width: 70rem;
   padding: 0 2rem;
   margin: 0 auto;
- 
 }
-nav{
+
+#bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  min-width: 100%;
+  min-height: 100%;
+}
+
+nav {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   padding: 1rem 0;
   z-index: 30;
-  background: linear-gradient(to bottom, rgba( 0, 0, 0, 0.05), transparent)
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.05), transparent);
 }
-nav .contain{
+nav .contain {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.bar:after{
+.bar:after {
   transform: translateY(8px);
 }
-.big-title{
+.big-title {
   position: absolute;
   z-index: 30;
   line-height: 4rem;
@@ -42,12 +52,12 @@ nav .contain{
   font-weight: 600;
   color: #fff;
 }
-section{
+section {
   width: 100%;
   position: relative;
 }
 
-section .container{
+section .container {
   padding: 3rem;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -56,18 +66,16 @@ section .container{
   min-height: 100vh;
 }
 
-section img{
+section img {
   width: 100%;
 }
 
-section .container > *{
+section .container > * {
   margin: 2rem;
 }
 
-
-
 /*--text rutorna börjar här --*/
-.text-box{
+.text-box {
   width: 90%;
   color: black;
   position: absolute;
@@ -76,59 +84,57 @@ section .container > *{
   transform: translate(-50%, -50%);
   text-align: center;
 }
-.text-box h1{
+.text-box h1 {
   font-size: 62px;
 }
 
 /*--text ruta --*/
-.text-box p{
-margin: 10px 0 40px;
-color: #f4433f;
-font-size: 15px;
+.text-box p {
+  margin: 10px 0 40px;
+  color: #f4433f;
+  font-size: 15px;
 }
 /*--knappar som blir till länkar--*/
 
-.hero-btn{
+.hero-btn {
   display: inline-block;
-  text-decoration:none;
+  text-decoration: none;
   color: rgb(5, 7, 3);
-  border: 2px solid black ;
+  border: 2px solid black;
   padding: 12px 34px;
   font-size: 30;
   background: transparent;
-  position:relative;
+  position: relative;
   cursor: pointer;
-
 }
 /*--knappar som blir till länkar--*/
-.hero-btn :hover{
+.hero-btn :hover {
   border: 1px solid #f4433f;
   background: #f44336;
   transition: 1s;
-
 }
 /*--allmän class som styr lite style--*/
 
-h1{
+h1 {
   font-size: 36px;
   font-weight: 600;
 }
 /*--allmän class som styr lite style--*/
 
-p{
+p {
   color: rgb(231, 65, 65);
   line: height 30px;
   font: size 30px;
 }
 /*--allmän class som styr lite style--*/
 
-h3{
+h3 {
   font-size: 30px;
   font-weight: 500;
 }
 /*--allmän class som styr lite style--*/
 
-h4{
+h4 {
   text-align: center;
   text-align: center;
   font-weight: 600;
@@ -136,33 +142,30 @@ h4{
 }
 /*--allmän class som styr lite style--*/
 
-header{
+header {
   min-height: 100vh;
   width: 100%;
   grid-column: span 2;
   grid-area: banner;
-
 }
 /*--allmän class som styr lite style--*/
 
-main{ 
+main {
   grid-area: nav;
 }
 /*--allmän class som styr lite style--*/
 
-
-.facilities{
+.facilities {
   min-height: 100vh;
   width: 100%;
   margin: 10px;
-  text-align:center;
+  text-align: center;
   padding-top: 10px;
 }
 
 /*--allmän class som styr lite style--*/
 
-
-.facilities-col{
+.facilities-col {
   flex-basis: 30%;
   border-radius: 10px;
   margin-bottom: 5%;
@@ -171,21 +174,20 @@ main{
 
 /*--allmän class som styr lite style--*/
 
-
-.facilities-col img{
+.facilities-col img {
   width: 100%;
   border-radius: 10px;
 }
 
 /*--allmän class som styr lite style--*/
 
-.facilities-col p{
+.facilities-col p {
   padding: 0%;
 }
 
 /*--allmän class som styr lite style--*/
 
-.facilities-col h3{
+.facilities-col h3 {
   margin-top: 16px;
   margin-bottom: 15px;
   text-align: left;
@@ -193,14 +195,14 @@ main{
 
 /*--almän ruta för alla rader på sidan -*/
 
-.row{
+.row {
   margin: 8%;
   display: flex;
   justify-content: space-between;
 }
 /*----de 3 rutrna som poppar up-*/
 
-.campus{
+.campus {
   width: 80%;
   margin: auto;
   text-align: center;
@@ -208,22 +210,22 @@ main{
 }
 /*----de 3 rutrna som poppar up-*/
 
-.campus-A{
+.campus-A {
   flex-basis: 30%;
   border-radius: 10px;
   margin-bottom: 10px;
   position: relative;
-  overflow:hidden;
+  overflow: hidden;
 }
 /*----de 3 rutrna som poppar up-*/
 
-.campus-A img{
+.campus-A img {
   width: 100%;
-  display:flexbox;
+  display: flexbox;
 }
 /*----de 3 rutrna som poppar up-*/
 
-.layer{
+.layer {
   background: transparent;
   height: 100%;
   width: 100%;
@@ -234,12 +236,12 @@ main{
 }
 /*----de 3 rutrna som poppar up-*/
 
-.layer:hover{
+.layer:hover {
   background: rgb(51, 33, 33);
 }
 /*----de 3 rutrna som poppar up-*/
 
-.layer h3{
+.layer h3 {
   width: 100%;
   font-weight: 500;
   color: #70f800;
@@ -252,21 +254,21 @@ main{
   transition: 00.5s;
 }
 /*----de 3 rutrna som poppar up-*/
-.layer:hover h3{
+.layer:hover h3 {
   bottom: 50%;
   opacity: 1;
 }
 /*---Knapparna längst ner 3 st knappar-*/
 
-.course-col{
+.course-col {
   flex-basis: 31%;
   width: 300px;
   border: 3px solid black;
-  padding:15px;
+  padding: 15px;
   margin: 10px;
 }
 /*---Knapparna längst ner 3 st knappar-*/
-.course-col:hover{
+.course-col:hover {
   border: 1px solid rgb(14, 69, 69);
   background-color: rgb(214, 69, 69);
   transition: 1s;
