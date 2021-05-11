@@ -19,6 +19,7 @@ import (
 var db *gorm.DB //database
 
 func init() {
+	//supernecessary ascii art
 	fmt.Printf(`______  ______  _____________________   __
 ___  / / /_  / / /_  ____/___  _/__  | / /
 __  /_/ /_  / / /_  / __  __  / __   |/ / 
@@ -31,6 +32,7 @@ _  __  / / /_/ / / /_/ / __/ /  _  /|  /
 		fmt.Print(e)
 	}
 
+	//get the connect variable for the database from the .env file
 	username := os.Getenv("db_user")
 	password := os.Getenv("db_pass")
 	dbName := os.Getenv("db_name")
@@ -53,6 +55,7 @@ _  __  / / /_/ / / /_/ / __/ /  _  /|  /
 	mqttConnect()
 }
 
+//callback for when a message is recieved from the broker
 var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
 	fmt.Printf("---> [%s] received message: \n%s\n---> from topic: %s\n",
 		time.Now().Format("2006-01-02 15:04:05"),
@@ -62,16 +65,20 @@ var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Me
 	go parser.SplitStore(msg.Payload())
 }
 
+//callback for when the client is connected to the broker
 var connectHandler mqtt.OnConnectHandler = func(client mqtt.Client) {
 	fmt.Println("Connected")
 }
 
+//callback for when the connection to the broker is lost
+//this wil kill the application, this is intended for use with docker
 var connectLostHandler mqtt.ConnectionLostHandler = func(client mqtt.Client, err error) {
 	fmt.Printf("--->[%s] Connection to mqtt broker lost, shutting down",
 		time.Now().Format("2006-01-02 15:04:05"))
 	os.Exit(1)
 }
 
+// mqttConnect configures the mqtt client and connect to the broker
 func mqttConnect() {
 
 	e := godotenv.Load() //Load .env file
@@ -79,6 +86,7 @@ func mqttConnect() {
 		fmt.Print(e)
 	}
 
+	//gets the connect variables from the .env file
 	user := os.Getenv("mqtt_user")
 	url := os.Getenv("mqtt_url")
 	pass := os.Getenv("mqtt_pass")
@@ -86,6 +94,7 @@ func mqttConnect() {
 
 	fmt.Printf("---> [%s] Starting client\n", time.Now().Format("2006-01-02 15:04:05"))
 
+	//creates the connect options for the mqtt client
 	opts := mqtt.NewClientOptions()
 	opts.AddBroker(url)
 	opts.SetUsername(user)
@@ -107,6 +116,7 @@ func main() {
 	<-c
 }
 
+// subscribe subscribes to the mqtt feed specified in the .env file
 func subscribe(client mqtt.Client, feed string) {
 	topic := feed
 
