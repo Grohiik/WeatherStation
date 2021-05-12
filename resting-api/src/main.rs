@@ -92,7 +92,6 @@ fn fetch_data_types(output: &mut Vec<DataType>, device: String) -> Result<(), Er
 
     Ok(())
 }
-//"SELECT da.value, da.time FROM data_storeds da, data_types t, devices d WHERE t.id = da.type_id and t.name = '{}' and t.device_id = d.id and d.device_name = '{}'"
 
 fn fetch_data(output: &mut Vec<Data>, device: String, datatype: String) -> Result<(), Error> {
     let mut client = Client::connect(dotenv!("postgresString"), NoTls)?;
