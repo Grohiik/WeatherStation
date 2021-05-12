@@ -1,8 +1,9 @@
-use chrono::DateTime;
+use chrono::{prelude::*, DateTime};
 use postgres::{Client, Error, NoTls};
 use serde::Serialize;
 use warp::Filter;
 extern crate dotenv;
+use std::io::{self, Write};
 
 use dotenv::dotenv;
 #[macro_use]
@@ -32,8 +33,6 @@ struct Data {
 async fn main() {
     dotenv().ok();
 
-    println!("{}", dotenv!("postgresString"));
-
     let list_devices = warp::path("list").and(warp::path("devices")).map(|| {
         let mut devices = Vec::new();
         fetch_devices(&mut devices).expect("blub");
@@ -60,6 +59,19 @@ async fn main() {
 
     let routes = list_devices.or(get_data_types).or(get_data);
 
+    let local: DateTime<Local> = Local::now();
+    print!(
+        "[{:?}] starting api
+  _    _ _    _  _____ _____ _   _ 
+ | |  | | |  | |/ ____|_   _| \\ | |
+ | |__| | |  | | |  __  | | |  \\| |
+ |  __  | |  | | | |_ | | | | . ` |
+ | |  | | |__| | |__| |_| |_| |\\  |
+ |_|  |_|\\____/ \\_____|_____|_| \\_|
+",
+        local
+    );
+    io::stdout().flush().unwrap();
     warp::serve(routes).run(([127, 0, 0, 1], 3030)).await;
 }
 
