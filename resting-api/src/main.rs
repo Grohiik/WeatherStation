@@ -72,7 +72,8 @@ async fn main() {
         local
     );
     io::stdout().flush().unwrap();
-    warp::serve(routes).run(([127, 0, 0, 1], 3030)).await;
+
+    warp::serve(routes).run(([0, 0, 0, 0], 3030)).await;
 }
 
 fn fetch_devices(output: &mut Vec<Devise>) -> Result<(), Error> {
