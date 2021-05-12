@@ -28,6 +28,7 @@ type Data_Stored struct {
 	Data_TypesID uint `gorm:"column:type_id"`
 	Value        string
 	Created      string
+	Time         string
 }
 
 func (b *Devices) Devices() string {

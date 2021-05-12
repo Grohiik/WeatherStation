@@ -4,6 +4,7 @@ import (
 	"RestAPI/Config"
 	"RestAPI/Models"
 	"RestAPI/Routes"
+	"RestAPI/parser"
 	"fmt"
 
 	"github.com/jinzhu/gorm"
@@ -20,6 +21,7 @@ func main() {
 	Config.DB.AutoMigrate(&Models.Devices{})
 	Config.DB.AutoMigrate(&Models.Data_Types{})
 	Config.DB.AutoMigrate(&Models.Data_Stored{})
+	parser.SetDatabaseConnection(Config.DB)
 	r := Routes.SetupRouter()
 	//running
 	r.Run()

@@ -2,6 +2,8 @@ package Controllers
 
 import (
 	"RestAPI/Models"
+	"RestAPI/parser"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -39,6 +41,15 @@ func GetAllData(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusOK, data_stored)
 	}
+}
+
+func StoreData(c *gin.Context) {
+	buf := make([]byte, 1024)
+	num, _ := c.Request.Body.Read(buf)
+	reqBody := string(buf[0:num])
+
+	fmt.Println(reqBody)
+	go parser.SplitStore(reqBody)
 }
 
 /*
