@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+  <!--THe head tag contains all the extra information about a web page, meta data, css, javascrips refrences etc-->
   <head>
+    <!---meta tags -->
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,91 +18,91 @@
     />
     <title>Weather Station | 🌥</title>
     <link rel="stylesheet" href="main.css" />
+
+    <title>full backgrund image</title>
+    <style type="text/css">
+    body{
+        background-image: url();
+        background-size: cover;
+        background-attachment: fixed;
+      }
+    </style>
   </head>
 
-  <body>
-    <header>
-      <h1>Weather Station Group</h1>
-    </header>
 
-    <div id="bg">
-      <img src="images/Background_2.jpeg" alt="" />
+<!---The body countians all visual content, headigns, images, paragraps, etc-->
+<body>
+
+<!-- Koden nedan inanför style sectionen ger oss en bild över hela hemskärmen -->
+<style>
+  body{
+    background-image: url(img/image.jpg);
+    /* no-repeat betyder att bilden kommer bara vissas en gång o den kommer inte att upprepa sig */
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+</style>
+
+<section class="header">
+  <nav>
+<!-- här ska vi bara lägga in våran logga så är de klart, jag har bara hittat någon logga som jag hade sen innan -->
+    <a href="index.html"><img src="eduford_img/logo.png"></a>
+  </nav>
+  <!-- rubriken -->
+    <h1>Weather Station Group</h1>
+  </section>
+<!-- graf -->
+  <section class="graf">
+  <main id="mainView">
+    <script defer src="scripts/app.ts">
+    </script>
+<!-- graf slutar  -->
+  </main>
+</section>
+<!-- footer börjar  -->
+  <section class="footer"><a id="github-link" target="_parent" rel="noreferrer" title="Github repository"
+    href="https://github.com/Grohiik/WeatherStation">
+    2021 © Weather Station Group</a>
+  </section>
+  <!-- footer slutar -->
+
+<!-- De tre rutorna som vissar upp olika delar vad folk har jobbat med  -->
+<section class="FEB">
+  <h2>Vad alla har jobbat med</h2>
+  <p>om du går med mussen över rutorna kommer du få en överaskning</p>
+
+  <div class="row">
+    <div class="FEB-col">
+      <img src="eduford_img/london.png">
+      <div class="layer">
+        <h3>
+          Ademir
+        </h3>
+      </div>
     </div>
 
-    <main id="mainView"></main>
-    <section>
-      <div class="contain">
-        <div class="content opacity">
-          <h3 class="title">
-            About
-            <div class="border"></div>
-          </h3>
-        </div>
-      </div>
-    </section>
 
-    <!-----Multi face pop ups-->
-    <section class="campus">
-      <h1>Alla delar i projektet</h1>
-      <div class="row">
-        <div class="campus-A">
-          <img src="ademir_img/backend.jpeg" />
-          <div class="layer">
-            <h3>
-              Frontend
-              <p>Ademir, Christian, Gabriella</p>
-            </h3>
-          </div>
-        </div>
-        <div class="campus-A">
-          <img src="ademir_img/backend.jpeg" />
-          <div class="layer">
-            <h3>
-              Backend
-              <p>Erik K, Eirc L, Marcus</p>
-            </h3>
-          </div>
-        </div>
+  <div class="FEB-col">
+    <img src="eduford_img/london.png">
+    <div class="layer">
+      <h3>
+        Ademir
+      </h3>
+    </div>
+  </div>
 
-        <div class="campus-A">
-          <img src="ademir_img/backend.jpeg" />
-          <div class="layer">
-            <h3>
-              Embedded systems
-              <p>Linnea och Pratchaya</p>
-            </h3>
-          </div>
-        </div>
-      </div>
-    </section>
+  <div class="FEB-col">
+    <img src="eduford_img/london.png">
+    <div class="layer">
+      <h3>
+        Ademir
+      </h3>
+    </div>
+  </div>
+</div>
+</section>
+<!-- slutar här  -->
+</body>
 
-    <!----Projekt info--->
-    <section class="facilities">
-      <h1>Projekt väderstation</h1>
-      <div class="row">
-        <div class="course-col">
-          <a href="hero-brt">Frontend</a>
-        </div>
-        <div class="course-col">
-          <a href="hero-brt">Enbeded systems</a>
-        </div>
-        <div class="course-col">
-          <a href="hero-brt">Backend</a>
-        </div>
-      </div>
-    </section>
 
-    <footer>
-      <a
-        id="github-link"
-        target="_parent"
-        rel="noreferrer"
-        title="Github repository"
-        href="https://github.com/Grohiik/WeatherStation"
-      >
-        2021 © Weather Station Group</a
-      >
-    </footer>
-    <script defer src="scripts/app.ts"></script>
-  </body>
 </html>

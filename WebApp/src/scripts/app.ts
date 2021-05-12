@@ -16,7 +16,6 @@ import {
   createLineGraph,
   clearChartData,
   addChartDataset,
-  addChartLabel,
   setChartLabels,
   updateChart,
   IDataset,
