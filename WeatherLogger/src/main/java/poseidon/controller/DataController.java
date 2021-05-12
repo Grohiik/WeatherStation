@@ -44,7 +44,7 @@ public class DataController {
         return types;
     }
 
-    @GetMapping("/list/datas/{deviceName}/{typeName}")
+    @GetMapping("/data/{deviceName}/{typeName}")
     public List<DataView> listDatas(@PathVariable String deviceName, @PathVariable String typeName,
                                     @RequestParam(required = false,
                                                   name = "start") String startDate,
