@@ -62,7 +62,10 @@ var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Me
 		msg.Payload(),
 		msg.Topic())
 
-	go parser.SplitStore(msg.Payload())
+	err := parser.SplitStore(msg.Payload())
+	if err != nil {
+		fmt.Println("bad timestamp", err)
+	}
 }
 
 //callback for when the client is connected to the broker

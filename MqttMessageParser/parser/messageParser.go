@@ -1,10 +1,10 @@
 package parser
 
 import (
-	"fmt"
-	"strings"
-
 	"MqttMessageParser/model"
+	"fmt"
+	"strconv"
+	"strings"
 
 	"github.com/jinzhu/gorm"
 )
@@ -17,7 +17,7 @@ func SetDatabaseConnection(conn *gorm.DB) {
 
 // SplitStore splits the mqtt message into multiple string arrays
 // The data is then isolated and stored on the database
-func SplitStore(msg []byte) {
+func SplitStore(msg []byte) error {
 	fmt.Println("Parsing message....")
 	var msgString = string(msg)
 	//splits the message into two lines
@@ -27,8 +27,14 @@ func SplitStore(msg []byte) {
 	//isolates the data elements in the second line of the message
 	data := strings.Split(lines[1], ",")
 
-	//the timestamp is always located in the second index of data
+	// the timestamp is always located in the second index of data
+	// checks if the timestamp is valid, jank af but it works(kinda)
 	time := data[1]
+	i, err := strconv.Atoi(time)
+	if err != nil {
+		return err
+	}
+	fmt.Println("time valid", i)
 	//the device name is always located at the first index of data
 	deviceName := data[0]
 
@@ -41,8 +47,10 @@ func SplitStore(msg []byte) {
 		storeData(dataType.ID, data[i], time)
 	}
 	fmt.Println("done")
+	return err
 }
 
+// storeDevice stores and or returns devices with the name "name"
 func storeDevice(name string) model.Devices {
 	//If a device with the same name does not exist create it
 	//otherwise get said device
@@ -52,6 +60,7 @@ func storeDevice(name string) model.Devices {
 	return device
 }
 
+// storeType stores and or gets a dataType for the specified device
 func storeType(deviceid uint, name string, unit string) model.Data_Types {
 	//If a datatype with the same name does not exist create it
 	//otherwise get said datatype
@@ -61,6 +70,7 @@ func storeType(deviceid uint, name string, unit string) model.Data_Types {
 	return dataType
 }
 
+// storeData stores the datapoints from the mqtt message for the specified datatype
 func storeData(typeid uint, data string, time string) {
 	//Store the data in the data_stored table and increment the count of its datatype
 	dataPoint := model.Data_Stored{Value: data, Time: time, Data_TypesID: typeid}
