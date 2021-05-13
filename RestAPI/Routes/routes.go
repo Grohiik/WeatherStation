@@ -9,7 +9,7 @@ import (
 //SetupRouter ... Configure routes
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
-	grp1 := r.Group("/api")
+	grp1 := r.Group("")
 	{
 		grp1.GET("/list/devices", Controllers.GetDevices)
 		grp1.GET("/list/types/:device_name", Controllers.GetDataTypes)
