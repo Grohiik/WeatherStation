@@ -5,22 +5,28 @@ body {
   font-family: 'Roboto', sans-serif;
   color: #000000;
   height: 100%;
+
+  display: grid;
+  place-items: center;
+  background-attachment: fixed;
 }
 .background-img {
   position: fixed;
   z-index: -1;
-  height: 100%;
+  width: 100%;
   top: 0;
   left: 0;
-
-  /* display: grid;
-  align-items: center;
-  justify-content: center;
-  height: 100vh; */
 }
-.header {
+.logo {
+  top: 280px;
+  background-attachment: center;
   position: relative;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 25%;
 }
+
 h2 {
   text-align: center;
   color: #000000;
@@ -33,15 +39,42 @@ p {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-.container {
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.frosted-container {
+  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
+  font-size: 2rem;
+  height: 220px;
+  overflow: hidden;
+  position: relative;
+  width: 370px;
+}
+
+.frosted-container:before {
+  backdrop-filter: blur(10px) saturate(100%) contrast(70%) brightness(130%);
+  content: '';
+  height: 100%;
+  position: absolute;
+  width: 100%;
+}
+
+/* .container {
+  top: 100px;
+  margin: auto;
+  width: 50%;
+
   width: 30rem;
   height: 20rem;
   box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
   position: relative;
   background: inherit;
-}
+  overflow: hidden;
+} */
 
-.container:before {
+/* .container:before {
   content: '';
   position: absolute;
   background: inherit;
@@ -51,7 +84,8 @@ p {
   bottom: 0;
   box-shadow: inset 0 0 2000px rgba(255, 255, 255, 0.5);
   filter: blur(10px);
-}
+  margin: -20px;
+} */
 
 .graf {
   position: relative;
@@ -155,6 +189,7 @@ main {
   background-size: cover;
   background-position: center center;
   padding: 2rem;
+  top: 200px;
 }
 
 .bird {
@@ -187,7 +222,7 @@ main {
 
 .bird-container {
   position: absolute;
-  top: 20%;
+  top: 10px;
   left: -10%;
   transform: scale(0) translateX(-10vw);
   will-change: transform;
