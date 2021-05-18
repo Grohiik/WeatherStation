@@ -6,6 +6,18 @@ body {
   color: #000000;
   height: 100%;
 }
+.background-img {
+  position: fixed;
+  z-index: -1;
+  height: 100%;
+  top: 0;
+  left: 0;
+
+  /* display: grid;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; */
+}
 .header {
   position: relative;
 }
@@ -19,6 +31,26 @@ p {
   text-align: center;
   font-weight: 100;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.container {
+  width: 30rem;
+  height: 20rem;
+  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
+  position: relative;
+  background: inherit;
+}
+
+.container:before {
+  content: '';
+  position: absolute;
+  background: inherit;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-shadow: inset 0 0 2000px rgba(255, 255, 255, 0.5);
+  filter: blur(10px);
 }
 
 .graf {
@@ -110,7 +142,7 @@ main {
   box-sizing: border-box;
 }
 
-.container {
+.bird-animation {
   z-index: 1;
   position: relative;
   overflow: hidden;

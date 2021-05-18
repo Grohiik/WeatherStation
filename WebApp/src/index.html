@@ -19,102 +19,94 @@
     />
     <title>Weather Station | 🌥</title>
     <link rel="stylesheet" href="main.css" />
-
-    <title>full backgrund image</title>
-    <style type="text/css">
-      body {
-        background-image: url();
-        background-size: cover;
-        background-attachment: fixed;
-      }
-    </style>
   </head>
 
   <!---The body countians all visual content, headigns, images, paragraps, etc-->
   <body>
     <!-- Koden nedan inanför style sectionen ger oss en bild över hela hemskärmen -->
-    <style>
-      body {
-        background-image: url(images/Background_2.jpeg);
-        /* no-repeat betyder att bilden kommer bara vissas en gång o den kommer inte att upprepa sig */
-        background-repeat: no-repeat;
-        background-size: cover;
-      }
-    </style>
+    <div class="root">
+      <img
+        class="background-img"
+        src="images/pathway-970705_1280.jpeg"
+        alt="background-img"
+      />
+      <section class="header">
+        <nav>
+          <!-- här ska vi bara lägga in våran logga så är de klart, jag har bara hittat någon logga som jag hade sen innan -->
+          <a href="index.html"><img src="images/hugin_logo.png" /></a>
+        </nav>
+        <!-- rubriken -->
+      </section>
 
-    <section class="header">
-      <nav>
-        <!-- här ska vi bara lägga in våran logga så är de klart, jag har bara hittat någon logga som jag hade sen innan -->
-        <a href="index.html"><img src="eduford_img/logo.png" /></a>
-      </nav>
-      <!-- rubriken -->
-    </section>
-    <!-- graf -->
-    <section class="graf">
-      <main id="mainView">
-        <script defer src="scripts/app.ts"></script>
-        <!-- graf slutar  -->
-      </main>
-    </section>
-    <!-- footer börjar  -->
-    <section class="footer">
-      <a
-        id="github-link"
-        target="_parent"
-        rel="noreferrer"
-        title="Github repository"
-        href="https://github.com/Grohiik/WeatherStation"
-      >
-        2021 © Weather Station Group</a
-      >
-    </section>
-    <!-- footer slutar -->
+      <div class="container"></div>
 
-    <!-- De tre rutorna som vissar upp olika delar vad folk har jobbat med  -->
-    <section class="FEB">
-      <h2>Vad alla har jobbat med</h2>
-      <p>om du går med mussen över rutorna kommer du få en överaskning</p>
+      <!-- graf -->
+      <section class="graf">
+        <main id="mainView">
+          <script defer src="scripts/app.ts"></script>
+          <!-- graf slutar  -->
+        </main>
+      </section>
 
-      <div class="row">
-        <div class="FEB-col">
-          <img src="eduford_img/london.png" />
-          <div class="layer">
-            <h3>Ademir, Gabriella, Christian</h3>
+      <!-- De tre rutorna som vissar upp olika delar vad folk har jobbat med  -->
+      <section class="FEB">
+        <h2>Vad alla har jobbat med</h2>
+        <p>om du går med mussen över rutorna kommer du få en överaskning</p>
+
+        <div class="row">
+          <div class="FEB-col">
+            <img src="eduford_img/london.png" />
+            <div class="layer">
+              <h3>Ademir, Gabriella, Christian</h3>
+            </div>
+          </div>
+
+          <div class="FEB-col">
+            <img src="eduford_img/london.png" />
+            <div class="layer">
+              <h3>Erik K, Eric L , Markus</h3>
+            </div>
+          </div>
+
+          <div class="FEB-col">
+            <img src="eduford_img/london.png" />
+            <div class="layer">
+              <h3>Pratchaya, Linnea</h3>
+            </div>
           </div>
         </div>
-
-        <div class="FEB-col">
-          <img src="eduford_img/london.png" />
-          <div class="layer">
-            <h3>Erik K, Eric L , Markus</h3>
-          </div>
+      </section>
+      <!-- slutar här  -->
+      <div class="bird-animation">
+        <div class="bird-container bird-container--one">
+          <div class="bird bird--one"></div>
         </div>
 
-        <div class="FEB-col">
-          <img src="eduford_img/london.png" />
-          <div class="layer">
-            <h3>Pratchaya, Linnea</h3>
-          </div>
+        <div class="bird-container bird-container--two">
+          <div class="bird bird--two"></div>
+        </div>
+
+        <div class="bird-container bird-container--three">
+          <div class="bird bird--three"></div>
+        </div>
+
+        <div class="bird-container bird-container--four">
+          <div class="bird bird--four"></div>
         </div>
       </div>
-    </section>
-    <!-- slutar här  -->
-    <div class="container">
-      <div class="bird-container bird-container--one">
-        <div class="bird bird--one"></div>
-      </div>
-
-      <div class="bird-container bird-container--two">
-        <div class="bird bird--two"></div>
-      </div>
-
-      <div class="bird-container bird-container--three">
-        <div class="bird bird--three"></div>
-      </div>
-
-      <div class="bird-container bird-container--four">
-        <div class="bird bird--four"></div>
-      </div>
+      <!-- footer börjar  -->
+      <section class="footer">
+        <a
+          id="github-link"
+          target="_parent"
+          rel="noreferrer"
+          title="Github repository"
+          href="https://github.com/Grohiik/WeatherStation"
+        >
+          2021 © Weather Station Group</a
+        >
+      </section>
+      <!-- footer slutar -->
     </div>
   </body>
 </html>
