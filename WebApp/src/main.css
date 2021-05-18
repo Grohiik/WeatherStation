@@ -1,5 +1,3 @@
-
-
 html,
 body {
   margin: 0;
@@ -8,34 +6,27 @@ body {
   color: #000000;
   height: 100%;
 }
-.header{
-  position:relative;
+.header {
+  position: relative;
 }
-h1{
-  text-align: center;
-  color: yellow;
-  font-size: 50pt;
-  font-weight: 600;
-}
-h2{
+h2 {
   text-align: center;
   color: #000000;
   font-size: 25pt;
   font-weight: 300;
 }
-p{
+p {
   text-align: center;
   font-weight: 100;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-.graf{
+.graf {
   position: relative;
   padding-top: 50pt;
   padding-right: 100pt;
   padding-left: 100pt;
   padding-bottom: 50pt;
-
 }
 main {
   position: relative;
@@ -50,43 +41,42 @@ main {
   width: 100%;
   color: black;
   text-align: center;
-  padding-top:unset;
-  padding-bottom:unset;
+  padding-top: unset;
+  padding-bottom: unset;
 }
 
-.FEB{
+.FEB {
   width: 80%;
   margin: auto;
   text-align: center;
   padding-top: 50pt;
 }
 
-.FEB-col{
+.FEB-col {
   flex-basis: 32%;
   border-radius: 10px;
   margin-bottom: 30px;
   position: relative;
   overflow: hidden;
 }
-.FEB-col img{
+.FEB-col img {
   width: 100%;
   display: flexbox;
   overflow: hidden;
 }
 
-.row{
+.row {
   margin: 8%;
   display: flex;
   justify-content: space-between;
 }
 
-
-.FEB-col img{
+.FEB-col img {
   width: 125%;
-  display:flexbox;
+  display: flexbox;
 }
-.layer{
-  background:transparent;
+.layer {
+  background: transparent;
   height: 100%;
   width: 100%;
   position: absolute;
@@ -94,14 +84,14 @@ main {
   left: 0;
   transition: 0.5s;
 }
-.layer:hover{
-  background: rgba(226,0,0,0.7);
+.layer:hover {
+  background: rgba(226, 0, 0, 0.7);
 }
 
-.layer h3{
+.layer h3 {
   width: 100%;
   font-weight: 500;
-  color:#454545;
+  color: #454545;
   font-size: 26px;
   bottom: 0%;
   left: 50%;
@@ -110,157 +100,143 @@ main {
   opacity: 0;
   transition: 00.5s;
 }
-.layer:hover h3{
+.layer:hover h3 {
   bottom: 50%;
   opacity: 1;
 }
 *,
 *::before,
 *::after {
-	box-sizing: border-box;
-}
-
-h1 {
-	font-family: 'Arima Madurai', cursive;
-	color: black;
-	font-size: 4rem;
-	letter-spacing: -3px;
-	text-shadow: 0px 1px 1px rgba(255,255,255,0.6);
-	position: relative;
-	z-index: 3;
+  box-sizing: border-box;
 }
 
 .container {
-	z-index: 1;
-	position: relative;
-	overflow: hidden;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	min-height: 100vh;
-	min-height: 35rem;
-	background-image: linear-gradient(to bottom,  rgba(255,168,76,0.6) 0%,rgba(255,123,13,0.6) 100%), url('https://images.unsplash.com/photo-1446824505046-e43605ffb17f');
-	background-blend-mode: soft-light;
-	background-size: cover;
-	background-position: center center;
-	padding: 2rem;
+  z-index: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 35rem;
+  background-blend-mode: soft-light;
+  background-size: cover;
+  background-position: center center;
+  padding: 2rem;
 }
 
 .bird {
-	background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/174479/bird-cells-new.svg);
-	background-size: auto 100%;
-	width: 88px;
-	height: 125px;
-	will-change: background-position;
-	animation-name: fly-cycle;
-	animation-timing-function: steps(10);
-	animation-iteration-count: infinite;
-
-	&--one{
-		animation-duration: 1s;
-		animation-delay: -0.5s;
-  }
-	&--two {
-		animation-duration: 0.9s;
-		animation-delay: -0.75s;
-	}
-	&--three {
-		animation-duration: 1.25s;
-		animation-delay: -0.25s;
-	}
-}
-	&--four {
-		animation-duration: 1.1s;
-		animation-delay: -0.5s;
-	}
+  background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/174479/bird-cells-new.svg);
+  background-size: auto 100%;
+  width: 88px;
+  height: 125px;
+  will-change: background-position;
+  animation-name: fly-cycle;
+  animation-timing-function: steps(10);
+  animation-iteration-count: infinite;
 }
 
+.bird--one {
+  animation-duration: 1s;
+  animation-delay: -0.5s;
+}
+.bird--two {
+  animation-duration: 0.9s;
+  animation-delay: -0.75s;
+}
+.bird--three {
+  animation-duration: 1.25s;
+  animation-delay: -0.25s;
+}
+.bird--four {
+  animation-duration: 1.1s;
+  animation-delay: -0.5s;
+}
 
 .bird-container {
-	position: absolute;
-	top: 20%;
-	left: -10%;
-	transform: scale(0) translateX(-10vw);
-	will-change: transform;
-	animation-name: fly-right-one;
-	animation-timing-function: linear;
-	animation-iteration-count: infinite;
-	&--one {
-		animation-duration: 15s;
-		animation-delay: 0;
-	}
-	&--two {
-		animation-duration: 16s;
-		animation-delay: 1s;
-	}
-	&--three {
-		animation-duration: 14.6s;
-		animation-delay: 9.5s;
-	}
-	&--four {
-		animation-duration: 16s;
-		animation-delay: 10.25s;
-	}
+  position: absolute;
+  top: 20%;
+  left: -10%;
+  transform: scale(0) translateX(-10vw);
+  will-change: transform;
+  animation-name: fly-right-one;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
 
+.bird-container--one {
+  animation-duration: 15s;
+  animation-delay: 0;
+}
+.bird-container--two {
+  animation-duration: 16s;
+  animation-delay: 1s;
+}
+.bird-container--three {
+  animation-duration: 14.6s;
+  animation-delay: 9.5s;
+}
+.bird-container--four {
+  animation-duration: 16s;
+  animation-delay: 10.25s;
+}
 
 @keyframes fly-cycle {
-	
-	100% {
-		background-position: -900px 0;
-	}
-	
+  100% {
+    background-position: -900px 0;
+  }
 }
 
 @keyframes fly-right-one {
-	0% {
-		transform: scale(0.3) translateX(-10vw);
-	}
-	10% {
-		transform: translateY(2vh) translateX(10vw) scale(0.4);
-	}
-	20% {
-		transform: translateY(0vh) translateX(30vw) scale(0.5);
-	}
-	30% {
-		transform: translateY(4vh) translateX(50vw) scale(0.6);
-	}
-	40% {
-		transform: translateY(2vh) translateX(70vw) scale(0.6);
-	}
-	50% {
-		transform: translateY(0vh) translateX(90vw) scale(0.6);
-	}
-	60% {
-		transform: translateY(0vh) translateX(110vw) scale(0.6);
-	}
-	100% {
-		transform: translateY(0vh) translateX(110vw) scale(0.6);
-	}
+  0% {
+    transform: scale(0.3) translateX(-10vw);
+  }
+  10% {
+    transform: translateY(2vh) translateX(10vw) scale(0.4);
+  }
+  20% {
+    transform: translateY(0vh) translateX(30vw) scale(0.5);
+  }
+  30% {
+    transform: translateY(4vh) translateX(50vw) scale(0.6);
+  }
+  40% {
+    transform: translateY(2vh) translateX(70vw) scale(0.6);
+  }
+  50% {
+    transform: translateY(0vh) translateX(90vw) scale(0.6);
+  }
+  60% {
+    transform: translateY(0vh) translateX(110vw) scale(0.6);
+  }
+  100% {
+    transform: translateY(0vh) translateX(110vw) scale(0.6);
+  }
 }
 
 @keyframes fly-right-two {
-	0% {
-		transform: translateY(-2vh) translateX(-10vw) scale(0.5);
-	}
-	10% {
-		transform: translateY(0vh) translateX(10vw) scale(0.4);
-	}
-	20% {
-		transform: translateY(-4vh) translateX(30vw) scale(0.6);
-	}
-	30% {
-		transform: translateY(1vh) translateX(50vw) scale(0.45);
-	}
-	40% {
-		transform: translateY(-2.5vh) translateX(70vw) scale(0.5);
-	}
-	50% {
-		transform: translateY(0vh) translateX(90vw) scale(0.45);
-	}
-	51% {
-		transform: translateY(0vh) translateX(110vw) scale(0.45);
-	}
-	100% {
-		transform: translateY(0vh) translateX(110vw) scale(0.45);
-	}
+  0% {
+    transform: translateY(-2vh) translateX(-10vw) scale(0.5);
+  }
+  10% {
+    transform: translateY(0vh) translateX(10vw) scale(0.4);
+  }
+  20% {
+    transform: translateY(-4vh) translateX(30vw) scale(0.6);
+  }
+  30% {
+    transform: translateY(1vh) translateX(50vw) scale(0.45);
+  }
+  40% {
+    transform: translateY(-2.5vh) translateX(70vw) scale(0.5);
+  }
+  50% {
+    transform: translateY(0vh) translateX(90vw) scale(0.45);
+  }
+  51% {
+    transform: translateY(0vh) translateX(110vw) scale(0.45);
+  }
+  100% {
+    transform: translateY(0vh) translateX(110vw) scale(0.45);
+  }
 }
