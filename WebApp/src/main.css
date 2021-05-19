@@ -2,7 +2,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Inter', sans-serif;
   color: #000000;
   height: 100%;
   display: grid;
@@ -10,6 +10,7 @@ body {
   background-attachment: fixed;
 }
 
+/* Background image */
 .background-img {
   position: fixed;
   z-index: -1;
@@ -19,6 +20,7 @@ body {
   left: 0;
 }
 
+/* Hugin logo */
 .logo {
   top: 280px;
   background-attachment: center;
@@ -26,33 +28,195 @@ body {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 17%;
+  height: 177px;
+  width: 350px;
 }
 
-h2 {
+/* Bird animation */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.bird-animation {
+  z-index: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 35rem;
+  background-blend-mode: soft-light;
+  background-size: cover;
+  background-position: center center;
+  top: 200px;
+}
+
+.bird {
+  background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/174479/bird-cells-new.svg);
+  background-size: auto 100%;
+  width: 88px;
+  height: 125px;
+  will-change: background-position;
+  animation-name: fly-cycle;
+  animation-timing-function: steps(10);
+  animation-iteration-count: infinite;
+}
+
+.bird--one {
+  animation-duration: 1s;
+  animation-delay: -0.5s;
+}
+.bird--two {
+  animation-duration: 0.9s;
+  animation-delay: -0.75s;
+}
+.bird--three {
+  animation-duration: 1.25s;
+  animation-delay: -0.25s;
+}
+.bird--four {
+  animation-duration: 1.1s;
+  animation-delay: -0.5s;
+}
+
+.bird-container {
+  position: absolute;
+  top: 10px;
+  left: -10%;
+  transform: scale(0) translateX(-10vw);
+  will-change: transform;
+  animation-name: fly-right-one;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.bird-container--one {
+  animation-duration: 15s;
+  animation-delay: 0;
+}
+.bird-container--two {
+  animation-duration: 16s;
+  animation-delay: 1s;
+}
+.bird-container--three {
+  animation-duration: 14.6s;
+  animation-delay: 9.5s;
+}
+.bird-container--four {
+  animation-duration: 16s;
+  animation-delay: 10.25s;
+}
+
+@keyframes fly-cycle {
+  100% {
+    background-position: -900px 0;
+  }
+}
+
+@keyframes fly-right-one {
+  0% {
+    transform: scale(0.3) translateX(-10vw);
+  }
+  10% {
+    transform: translateY(2vh) translateX(10vw) scale(0.4);
+  }
+  20% {
+    transform: translateY(0vh) translateX(30vw) scale(0.5);
+  }
+  30% {
+    transform: translateY(4vh) translateX(50vw) scale(0.6);
+  }
+  40% {
+    transform: translateY(2vh) translateX(70vw) scale(0.6);
+  }
+  50% {
+    transform: translateY(0vh) translateX(90vw) scale(0.6);
+  }
+  60% {
+    transform: translateY(0vh) translateX(110vw) scale(0.6);
+  }
+  100% {
+    transform: translateY(0vh) translateX(110vw) scale(0.6);
+  }
+}
+@keyframes fly-right-two {
+  0% {
+    transform: translateY(-2vh) translateX(-10vw) scale(0.5);
+  }
+  10% {
+    transform: translateY(0vh) translateX(10vw) scale(0.4);
+  }
+  20% {
+    transform: translateY(-4vh) translateX(30vw) scale(0.6);
+  }
+  30% {
+    transform: translateY(1vh) translateX(50vw) scale(0.45);
+  }
+  40% {
+    transform: translateY(-2.5vh) translateX(70vw) scale(0.5);
+  }
+  50% {
+    transform: translateY(0vh) translateX(90vw) scale(0.45);
+  }
+  51% {
+    transform: translateY(0vh) translateX(110vw) scale(0.45);
+  }
+  100% {
+    transform: translateY(0vh) translateX(110vw) scale(0.45);
+  }
+}
+
+/* Dropdown menu */
+select {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.15);
+  font-size: 14pt;
+  margin: auto;
   text-align: center;
-  color: #000000;
-  font-size: 25pt;
-  font-weight: 300;
+  overflow: hidden;
+  width: 80px;
+  margin-bottom: 80px;
 }
 
-p {
+select:before {
+  backdrop-filter: blur(5px) saturate(90%) contrast(70%) brightness(130%);
+  content: '';
+  height: 100%;
+  position: absolute;
+  width: 100%;
+}
+
+/* Graph */
+canvas {
+  width: 900pt !important;
+  box-shadow: 0 0 1rem 0 rgba(255, 255, 255, 0.3) !important;
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.graph {
   text-align: center;
-  font-weight: 100;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  padding-top: 200pt;
+  padding-right: 100pt;
+  padding-left: 100pt;
+  padding-bottom: 50pt;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-}
-
+/* Frosted container */
 .frosted-container {
   box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
   font-size: 2rem;
-  height: 675px;
+  height: 400px;
   overflow: hidden;
   position: relative;
+  display: block;
+  margin-top: 500px;
+  margin-left: auto;
+  margin-right: auto;
   width: 1250px;
 }
 
@@ -64,31 +228,28 @@ p {
   width: 100%;
 }
 
-.graph {
+/* Puts text above frosted-container */
+.about-project {
   position: relative;
-  padding-top: 200pt;
-  padding-right: 100pt;
-  padding-left: 100pt;
-  padding-bottom: 50pt;
 }
 
-main {
-  position: relative;
-  height: 100%;
-  padding: 0pt;
-}
-
-.footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  color: black;
+/* Format 'About' text */
+h2 {
   text-align: center;
-  padding-top: unset;
-  padding-bottom: unset;
+  color: #000000;
+  font-size: 25pt;
+  font-weight: 300;
 }
 
+p {
+  text-align: center;
+  color: #000000;
+  font-weight: 100;
+  font-size: 16pt;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Team panels */
 .FEB {
   width: 80%;
   margin: auto;
@@ -132,14 +293,13 @@ main {
 }
 
 .layer:hover {
-  background: rgba(226, 0, 0, 0.7);
+  background: rgba(223, 142, 105, 0.7);
 }
 
 .layer h3 {
   width: 100%;
-  font-weight: 500;
+  font-weight: 400;
   color: #454545;
-  font-size: 26px;
   bottom: 0%;
   left: 50%;
   transform: translate(-50%);
@@ -153,145 +313,33 @@ main {
   opacity: 1;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-.bird-animation {
-  z-index: 1;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  min-height: 35rem;
-  background-blend-mode: soft-light;
-  background-size: cover;
-  background-position: center center;
-  top: 200px;
-}
-
-.bird {
-  background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/174479/bird-cells-new.svg);
-  background-size: auto 100%;
-  width: 88px;
-  height: 125px;
-  will-change: background-position;
-  animation-name: fly-cycle;
-  animation-timing-function: steps(10);
-  animation-iteration-count: infinite;
-}
-
-.bird--one {
-  animation-duration: 1s;
-  animation-delay: -0.5s;
-}
-
-.bird--two {
-  animation-duration: 0.9s;
-  animation-delay: -0.75s;
-}
-
-.bird--three {
-  animation-duration: 1.25s;
-  animation-delay: -0.25s;
-}
-
-.bird--four {
-  animation-duration: 1.1s;
-  animation-delay: -0.5s;
-}
-
-.bird-container {
+.layer p1 {
+  width: 100%;
+  font-weight: 100;
+  color: #454545;
+  font-size: 14px;
+  bottom: 0%;
+  left: 50%;
+  transform: translate(-50%);
   position: absolute;
-  top: 10px;
-  left: -10%;
-  transform: scale(0) translateX(-10vw);
-  will-change: transform;
-  animation-name: fly-right-one;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
+  opacity: 0;
+  transition: 00.5s;
 }
 
-.bird-container--one {
-  animation-duration: 15s;
-  animation-delay: 0;
+.layer:hover p1 {
+  bottom: 50%;
+  opacity: 1;
 }
 
-.bird-container--two {
-  animation-duration: 16s;
-  animation-delay: 1s;
-}
-
-.bird-container--three {
-  animation-duration: 14.6s;
-  animation-delay: 9.5s;
-}
-
-.bird-container--four {
-  animation-duration: 16s;
-  animation-delay: 10.25s;
-}
-
-@keyframes fly-cycle {
-  100% {
-    background-position: -900px 0;
-  }
-}
-
-@keyframes fly-right-one {
-  0% {
-    transform: scale(0.3) translateX(-10vw);
-  }
-  10% {
-    transform: translateY(2vh) translateX(10vw) scale(0.4);
-  }
-  20% {
-    transform: translateY(0vh) translateX(30vw) scale(0.5);
-  }
-  30% {
-    transform: translateY(4vh) translateX(50vw) scale(0.6);
-  }
-  40% {
-    transform: translateY(2vh) translateX(70vw) scale(0.6);
-  }
-  50% {
-    transform: translateY(0vh) translateX(90vw) scale(0.6);
-  }
-  60% {
-    transform: translateY(0vh) translateX(110vw) scale(0.6);
-  }
-  100% {
-    transform: translateY(0vh) translateX(110vw) scale(0.6);
-  }
-}
-
-@keyframes fly-right-two {
-  0% {
-    transform: translateY(-2vh) translateX(-10vw) scale(0.5);
-  }
-  10% {
-    transform: translateY(0vh) translateX(10vw) scale(0.4);
-  }
-  20% {
-    transform: translateY(-4vh) translateX(30vw) scale(0.6);
-  }
-  30% {
-    transform: translateY(1vh) translateX(50vw) scale(0.45);
-  }
-  40% {
-    transform: translateY(-2.5vh) translateX(70vw) scale(0.5);
-  }
-  50% {
-    transform: translateY(0vh) translateX(90vw) scale(0.45);
-  }
-  51% {
-    transform: translateY(0vh) translateX(110vw) scale(0.45);
-  }
-  100% {
-    transform: translateY(0vh) translateX(110vw) scale(0.45);
-  }
+/* Footer */
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  color: black;
+  font-family: 'Inter', sans-serif;
+  text-align: center;
+  padding-top: unset;
+  padding-bottom: unset;
 }

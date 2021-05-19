@@ -69,7 +69,7 @@ async function main() {
       const dataset: IDataset = {
         data: [],
         label: upperCasefirst(currentContent.name),
-        borderColor: '#ff0000',
+        borderColor: '#dd3e4bc7',
       }
       const labels: string[] = []
       clearChartData(graph)

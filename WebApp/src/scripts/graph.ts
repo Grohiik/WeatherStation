@@ -15,11 +15,29 @@ export interface IDataset {
 type TLineChart = Chart<'line', number[], string>
 
 export function createLineGraph(canvas: HTMLCanvasElement): TLineChart {
+  Chart.defaults.font.size = 16
+  Chart.defaults.color = '#000000'
+  Chart.defaults.font.family = 'Inter'
   return new Chart<'line', number[], string>(canvas, {
     type: 'line',
     data: {
       labels: [],
       datasets: [],
+    },
+    options: {
+      elements: {
+        point: {
+          radius: 0,
+        },
+        line: {
+          borderWidth: 2,
+        },
+      },
+      plugins: {
+        legend: {
+          labels: {},
+        },
+      },
     },
   })
 }
