@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <!--THe head tag contains all the extra information about a web page, meta data, css, javascrips refrences etc-->
+
   <head>
     <!---meta tags -->
     <meta charset="UTF-8" />
@@ -22,18 +23,18 @@
   </head>
 
   <!---The body countians all visual content, headigns, images, paragraps, etc-->
+
   <body>
-    <!-- Koden nedan inanför style sectionen ger oss en bild över hela hemskärmen -->
     <div class="root">
       <img
         class="background-img"
-        src="images/pathway-970705_1280.jpeg"
+        src="images/background_img.jpg"
         alt="background-img"
       />
       <div class="logo">
         <img src="images/hugin_logo.png" alt="hugin-logo-img" />
       </div>
-
+      <!--Following code for bird-animation is the four different containers for the flying birds-->
       <div class="bird-animation">
         <div class="bird-container bird-container--one">
           <div class="bird bird--one"></div>
@@ -51,23 +52,22 @@
           <div class="bird bird--four"></div>
         </div>
       </div>
+      <!--Bird animation ends here-->
+
+      <!-- graph -->
+      <section class="graph">
+        <main id="mainView">
+          <script defer src="scripts/app.ts"></script>
+        </main>
+      </section>
+      <!-- graph ends  -->
 
       <div class="frosted-container"></div>
 
-      <!-- graf -->
-      <section class="graf">
-        <div class="frosted-container">
-          <main id="mainView">
-            <script defer src="scripts/app.ts"></script>
-            <!-- graf slutar  -->
-          </main>
-        </div>
-      </section>
-
-      <!-- De tre rutorna som vissar upp olika delar vad folk har jobbat med  -->
+      <!-- Three boxes that shows who's been working on what, FRONTEND, BACKEND, EMBEDDED -->
       <section class="FEB">
         <h2>Vad alla har jobbat med</h2>
-        <p>om du går med mussen över rutorna kommer du få en överaskning</p>
+        <p>om du går med musen över rutorna kommer du få en överaskning</p>
 
         <div class="row">
           <div class="FEB-col">
@@ -92,9 +92,9 @@
           </div>
         </div>
       </section>
-      <!-- slutar här  -->
+      <!-- Section ends here  -->
 
-      <!-- footer börjar  -->
+      <!-- Footer starts here, located on the bottom of the screen  -->
       <section class="footer">
         <a
           id="github-link"
@@ -106,7 +106,7 @@
           2021 © Weather Station Group</a
         >
       </section>
-      <!-- footer slutar -->
+      <!-- footer ends here -->
     </div>
   </body>
 </html>
