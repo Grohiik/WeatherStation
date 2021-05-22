@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <!--THe head tag contains all the extra information about a web page, meta data, css, javascrips refrences etc-->
+  <!--The head tag contains all the extra information about a web page, meta data, css, javascript refrences, etc-->
 
   <head>
     <!---meta tags -->
@@ -22,8 +22,7 @@
     <link rel="stylesheet" href="main.css" />
   </head>
 
-  <!---The body countians all visual content, headigns, images, paragraps, etc-->
-
+  <!---The body countians all visual content, headings, images, paragraps, etc-->
   <body>
     <div class="root">
       <img
@@ -31,9 +30,18 @@
         src="images/background_img.jpg"
         alt="background-img"
       />
+      <!-- To top button -->
+      <div class="arrow-btn">
+        <a href="#"><img class="bird-arrow" src="images/toTop-raven.png" /></a>
+      </div>
+      <!-- End - to top button -->
+
+      <!-- Logo image -->
       <div class="logo">
         <img src="images/hugin_logo.png" alt="hugin-logo-img" />
       </div>
+      <!-- End - logo image -->
+
       <!--Following code for bird-animation is the four different containers for the flying birds-->
       <div class="bird-animation">
         <div class="bird-container bird-container--one">
@@ -52,60 +60,89 @@
           <div class="bird bird--four"></div>
         </div>
       </div>
-      <!--Bird animation ends here-->
+      <!-- Bird animation ends here -->
 
-      <!-- graph -->
+      <!-- Graph -->
       <section class="graph">
         <main id="mainView">
           <script defer src="scripts/app.ts"></script>
         </main>
       </section>
-      <!-- graph ends  -->
+      <!-- End - graph  -->
 
+      <!-- Hand dividers -->
+      <img
+        class="left-hand"
+        src="images/cirquit-hand-left.png"
+        alt="cirquit-hand-image-left"
+      />
+      <img
+        class="right-hand"
+        src="images/cirquit-hand-right.png"
+        alt="cirquit-hand-image-right"
+      />
+      <!-- End - hand dividers -->
+
+      <!-- Frosted container containing info about project -->
       <div class="frosted-container">
         <div class="about-project">
-          <h2>About the Hugin project</h2>
+          <h1>About the Hugin project</h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil
-            excepturi quisquam repudiandae voluptate obcaecati inventore modi
-            est ea magni aut possimus assumenda corrupti tempore sint
-            necessitatibus nulla, perferendis officia impedit.
+            Before the idea of Hugin had touched our minds, our project started
+            out as a Weather Station system called Poseidon. Both Hugin and
+            Poseidon are made up of the same fundamental idea, namely, an
+            <b>embedded system</b> which collects data that in turn is sent to a
+            <b>server</b>. The server formats and sorts this data into something
+            comprehensible which will then be utilised by a <b>website</b> and
+            be presented to the user whom has purchased the system.
           </p>
-          <p></p>
+          <p>
+            During the development we realised that only weather data collection
+            is very static, and doesn’t live up to the full potential of our
+            project. Therefore, we expanded the system to recognise any type of
+            data and make it possible for any type of data collection hardware
+            to connect to the system. This change gave way to the birth of
+            Hugin.
+          </p>
+          <div class="dotted-line"></div>
+          <p>
+            - Hugin derives from the Nordic mythology and is the name of one of
+            Odin’s all seeing ravens. Hugin means “thought” -
+          </p>
         </div>
       </div>
+      <!-- End - frosted container -->
 
       <!-- Three boxes that shows who's been working on what, FRONTEND, BACKEND, EMBEDDED -->
       <section class="FEB">
         <div class="row">
           <div class="FEB-col">
-            <img src="eduford_img/london.png" />
+            <img src="images/frontend-eye.png" alt="eye-img" />
             <div class="layer">
-              <h3>Ademir, Gabriella and Christian</h3>
-
-              <p1
-                >Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Facere, earum!</p1
-              >
+              <h2>Frontend</h2>
+              <p-feb>Ademir, Gabriella</p-feb>
+              <p-feb>and Christian</p-feb>
             </div>
           </div>
 
           <div class="FEB-col">
-            <img src="eduford_img/london.png" />
+            <img src="images/backend-brain.png" alt="brain-img" />
             <div class="layer">
-              <h3>Erik K, Eric L and Markus</h3>
+              <h2>Backend</h2>
+              <p-feb>Erik K, Eric L and Marcus</p-feb>
             </div>
           </div>
 
           <div class="FEB-col">
-            <img src="eduford_img/london.png" />
+            <img src="images/embedded-heart.png" alt="heart-img" />
             <div class="layer">
-              <h3>Pratchaya and Linnea</h3>
+              <h2>Embedded Systems</h2>
+              <p-feb>Pratchaya and Linnéa</p-feb>
             </div>
           </div>
         </div>
       </section>
-      <!-- Section ends here  -->
+      <!-- End - boxes containing info  -->
 
       <!-- Footer starts here, located on the bottom of the screen  -->
       <section class="footer">
@@ -119,7 +156,7 @@
           2021 © Weather Station Group</a
         >
       </section>
-      <!-- footer ends here -->
+      <!-- End - footer -->
     </div>
   </body>
 </html>

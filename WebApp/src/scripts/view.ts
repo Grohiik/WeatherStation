@@ -29,6 +29,14 @@ export function createCanvas(parent: HTMLElement): HTMLCanvasElement {
   return canvas
 }
 
+export function createButton(parent: HTMLElement): HTMLButtonElement {
+  const button = document.createElement('button')
+  button.innerHTML = 'Remove Graph'
+  button.type = 'button'
+  parent.appendChild(button)
+  return button
+}
+
 export function clearOptionsFromDropdrown(dropdown: HTMLSelectElement): void {
   for (let i = dropdown.length; i >= 1; i--) dropdown.remove(i)
 }

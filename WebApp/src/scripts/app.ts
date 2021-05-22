@@ -11,6 +11,7 @@ import {
   createCanvas,
   createDropdown,
   clearOptionsFromDropdrown,
+  createButton,
 } from './view'
 import {
   createLineGraph,
@@ -38,10 +39,24 @@ async function main() {
   const canvas = createCanvas(mainView)
   const graph = createLineGraph(canvas)
 
+  const button = createButton(mainView)
+
   dropdownDevice.addEventListener('change', onDeviceSelect)
   dropdownData.addEventListener('change', onDeviceContentSelect)
 
+  button.addEventListener('click', removeCanvasButton)
+
+  function removeCanvasButton() {
+    clearChartData(graph)
+    canvas.style.display = 'none'
+    dropdownDevice.selectedIndex = 0
+    dropdownData.selectedIndex = 0
+    button.style.visibility = 'hidden'
+  }
+
   getListOfDevices().then((devices) => {
+    button.style.visibility = 'hidden'
+    canvas.style.display = 'none'
     deviceList = devices
     deviceList.forEach((current) => {
       const name = upperCasefirst(current.device)
@@ -80,9 +95,11 @@ async function main() {
         dataset.data.push(Number(currentData[i].value))
       }
 
+      canvas.style.display = 'block'
       setChartLabels(graph, labels)
       addChartDataset(graph, dataset)
       updateChart(graph)
+      button.style.visibility = 'visible'
     })
   }
 }

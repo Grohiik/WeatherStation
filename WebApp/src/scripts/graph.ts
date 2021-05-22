@@ -38,6 +38,14 @@ export function createLineGraph(canvas: HTMLCanvasElement): TLineChart {
           labels: {},
         },
       },
+      scales: {
+        x: {
+          ticks: {
+            autoSkip: true,
+            autoSkipPadding: 30,
+          },
+        },
+      },
     },
   })
 }
