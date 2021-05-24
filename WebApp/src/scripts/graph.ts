@@ -1,3 +1,10 @@
+/*
+ * Authors:
+ * Gabriella Pantic, Ademir Zjajo, Christian Heisterkamp
+ * Co-authors:
+ * Pratchaya Khansomboom, Linnéa Mörk
+ */
+
 import { Chart } from 'chart.js'
 
 export interface ILineGraph {

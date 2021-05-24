@@ -1,4 +1,11 @@
-/**
+/*
+ * Authors:
+ * Gabriella Pantic, Ademir Zjajo, Christian Heisterkamp
+ * Co-authors:
+ * Pratchaya Khansomboom, Linnéa Mörk
+ */
+
+/*
  * 'datafetch' imports the path for the collected data from the API_URL
  * from 'endpoints' and implements these into interfaces for further
  * implementation
@@ -6,18 +13,10 @@
 
 import { listDataPath, listDataTypePath, listDevicesPath } from './endpoints'
 
-/**
- * Interface for the devices connected to the server
- */
-
 export interface IDevice {
   device: string
   description: string
 }
-
-/**
- * Interface for the content of the devices connected to the server
- */
 
 export interface IDeviceContent {
   name: string

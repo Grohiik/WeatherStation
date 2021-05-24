@@ -1,3 +1,10 @@
+/*
+ * Authors:
+ * Gabriella Pantic, Ademir Zjajo, Christian Heisterkamp
+ * Co-authors:
+ * Pratchaya Khansomboom, Linnéa Mörk
+ */
+
 export function createDropdown(
   parent: HTMLElement,
   defaultvalue = 'Select'
