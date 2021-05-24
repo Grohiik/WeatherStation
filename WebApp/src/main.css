@@ -46,7 +46,6 @@ body {
 /* Hugin logo */
 .logo {
   top: 280px;
-  background-attachment: center;
   position: relative;
   display: block;
   margin-left: auto;
@@ -119,7 +118,6 @@ body {
 
 .bird-container--one {
   animation-duration: 15s;
-  animation-delay: 0;
 }
 .bird-container--two {
   animation-duration: 16s;
@@ -271,7 +269,7 @@ button {
   width: 1250px;
 }
 .frosted-container:before {
-  backdrop-filter: blur(5px) saturate(90%) contrast(70%) brightness(130%);
+  filter: blur(5px) saturate(90%) contrast(70%) brightness(130%);
   content: '';
   height: 100%;
   position: absolute;
@@ -290,7 +288,7 @@ h1 {
   text-align: center;
   color: #000000;
   font-size: 25pt;
-  font-weight: 330;
+  font-weight: 300;
 }
 p {
   padding-left: 40px;
@@ -335,7 +333,7 @@ b {
 }
 .FEB-col img {
   width: 100%;
-  display: flexbox;
+  display: flex;
   overflow: hidden;
   border: 3px dotted #000000;
 }
@@ -358,7 +356,7 @@ b {
   font-size: 30px;
   color: #ffffff;
   bottom: 0%;
-  text-align: 50%;
+  text-align: center;
   position: relative;
   top: 35%;
   opacity: 0;
@@ -366,7 +364,6 @@ b {
   padding-bottom: 10px;
 }
 .layer:hover h2 {
-  bottom: 50%;
   opacity: 1;
 }
 .layer p-feb {
@@ -376,7 +373,7 @@ b {
   font-size: 24px;
   color: #ffffff;
   bottom: 0%;
-  text-align: 50%;
+  text-align: center;
   position: relative;
   top: 35%;
   opacity: 0;
