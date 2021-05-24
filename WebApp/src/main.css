@@ -269,7 +269,7 @@ button {
   width: 1250px;
 }
 .frosted-container:before {
-  filter: blur(5px) saturate(90%) contrast(70%) brightness(130%);
+  backdrop-filter: blur(5px) saturate(90%) contrast(70%) brightness(130%);
   content: '';
   height: 100%;
   position: absolute;
