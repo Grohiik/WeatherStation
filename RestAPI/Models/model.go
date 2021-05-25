@@ -1,34 +1,43 @@
 package Models
 
 import (
+	"time"
+
 	"gorm.io/gorm"
 )
 
-type Model struct {
-	ID uint
-}
-
 type Devices struct {
-	gorm.Model
-	DataTypes []Data_Types
-	Name      string `gorm:"column:device_name"`
+	Name      string         `gorm:"column:device_name" json:"name"`
+	CreatedAt time.Time      `json:"created_at"`
+	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
+	ID        uint           `gorm:"primarykey" json:"-"`
+	UpdatedAt time.Time      `json:"-"`
+	DataTypes []Data_Types   `json:"-"`
 }
 
 type Data_Types struct {
-	gorm.Model
-	Datas    []Data_Stored
-	DeviceID uint
-	Name     string
-	Count    uint
-	Unit     string
+	Name      string    `json:"name"`
+	Count     uint      `json:"count"`
+	Unit      string    `json:"unit"`
+	CreatedAt time.Time `json:"created_at"`
+
+	DeviceID  uint           `json:"-"`
+	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
+	ID        uint           `gorm:"primarykey" json:"-"`
+	UpdatedAt time.Time      `json:"-"`
+	Datas     []Data_Stored  `json:"-"`
 }
 
 type Data_Stored struct {
-	gorm.Model
-	Data_TypesID uint `gorm:"column:type_id"`
-	Value        string
-	Created      string
-	Time         string
+	Value string `json:"value"`
+	Time  string `json:"time"`
+
+	Data_TypesID uint           `gorm:"column:type_id" json:"-"`
+	DeletedAt    gorm.DeletedAt `gorm:"index" json:"-"`
+	ID           uint           `gorm:"primarykey" json:"-"`
+	UpdatedAt    time.Time      `json:"-"`
+	CreatedAt    time.Time      `json:"-"`
+	Datas        []Data_Stored  `json:"-"`
 }
 
 func (b *Devices) Devices() string {

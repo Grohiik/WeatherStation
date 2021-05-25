@@ -32,10 +32,11 @@ func GetDataTypes(c *gin.Context) {
 }
 
 func GetAllData(c *gin.Context) {
-	data_types := c.Params.ByName("name")
-	device := c.Params.ByName("device")
+	deviceName := c.Params.ByName("name")
+	dataType := c.Params.ByName("type")
+
 	var data_stored []Models.Data_Stored
-	err := Models.GetDataByDeviceAndDataType(&data_stored, data_types, device)
+	err := Models.GetDataByDeviceAndDataType(&data_stored, deviceName, dataType)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {

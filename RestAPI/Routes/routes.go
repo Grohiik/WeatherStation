@@ -13,7 +13,7 @@ func SetupRouter() *gin.Engine {
 	{
 		grp1.GET("/list/devices", Controllers.GetDevices)
 		grp1.GET("/list/types/:device_name", Controllers.GetDataTypes)
-		grp1.GET("/list/datas/:name", Controllers.GetAllData)
+		grp1.GET("/datas/:name/:type", Controllers.GetAllData)
 		grp1.POST("/storedata", Controllers.StoreData)
 		//grp1.GET("/data/:device/")
 		// grp1.GET("device/:id", Controllers.GetDeviceByID)
