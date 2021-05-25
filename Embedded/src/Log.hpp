@@ -1,3 +1,14 @@
+/**
+ * @file    WeatherData.cpp
+ * @author  Pratchaya Khansomboon (pratchaya.k.git@gmail.com)
+ * @brief
+ * @version 0.1.0
+ * @date 2021-05-5
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
+
 #pragma once
 
 #include <cstdint>
@@ -13,7 +24,8 @@ namespace poseidon {
     constexpr auto LOG_BUFFER_SIZE       = 256;
     constexpr auto BATTERY_LOG_FILENAME  = "/battery.csv";
     constexpr auto DATALOG_FILENAME      = "/datalog.csv";
-    constexpr auto DATALOG_ALL_FILENAME  = "/alldata.csv";
+    constexpr auto COLLECTIONS_FILENAME  = "/collections.csv";
+    constexpr auto BATTERY_HEADER        = "time,battery(voltage)";
 
     // clang-format on
 
@@ -27,7 +39,11 @@ namespace poseidon {
 
         void logBattery();
         void logData(WeatherData& weather);
-        void logAllData(WeatherData& weather);
+        void logBackup(WeatherData& weather);
+
+       private:
+        void createLogFile(const char* filename, const char* header,
+                           const bool& newline = true);
 
        private:
         bool m_isInit;

@@ -3,7 +3,7 @@
  * @author  Pratchaya Khansomboon (pratchaya.k.git@gmail.com)
  * @brief
  * @version 0.1.0
- * @date 2021-04-12
+ * @date 2021-05-25
  *
  * @copyright Copyright (c) 2021
  *
@@ -41,9 +41,9 @@ namespace poseidon {
 
     char* WeatherData::toCSV(const boolean& headerOn) {
         if (headerOn)
-            sprintf(m_message, "%s\n%s,%u,%.3f,%.3f,%.3f,%.3f",
-                    WEATHER_DATA_HEADER, DEVICE_ID, m_time, m_temperature,
-                    m_humidity, m_light.lux, m_batteryVoltage);
+            sprintf(m_message, "%s\n%s,%u,%.3f,%.3f,%.3f,%.3f", DATA_HEADER,
+                    DEVICE_ID, m_time, m_temperature, m_humidity, m_light.lux,
+                    m_batteryVoltage);
         else
             sprintf(m_message, "%s,%u,%.3f,%.3f,%.3f,%.3f", DEVICE_ID, m_time,
                     m_temperature, m_humidity, m_light.lux, m_batteryVoltage);
