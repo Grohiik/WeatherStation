@@ -1,3 +1,14 @@
+/**
+ * @file    main.rs
+ * @author  Linnéa
+ * @brief
+ * @version 0.1.0
+ * @date    2021-05-25
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
+
 use chrono::{prelude::*, DateTime};
 use postgres::{Client, Error, NoTls};
 use serde::Serialize;
