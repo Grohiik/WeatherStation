@@ -6,6 +6,8 @@ import (
 	"gorm.io/gorm"
 )
 
+//Authour Eric Lundin
+
 type Model struct {
 	ID        uint8      `gorm:"autoIncrement;primary_key;"`
 	CreatedAt time.Time  `gorm:"autoCreateTime"`
