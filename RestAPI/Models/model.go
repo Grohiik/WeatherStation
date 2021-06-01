@@ -6,6 +6,15 @@ import (
 	"gorm.io/gorm"
 )
 
+/**
+ * Modelclass
+ *
+ * @author Marcus Linné
+ * @author Erik Kellgren
+ * @author Pratchaya Khansomboon
+ * @version 0.1.0
+ */
+
 type Devices struct {
 	Name      string         `gorm:"column:device_name" json:"name"`
 	CreatedAt time.Time      `json:"created_at"`

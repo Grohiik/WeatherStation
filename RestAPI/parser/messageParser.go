@@ -9,6 +9,13 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+/**
+ * Parserclass
+ *
+ * @author Eric Lundin
+ * @version 0.1.0
+ */
+
 var db *gorm.DB
 
 func SetDatabaseConnection(conn *gorm.DB) {

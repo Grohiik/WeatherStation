@@ -4,6 +4,15 @@ import (
 	"RestAPI/Config"
 )
 
+/**
+ * Fetchingclass
+ *
+ * @author Marcus Linné
+ * @author Erik Kellgren
+ * @author Pratchaya Khansomboon
+ * @version 0.1.0
+ */
+
 //GetAllDevices Fetches all devices.
 func GetAllDevices(devices *[]Devices) (err error) {
 	if err = Config.DB.Find(devices).Error; err != nil {

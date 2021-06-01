@@ -1,4 +1,4 @@
-package Config //Konfigurationsfil
+package Config
 
 import (
 	"fmt"
@@ -8,6 +8,14 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/joho/godotenv"
 )
+
+/**
+ * Configurationfile
+ *
+ * @author Marcus Linné
+ * @author Erik Kellgren
+ * @version 0.1.0
+ */
 
 var DB *gorm.DB
 

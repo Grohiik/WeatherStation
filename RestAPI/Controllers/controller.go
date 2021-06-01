@@ -9,6 +9,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+/**
+ * Controller
+ *
+ * @author Marcus Linné
+ * @author Erik Kellgren
+ * @version 0.1.0
+ */
+
 //GetDevices ... Gets all devices
 func GetDevices(c *gin.Context) {
 	var device []Models.Devices

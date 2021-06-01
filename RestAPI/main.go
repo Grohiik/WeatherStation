@@ -10,6 +10,14 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+/**
+ * Mainclass
+ *
+ * @author Marcus Linné
+ * @author Erik Kellgren
+ * @version 0.1.0
+ */
+
 var err error
 
 func main() {
