@@ -9,6 +9,8 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// Authour Eric Lundin
+
 var db *gorm.DB
 
 func SetDatabaseConnection(conn *gorm.DB) {
