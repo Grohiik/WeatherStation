@@ -15,7 +15,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/joho/godotenv"
 )
-
+// Authour Eric Lundin 
 var db *gorm.DB //database
 
 func init() {
