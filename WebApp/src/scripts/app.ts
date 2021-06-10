@@ -66,7 +66,7 @@ async function main() {
     canvas.style.display = 'none'
     deviceList = devices
     deviceList.forEach((current) => {
-      const name = upperCasefirst(current.device)
+      const name = upperCasefirst(current.name)
       addOptionToDropdown(dropdownDevice, name)
     })
   })
@@ -75,7 +75,7 @@ async function main() {
     currentDevice = deviceList[dropdownDevice.selectedIndex - 1]
     deviceContentList = []
     clearOptionsFromDropdrown(dropdownData)
-    getDeviceContent(currentDevice.device).then((contents) => {
+    getDeviceContent(currentDevice.name).then((contents) => {
       deviceContentList = contents
       deviceContentList.forEach((content) => {
         const name = upperCasefirst(content.name)
@@ -86,7 +86,7 @@ async function main() {
 
   function onDeviceContentSelect() {
     currentContent = deviceContentList[dropdownData.selectedIndex - 1]
-    getSpecificData(currentDevice.device, currentContent.name).then((datas) => {
+    getSpecificData(currentDevice.name, currentContent.name).then((datas) => {
       currentData = datas
       const dataset: IDataset = {
         data: [],
@@ -97,7 +97,7 @@ async function main() {
       clearChartData(graph)
 
       for (let i = 0; i < currentData.length; i++) {
-        const date = new Date(Number(currentData[i].created) * 1000)
+        const date = new Date(Number(currentData[i].time) * 1000)
         labels.push(date.toLocaleString('se-SE', { timeZone: 'UTC' }))
         dataset.data.push(Number(currentData[i].value))
       }

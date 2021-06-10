@@ -14,20 +14,20 @@
 import { listDataPath, listDataTypePath, listDevicesPath } from './endpoints'
 
 export interface IDevice {
-  device: string
-  description: string
+  name: string
+  created_at: string
 }
 
 export interface IDeviceContent {
   name: string
-  type: string
-  unit: string
   count: number
+  unit: string
+  created_at: string
 }
 
 export interface IDeviceData {
   value: string
-  created: string
+  time: string
 }
 
 export async function getListOfDevices(): Promise<IDevice[]> {

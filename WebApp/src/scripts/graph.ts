@@ -5,9 +5,7 @@
  * Pratchaya Khansomboom, Linnéa Mörk
  */
 
-import { Chart, registerables } from 'chart.js'
-
-Chart.register(...registerables)
+import C, { Chart } from 'chart.js'
 
 export interface ILineGraph {
   xValues: string[]

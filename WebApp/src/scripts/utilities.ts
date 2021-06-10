@@ -5,6 +5,6 @@
  * Pratchaya Khansomboom, Linnéa Mörk
  */
 
-export function upperCasefirst(string: string) {
+export function upperCasefirst(string: string): string {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }

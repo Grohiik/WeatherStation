@@ -18,7 +18,7 @@ import { API_URL } from './env'
  */
 
 export function listDevicesPath(): string {
-  return API_URL + '/ListDevices'
+  return API_URL + '/list/devices'
 }
 
 /*
@@ -28,7 +28,7 @@ export function listDevicesPath(): string {
  */
 
 export function listDataTypePath(deviceName: string): string {
-  return API_URL + `/${deviceName}/datatypes`
+  return API_URL + `/list/types/${deviceName}/`
 }
 
 /*
@@ -39,5 +39,5 @@ export function listDataTypePath(deviceName: string): string {
  */
 
 export function listDataPath(deviceName: string, datatypes: string): string {
-  return API_URL + `/${deviceName}/${datatypes}/data`
+  return API_URL + `/data/${deviceName}/${datatypes}/`
 }
