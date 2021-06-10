@@ -2,6 +2,7 @@ package Models
 
 import (
 	"RestAPI/Config"
+	"fmt"
 )
 
 /**
@@ -22,19 +23,22 @@ func GetAllDevices(devices *[]Devices) (err error) {
 }
 
 // Gets which types of data the choosen device has.
-func GetDataTypesByDevice(data_types *[]Data_Types, device string) (err error) {
-	if err = Config.DB.Model(&device).Find(&data_types).Error; err != nil {
-		return err
-	}
+func GetDataTypesByDevice(dataTypes *[]Data_Types, deviceName string) (err error) {
+	device := Devices{}
+	Config.DB.First(&device, Devices{Name: deviceName})
+	Config.DB.Find(&dataTypes, Data_Types{DeviceID: device.ID})
+
 	return nil
 }
 
-func GetDataByDeviceAndDataType(data *[]Data_Stored, type_name string, device_name string) (err error) {
+func GetDataByDeviceAndDataType(data *[]Data_Stored, deviceName string, typeName string) (err error) {
 	device := Devices{}
-	data_type := Data_Types{}
-	Config.DB.First(&device, Devices{Name: device_name})
-	Config.DB.First(&data_type, Data_Types{Name: type_name, DeviceID: device.ID})
-	Config.DB.Find(data, Data_Stored{Data_TypesID: data_type.ID})
+	dataType := Data_Types{}
+	Config.DB.First(&device, Devices{Name: deviceName})
+	Config.DB.First(&dataType, Data_Types{Name: typeName, DeviceID: device.ID})
+	Config.DB.Find(data, Data_Stored{Data_TypesID: dataType.ID})
+
+	fmt.Println(len(*data))
 
 	return nil
 }
